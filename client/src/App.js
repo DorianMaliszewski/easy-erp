@@ -51,6 +51,7 @@ const App = ({ location, ...props }) => {
       <PrivateRoute path={routes.QUOTES_DETAIL.path} component={QuoteDetail} />
       <PrivateRoute path={routes.MY_CUSTOMERS.path} component={MyCustomers} />
       <PrivateRoute path={routes.CUSTOMERS_DETAIL.path} component={CustomerDetail} />
+
       <PrivateRoute path={routes.CUSTOMERS_FORM.path} component={CustomerFormPage} />
       <PrivateRoute path={routes.MY_PROFILE.path} component={MyProfile} />
       <PrivateRoute path={routes.USER_DETAIL.path} component={UserDetail} />

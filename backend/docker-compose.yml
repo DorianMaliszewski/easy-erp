@@ -1,18 +1,6 @@
 version: "3"
 
 services:
-  eureka:
-    image: easy-erp-eureka
-    ports:
-      - 8000:8761
-
-  zuul:
-    image: easy-erp-zuul
-    env_file:
-      - .env_file
-    ports:
-      - 8080:8080
-
   authorization-server:
     image: easy-erp-authorization-server
     env_file:
@@ -24,7 +12,7 @@ services:
       - db-oauth2
     ports:
       - 8081:8080
-  
+
   db-bill:
     image: mariadb
     environment:
