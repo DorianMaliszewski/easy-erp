@@ -1,0 +1,30 @@
+zuul:
+  prefix: /rest
+  sensitive-headers:
+  - Cookie
+  - Set-Cookie
+  routes:
+    quote-service:
+      path: /quote-service/**
+      serviceId: QUOTE-SERVICE
+    bill-service:
+      path: /bill-service/**
+      serviceId: BILL-SERVICE
+    client-service:
+      path: /client-service/**
+      serviceId: CLIENT-SERVICE
+    authorization-server:
+      path: /authorization-server/**
+      serviceId: AUTHORIZATION-SERVER
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka
+  instance:
+    hostname: api.easy-erp.lan
+
+spring:
+  application:
+    name: zuul-service

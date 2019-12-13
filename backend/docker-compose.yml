@@ -1,0 +1,82 @@
+version: "3"
+
+services:
+  eureka:
+    image: easy-erp-eureka
+    ports:
+      - 8000:8761
+
+  zuul:
+    image: easy-erp-zuul
+    env_file:
+      - .env_file
+    ports:
+      - 8080:8080
+
+  authorization-server:
+    image: easy-erp-authorization-server
+    env_file:
+      - .env_file
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db-oauth2/${MYSQL_OAUTH2_DB}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      - db-oauth2
+    ports:
+      - 8081:8080
+  
+  db-bill:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_BILL_DB}
+
+  db-client:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_CLIENT_DB}
+
+  db-quote:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_QUOTE_DB}
+
+  db-oauth2:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_OAUTH2_DB}
+    ports:
+      - 3306
+
+  quote-service:
+    image: easy-erp-quote-service
+    env_file:
+      - .env_file
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db-quote/${MYSQL_QUOTE_DB}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      - db-quote
+
+  bill-service:
+    image: easy-erp-bill-service
+    env_file:
+      - .env_file
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db-bill/${MYSQL_BILL_DB}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      - db-bill
+
+  client-service:
+    image: easy-erp-client-service
+    env_file:
+      - .env_file
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db-client/${MYSQL_CLIENT_DB}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      - db-client

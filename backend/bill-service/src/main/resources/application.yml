@@ -1,0 +1,37 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: bill-service
+
+  datasource:
+    url: jdbc:mysql://localhost/ez_bill
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+
+
+application:
+  oauth:
+    client-id: easy-erp
+    client-secret: easy-erp
+    client-url: http://localhost:8081/oauth/check_token
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8000/eureka
+  instance:
+    hostname: api.easy-erp.lan
+    prefer-ip-address: true
+
+feign:
+  hystrix:
+    enabled: true
+hystrix:
+  shareSecurityContext: true

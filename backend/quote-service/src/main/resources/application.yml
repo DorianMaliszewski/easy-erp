@@ -1,0 +1,27 @@
+eureka:
+  instance:
+    hostname: api.easy-erp.lan
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8000/eureka
+
+spring:
+  application:
+    name: quote-service
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost/ez_quote
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+    port: 8082
+
+application:
+  oauth:
+    client-id: easy-erp
+    client-secret: easy-erp
+    client-url: http://localhost:8081/oauth/check_token
