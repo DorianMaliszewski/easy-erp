@@ -4,9 +4,17 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://localhost/ez_quote
+    url: jdbc:mysql://localhost:3307/ez_client
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+
+
 server:
   port: 8082
+
+application:
+  oauth:
+    client-id: easy-erp
+    client-secret: easy-erp
+    client-url: http://localhost:8081

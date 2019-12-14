@@ -4,10 +4,13 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://localhost/ez_quote
+    url: jdbc:mysql://localhost:3308/ez_quote
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
 
 server:
   port: 8082

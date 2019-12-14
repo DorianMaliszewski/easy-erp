@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class QuoteRequest {
-    private Double price;
-    private String creator;
-    private String client;
+    private Double total;
+    private Long createdBy;
+    private Long clientId;
 }

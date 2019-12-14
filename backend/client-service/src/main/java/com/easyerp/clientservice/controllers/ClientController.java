@@ -5,6 +5,7 @@ import com.easyerp.clientservice.dtos.DTO;
 import com.easyerp.clientservice.repositories.ClientRepository;
 import com.easyerp.clientservice.requests.ClientRequest;
 import com.easyerp.clientservice.services.ClientService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,8 @@ public class ClientController {
 
     @GetMapping("/{id}")
     public ResponseEntity findOneById(@PathVariable Long id) {
-        return ResponseEntity.ok(this.clientRepository.findById(id));
+        var client = this.clientRepository.findById(id);
+        return client.isPresent() ? ResponseEntity.ok(client) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("The client doesn't exist");
     }
 
     @PostMapping

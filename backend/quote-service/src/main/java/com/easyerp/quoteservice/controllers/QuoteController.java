@@ -1,9 +1,11 @@
 package com.easyerp.quoteservice.controllers;
 
 import com.easyerp.quoteservice.domains.Quote;
+import com.easyerp.quoteservice.dtos.DTO;
 import com.easyerp.quoteservice.repositories.QuoteRepository;
 import com.easyerp.quoteservice.requests.QuoteRequest;
 import com.easyerp.quoteservice.services.QuoteService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +23,16 @@ public class QuoteController {
 
     @GetMapping
     public ResponseEntity findAll() {
-        return ResponseEntity.ok(this.quoteRepository.findAll());
+        var dto = new DTO<Quote>();
+        dto.setItems(this.quoteRepository.findAll());
+        dto.setNumFound((long) dto.getItems().size());
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity findOneById(@PathVariable Long id) {
-        return ResponseEntity.ok(this.quoteRepository.findById(id));
+        var quote = this.quoteRepository.findById(id);
+        return quote.isPresent() ? ResponseEntity.ok(quote) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("The quote doesn't exist");
     }
 
     @PostMapping

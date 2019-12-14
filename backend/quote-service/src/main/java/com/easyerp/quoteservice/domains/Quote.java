@@ -2,27 +2,28 @@ package com.easyerp.quoteservice.domains;
 
 import com.easyerp.quoteservice.enums.QuoteStatus;
 import com.easyerp.quoteservice.requests.QuoteRequest;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Quote extends BaseEntity {
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private QuoteStatus status;
     private Double total;
-    private String creator;
-    private String client;
+    private Long createdBy;
+    private Long clientId;
 
     private Boolean deleted;
 
     public Quote(QuoteRequest quoteRequest) {
-        this.total = quoteRequest.getPrice();
-        this.creator = quoteRequest.getCreator();
-        this.client = quoteRequest.getClient();
+        this.total = quoteRequest.getTotal();
+        this.createdBy = quoteRequest.getCreatedBy();
+        this.clientId = quoteRequest.getClientId();
     }
 }

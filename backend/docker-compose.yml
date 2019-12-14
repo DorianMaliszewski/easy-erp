@@ -18,18 +18,24 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_BILL_DB}
+    ports:
+    - 3306:3306
 
   db-client:
     image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_CLIENT_DB}
+    ports:
+    - 3307:3306
 
   db-quote:
     image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_QUOTE_DB}
+    ports:
+    - 3308:3306
 
   db-oauth2:
     image: mariadb
@@ -37,7 +43,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_OAUTH2_DB}
     ports:
-      - 3306
+    - 3309:3306
 
   quote-service:
     image: easy-erp-quote-service

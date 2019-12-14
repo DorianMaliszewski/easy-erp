@@ -1,19 +1,19 @@
 package com.easyerp.clientservice.domains;
 
 import com.easyerp.clientservice.requests.ClientRequest;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.Entity;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Client extends BaseEntity {
 
     private String name;
-    private String contact;
+    private Long contact;
     private String phone;
     private String email;
     private String site;
@@ -22,7 +22,7 @@ public class Client extends BaseEntity {
     private String postalCode;
     private Boolean enabled = true;
     private Boolean deleted = false;
-    private String createdBy;
+    private Long createdBy;
 
     public Client(ClientRequest clientRequest) {
         this.name = clientRequest.getName();
