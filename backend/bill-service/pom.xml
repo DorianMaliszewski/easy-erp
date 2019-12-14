@@ -79,9 +79,10 @@
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
         </dependency>
 
     </dependencies>

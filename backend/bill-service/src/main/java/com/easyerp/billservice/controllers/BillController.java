@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/bill")
+@RequestMapping("/api/bills")
 public class BillController {
 
     private final BillRepository billRepository;

@@ -7,8 +7,7 @@ spring:
     url: jdbc:mysql://localhost:3307/ez_client
   jpa:
     hibernate:
-      ddl-auto: validate
-
+      ddl-auto: none
 
 server:
   port: 8082

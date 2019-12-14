@@ -6,8 +6,7 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
        SPRING_DATASOURCE_URL="" \
        SPRING_DATASOURCE_USER="" \
        SPRING_DATASOURCE_PASSWORD="" \
-       BASE_URL="" \
-       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=""
+       BASE_URL=""
 
 ADD *.jar /app.jar
 
@@ -20,5 +19,4 @@ CMD echo "The application will start in ${TIME_TO_SLEEP}s..." && \
        --spring.datasource.url="${SPRING_DATASOURCE_URL}" \
        --spring.datasource.username="${SPRING_DATASOURCE_USERNAME}" \
        --spring.datasource.password="${SPRING_DATASOURCE_PASSWORD}" \
-       --application.base-url="${BASE_URL}" \
-       --eureka.client.service-url.defaultZone="${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}"
+       --application.base-url="${BASE_URL}"

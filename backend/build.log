@@ -4,20 +4,27 @@
 [INFO] Building quote-service 0.0.1-SNAPSHOT
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ quote-service ---
+[INFO] Deleting /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/target
+[INFO] 
 [INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ quote-service ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] Copying 1 resource
-[INFO] Copying 0 resource
+[INFO] Copying 2 resources
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.8.0:compile (default-compile) @ quote-service ---
-[INFO] Nothing to compile - all classes are up to date
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 14 source files to /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/target/classes
+[INFO] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java: /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java uses unchecked or unsafe operations.
+[INFO] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java: Recompile with -Xlint:unchecked for details.
 [INFO] 
 [INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ quote-service ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] skip non existing resourceDirectory /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/test/resources
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.8.0:testCompile (default-testCompile) @ quote-service ---
-[INFO] Nothing to compile - all classes are up to date
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/target/test-classes
 [INFO] 
 [INFO] --- maven-surefire-plugin:2.22.1:test (default-test) @ quote-service ---
 [INFO] Tests are skipped.
@@ -36,30 +43,30 @@
 Step 1/5 : FROM openjdk:11
 
  ---> f06fdc42d01a
-Step 2/5 : ENV EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=""   SPRING_DATASOURCE_URL=""   SPRING_DATASOURCE_USERNAME=""   SPRING_DATASOURCE_PASSWORD=""   OAUTHSERVICE_URL=''
+Step 2/5 : ENV SPRING_DATASOURCE_URL=""   SPRING_DATASOURCE_USERNAME=""   SPRING_DATASOURCE_PASSWORD=""   OAUTHSERVICE_URL=''
 
  ---> Using cache
- ---> 09bdaa447230
+ ---> b18ca00d4eca
 Step 3/5 : ADD *.jar /app.jar
 
- ---> 025b711409b7
+ ---> 265d35874295
 Step 4/5 : EXPOSE 8080
 
- ---> Running in 55c36f1049fb
-Removing intermediate container 55c36f1049fb
- ---> 64256d8b0625
-Step 5/5 : CMD java -jar /app.jar   --server.port=8080   --spring.datasource.url="${SPRING_DATASOURCE_URL}"   --spring.datasource.username="${SPRING_DATASOURCE_USERNAME}"   --spring.datasource.password="${SPRING_DATASOURCE_PASSWORD}"   --eureka.client.service-url.defaultZone="${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}"   --application.oauth.client-url="${OAUTHSERVICE_URL}"
+ ---> Running in a39befacc891
+Removing intermediate container a39befacc891
+ ---> 685b237bde56
+Step 5/5 : CMD java -jar /app.jar   --server.port=8080   --spring.datasource.url="${SPRING_DATASOURCE_URL}"   --spring.datasource.username="${SPRING_DATASOURCE_USERNAME}"   --spring.datasource.password="${SPRING_DATASOURCE_PASSWORD}"   --application.oauth.client-url="${OAUTHSERVICE_URL}"
 
- ---> Running in 37243d150579
-Removing intermediate container 37243d150579
- ---> 89fbafc790c6
+ ---> Running in e91b28bcc4c8
+Removing intermediate container e91b28bcc4c8
+ ---> 1c29472f8f41
 ProgressMessage{id=null, status=null, stream=null, error=null, progress=null, progressDetail=null}
-Successfully built 89fbafc790c6
+Successfully built 1c29472f8f41
 Successfully tagged easy-erp-quote-service:latest
 [INFO] Built easy-erp-quote-service
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  9.792 s
-[INFO] Finished at: 2019-12-13T23:07:16+01:00
+[INFO] Total time:  11.011 s
+[INFO] Finished at: 2019-12-14T17:14:18+01:00
 [INFO] ------------------------------------------------------------------------

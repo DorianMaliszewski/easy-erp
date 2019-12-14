@@ -1,7 +1,6 @@
 FROM openjdk:11
 
-ENV EUREKA_CLIENT_SERVICEURL_DEFAULTZONE="" \
-  SPRING_DATASOURCE_URL="" \
+ENV SPRING_DATASOURCE_URL="" \
   SPRING_DATASOURCE_USERNAME="" \
   SPRING_DATASOURCE_PASSWORD="" \
   OAUTHSERVICE_URL=''
@@ -15,5 +14,4 @@ CMD java -jar /app.jar \
   --spring.datasource.url="${SPRING_DATASOURCE_URL}" \
   --spring.datasource.username="${SPRING_DATASOURCE_USERNAME}" \
   --spring.datasource.password="${SPRING_DATASOURCE_PASSWORD}" \
-  --eureka.client.service-url.defaultZone="${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}" \
   --oauth-service.url="${OAUTHSERVICE_URL}"

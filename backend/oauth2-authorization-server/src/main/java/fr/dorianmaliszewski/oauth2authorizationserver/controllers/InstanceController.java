@@ -5,8 +5,6 @@ import fr.dorianmaliszewski.oauth2authorizationserver.repositories.TenantReposit
 import fr.dorianmaliszewski.oauth2authorizationserver.requests.TenantRequest;
 import fr.dorianmaliszewski.oauth2authorizationserver.responses.DTO;
 import fr.dorianmaliszewski.oauth2authorizationserver.services.InstanceService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/client")
 @PreAuthorize("#oauth2.hasScope('admin')")
-@Api("Opérations sur les clients")
 public class InstanceController {
 
     private final TenantRepository tenantRepository;
@@ -25,9 +22,7 @@ public class InstanceController {
         this.instanceService = instanceService;
     }
 
-
     @GetMapping
-    @ApiOperation(value = "Retourne toutes les instances", response = DTO.class)
     public ResponseEntity findAll() {
         DTO<Tenant> clientDTO = new DTO<>();
         clientDTO.setItems(this.tenantRepository.findAll());
@@ -36,13 +31,11 @@ public class InstanceController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Retourne l'tenant correspondant à l'id si il existe", response = Tenant.class)
     public ResponseEntity findOneById(@PathVariable Long id) {
         return ResponseEntity.ok(this.tenantRepository.findById(id));
     }
 
     @PostMapping
-    @ApiOperation(value = "Créer une nouvelle tenant", response = Tenant.class)
     public ResponseEntity create(@RequestBody TenantRequest tenantRequest) {
         Tenant newTenant = this.instanceService.create(tenantRequest);
         return ResponseEntity.ok(newTenant);

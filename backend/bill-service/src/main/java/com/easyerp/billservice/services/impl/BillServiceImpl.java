@@ -35,7 +35,7 @@ public class BillServiceImpl implements BillService {
         bill.setPrice(
                 billRequest.getLines().stream().mapToDouble(line -> line.getUnitaryPrice() * line.getQuantity()).sum());
 
-        bill.setCreator(authentication.getName());
+        bill.setCreatedBy(0L);
 
         if (SecurityUtils.isMoreThanOrEqualManager(authentication.getAuthorities())) {
             bill.setStatus(BillStatus.WAITING_CUSTOMER);
@@ -51,7 +51,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public Bill update(Bill bill, BillRequest billRequest, OAuth2Authentication authentication) {
-        if (!authentication.getName().equals(bill.getCreator())) {
+        if (!authentication.getName().equals(bill.getCreatedBy().toString())) {
             throw new ForbiddenException();
         }
 
@@ -67,7 +67,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public void publish(Bill bill, OAuth2Authentication authentication) {
-        if (!authentication.getName().equals(bill.getCreator())) {
+        if (!authentication.getName().equals(bill.getCreatedBy())) {
             throw new ForbiddenException();
         }
 

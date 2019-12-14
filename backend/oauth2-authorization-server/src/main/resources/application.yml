@@ -1,15 +1,16 @@
 server:
-  port: 8081
+  port: 8085
 
 spring:
   application:
     name: authorization-server
+  datasource:
+    url: jdbc:mysql://localhost:3309/ez_users
+    username: root
+    password: root
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
-  datasource:
-    url: jdbc:mysql://localhost/oauth_user
-    username: root
-    password: root
-    initialization-mode: always
+  flyway:
+    enabled: true
+

@@ -3,7 +3,7 @@ for dir in ./*/
 do
   cd $dir;
   echo -ne "Building $dir ...";
-  ./mvnw package docker:build -DskipTests > ../build.log;
+  ./mvnw clean package docker:build -DskipTests > ../build.log;
   if [ $? != 0 ] ; then
     echo -e "\033[0;31m error \033[0m \n Une erreur est survenue lors de la compilation du projet dans $dir ";
     exit 1;

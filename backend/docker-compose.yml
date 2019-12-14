@@ -1,6 +1,17 @@
 version: "3"
 
 services:
+  traefik:
+    image: "traefik:v2.0.0"
+    container_name: "traefik"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    domainname: localhost
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik.toml:/etc/traefik/traefik.toml"
+
   authorization-server:
     image: easy-erp-authorization-server
     env_file:
@@ -12,6 +23,9 @@ services:
       - db-oauth2
     ports:
       - 8081:8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.authorization-server.rule=Host(`oauth.easy-erp.lan`)"
 
   db-bill:
     image: mariadb
@@ -19,7 +33,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_BILL_DB}
     ports:
-    - 3306:3306
+      - 3306:3306
 
   db-client:
     image: mariadb
@@ -27,7 +41,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_CLIENT_DB}
     ports:
-    - 3307:3306
+      - 3307:3306
 
   db-quote:
     image: mariadb
@@ -35,7 +49,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_QUOTE_DB}
     ports:
-    - 3308:3306
+      - 3308:3306
 
   db-oauth2:
     image: mariadb
@@ -43,7 +57,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_OAUTH2_DB}
     ports:
-    - 3309:3306
+      - 3309:3306
 
   quote-service:
     image: easy-erp-quote-service
@@ -54,6 +68,11 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     depends_on:
       - db-quote
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.quote-service-router.rule=Host(`api.easy-erp.lan`) && PathPrefix(`/quote-service`)"
+      - "traefik.http.middlewares.quote-service-middlewares.stripprefix.prefixes=/quote-service"
+      - "traefik.http.routers.quote-service-router.middlewares=quote-service-middlewares@docker"
 
   bill-service:
     image: easy-erp-bill-service
@@ -64,6 +83,11 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     depends_on:
       - db-bill
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bill-service-router.rule=Host(`api.easy-erp.lan`) && PathPrefix(`/bill-service`)"
+      - "traefik.http.middlewares.bill-service-middlewares.stripprefix.prefixes=/bill-service"
+      - "traefik.http.routers.bill-service-router.middlewares=bill-service-middlewares@docker"
 
   client-service:
     image: easy-erp-client-service
@@ -74,3 +98,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     depends_on:
       - db-client
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.client-service-router.rule=Host(`api.easy-erp.lan`) && PathPrefix(`/client-service`)"
+      - "traefik.http.middlewares.client-service-middlewares.stripprefix.prefixes=/client-service"
+      - "traefik.http.routers.client-service-router.middlewares=client-service-middlewares@docker"

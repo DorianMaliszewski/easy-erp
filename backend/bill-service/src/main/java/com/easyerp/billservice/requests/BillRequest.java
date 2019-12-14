@@ -11,7 +11,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BillRequest {
     private Double price;
-    private String creator;
+    private Long createdBy;
     private Long clientId;
     private List<BillLineRequest> lines;
     private Boolean isDraft;
