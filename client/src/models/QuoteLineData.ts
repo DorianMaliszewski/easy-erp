@@ -1,8 +1,8 @@
 export class QuoteLineData {
   description: string;
   quantity: number;
-  puht: number;
-  puttc: number;
+  preTaxPrice: number;
+  postTaxPrice: number;
   total?: number;
   createdAt?: Date;
   updatedAt?: Date;
@@ -11,7 +11,7 @@ export class QuoteLineData {
   constructor() {
     this.description = "";
     this.quantity = 0;
-    this.puht = 0;
-    this.puttc = 0;
+    this.preTaxPrice = 0;
+    this.postTaxPrice = 0;
   }
 }

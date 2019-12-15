@@ -6,7 +6,8 @@ CREATE TABLE bill (
     updated_at DATETIME DEFAULT NULL,
     version int DEFAULT 0,
     status varchar(50) DEFAULT NULL,
-    price DOUBLE DEFAULT NULL,
+    total DOUBLE DEFAULT NULL,
+    tva DOUBLE DEFAULT 0,
     created_by BIGINT(20) DEFAULT NULL,
     client_id BIGINT(20) DEFAULT NULL,
     deleted BIT(1) DEFAULT 0
@@ -21,7 +22,7 @@ CREATE TABLE bill_line (
     version int DEFAULT 0,
     description VARCHAR(255) DEFAULT NULL,
     quantity INT DEFAULT 0,
-    unitary_price DOUBLE DEFAULT 0,
+    pre_tax_price DOUBLE DEFAULT 0,
     PRIMARY KEY (bill_id, line_number),
     FOREIGN KEY (bill_id) REFERENCES bill (id)
 );

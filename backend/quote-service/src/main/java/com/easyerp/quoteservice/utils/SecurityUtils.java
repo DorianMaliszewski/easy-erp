@@ -11,7 +11,7 @@ public class SecurityUtils {
      * @param authorities Collection of
      * @return
      */
-    public static Boolean isMoreThanOrEqualManager(Collection<GrantedAuthority> authorities) {
+    public static Boolean isMoreThanOrEqualManager(Collection<? extends GrantedAuthority> authorities) {
         return authorities.stream().anyMatch(grantedAuthority ->
                 grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_SUPER_ADMIN") ||
                 grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_ADMIN") ||

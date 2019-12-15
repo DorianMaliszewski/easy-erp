@@ -6,4 +6,6 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 public interface QuoteService {
     Quote create(QuoteRequest quoteRequest, OAuth2Authentication authentication);
+
+    Quote update(Quote quote, QuoteRequest quoteRequest, OAuth2Authentication authentication);
 }

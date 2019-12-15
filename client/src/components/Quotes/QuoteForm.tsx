@@ -1,29 +1,43 @@
-import React, { useContext } from "react";
-import { Table, TableHead, TableRow, TableCell, TextField, TableFooter, Fab, Button, Grid } from "@material-ui/core";
+import React, { useContext, useState } from "react";
+import { Table, TableHead, TableRow, TableCell, TextField, TableFooter, Fab, Button, Grid, makeStyles, Theme, withTheme } from "@material-ui/core";
 import QuoteFormBody from "./QuoteFormBody";
 import SingleSelectAutoComplete from "../Autocomplete/SingleSelectAutoComplete";
 import QuoteFormContext from "../../contexts/QuoteFormContext";
 import AddIcon from "@material-ui/icons/Add";
 import CheckIcon from "@material-ui/icons/Check";
+import SaveIcon from "@material-ui/icons/Save";
+import CustomerContext from "../../contexts/CustomerContext";
+import { CustomerData } from "../../models/CustomerData";
+import useCustomers from "../../hooks/useCustomers";
+import { green, purple } from "@material-ui/core/colors";
 
 const QuoteForm: React.FC<any> = ({ quote }) => {
   const quoteFormContext = useContext(QuoteFormContext);
-  const [single, setSingle] = React.useState(null);
+  const [clientSelected, setClientSelected] = React.useState(quoteFormContext.quote.clientId);
+  const { customers, isLoading, refresh } = useCustomers();
+  const classes = useStyles();
 
-  function handleChangeSingle(value: any) {
-    setSingle(value);
-    quoteFormContext.setClient(value);
+  function handleChangeSelectedClient(event: any) {
+    setClientSelected(event.value);
+    quoteFormContext.setClient(event.value);
   }
+
+  console.log(clientSelected, quoteFormContext.quote.clientId);
+
+  const getCustomersList = () => {
+    return customers ? customers.map(customer => ({ value: customer.id, label: customer.name })) : [];
+  };
+
   return (
-    <>
-      <Grid container direction="row" alignItems="center" alignContent="center">
+    <Grid container spacing={3} direction="column">
+      <Grid item container direction="row" alignItems="center" alignContent="center">
         <Grid item xs={12} sm={6}>
           <TextField
             style={{ marginTop: 20 }}
             label="TVA"
             variant="outlined"
             type="number"
-            value={quoteFormContext.tva ? quoteFormContext.tva : ""}
+            value={quoteFormContext.quote.tva ? quoteFormContext.quote.tva * 100 : ""}
             onChange={e => quoteFormContext.changeTva(parseInt(e.target.value, 10))}
           />
         </Grid>
@@ -31,45 +45,63 @@ const QuoteForm: React.FC<any> = ({ quote }) => {
           <SingleSelectAutoComplete
             label="Client"
             placeholder="Chercher un client"
-            value={single}
-            onChange={handleChangeSingle}
-            options={["Client 1", "Client 2", "Client 3"].map((el, i) => ({ value: i, label: el }))}
+            value={getCustomersList().find(entry => entry.value === clientSelected)}
+            isLoading={isLoading}
+            onChange={handleChangeSelectedClient}
+            options={getCustomersList()}
           />
         </Grid>
       </Grid>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Description</TableCell>
-            <TableCell align="right">Quantité</TableCell>
-            <TableCell align="right">Prix UHT</TableCell>
-            <TableCell align="right">Prix UTTC</TableCell>
-            <TableCell align="right">Total</TableCell>
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <QuoteFormBody quote={quote} />
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={6} align="center">
-              <Fab aria-label="Ajouter une ligne" color="primary" onClick={e => quoteFormContext.addLine()}>
-                <AddIcon />
-              </Fab>
-            </TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-      <Grid container alignItems="center" direction="row-reverse">
-        <Grid item>
-          <Button variant="contained" color="secondary" onClick={e => quoteFormContext.submit()}>
-            <CheckIcon style={{ marginRight: 10 }} /> Valider
+      <Grid item>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Description</TableCell>
+              <TableCell align="right">Quantité</TableCell>
+              <TableCell align="right">Prix UHT</TableCell>
+              <TableCell align="right">Prix UTTC</TableCell>
+              <TableCell align="right">Total</TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <QuoteFormBody quote={quote} />
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={6} align="center">
+                <Button variant="contained" startIcon={<AddIcon />} aria-label="Ajouter une ligne" color="primary" onClick={e => quoteFormContext.addLine()}>
+                  Ajouter une ligne
+                </Button>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </Grid>
+      <Grid item container alignItems="center" direction="row-reverse" spacing={1}>
+        <Grid item xs={12} sm="auto">
+          <Button startIcon={<SaveIcon />} variant="contained" className={classes.saveButton} onClick={e => quoteFormContext.saveDraft()}>
+            Enregistrer comme brouillon
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm="auto">
+          <Button startIcon={<CheckIcon />} variant="contained" className={classes.validateButton} onClick={e => quoteFormContext.submit()}>
+            Valider le devis
           </Button>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 
-QuoteForm.propTypes = {};
-
+const useStyles = makeStyles((theme: Theme) => ({
+  validateButton: {
+    color: "white",
+    backgroundColor: green[500],
+    "&:hover": { backgroundColor: green[700] }
+  },
+  saveButton: {
+    color: "white",
+    backgroundColor: purple[500],
+    "&:hover": { backgroundColor: purple[700] }
+  }
+}));
 export default QuoteForm;

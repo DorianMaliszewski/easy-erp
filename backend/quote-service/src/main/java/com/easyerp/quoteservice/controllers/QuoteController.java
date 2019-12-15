@@ -41,6 +41,13 @@ public class QuoteController {
         return ResponseEntity.ok(quote);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity update(@PathVariable Long id, @RequestBody QuoteRequest quoteRequest, OAuth2Authentication authentication) {
+        Quote quote = this.quoteRepository.findById(id).orElseThrow();
+        quote = this.quoteService.update(quote, quoteRequest, authentication);
+        return ResponseEntity.ok(quote);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
         Quote quote = this.quoteRepository.findById(id).orElseThrow();

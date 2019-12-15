@@ -249,6 +249,7 @@ const IntegrationReactSelect: React.FC<any> = props => {
           shrink: true
         }
       }}
+      isLoading={props.isLoading}
       placeholder={props.placeholder}
       options={props.options}
       value={props.value}

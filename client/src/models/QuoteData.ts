@@ -1,19 +1,22 @@
 import { QuoteLineData } from "./QuoteLineData";
+import { Moment } from "moment";
 
 export class QuoteData {
-  lines = [new QuoteLineData()];
-  createdAt?: Date;
-  updatedAt?: Date;
+  lines: QuoteLineData[] = [];
+  createdAt?: Moment;
+  updatedAt?: Moment;
   version?: number;
   status?: string;
   total: number;
   clientId?: number;
   createdBy?: number;
   deleted?: boolean;
+  tva: number;
   id?: number;
 
   constructor() {
-    this.lines = [new QuoteLineData()];
+    this.lines = [];
     this.total = 0;
+    this.tva = 0;
   }
 }

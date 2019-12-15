@@ -3,6 +3,7 @@ package com.easyerp.billservice.domains;
 import com.easyerp.billservice.requests.BillLineRequest;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,11 +24,12 @@ public class BillLine implements Serializable {
     private int lineNumber;
     @Id
     @ManyToOne(targetEntity = Bill.class)
+    @JsonIgnore
     private Bill bill;
 
     private String description;
     private int quantity;
-    private Double unitaryPrice;
+    private Double preTaxPrice;
 
     @CreationTimestamp
     private Date createdAt;
@@ -40,6 +42,6 @@ public class BillLine implements Serializable {
         this.lineNumber = billLineRequest.getLineNumber();
         this.description = billLineRequest.getDescription();
         this.quantity = billLineRequest.getQuantity();
-        this.unitaryPrice = billLineRequest.getUnitaryPrice();
+        this.preTaxPrice = billLineRequest.getPreTaxPrice();
     }
 }

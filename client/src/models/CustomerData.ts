@@ -1,3 +1,5 @@
+import { Moment } from "moment";
+
 export class CustomerData {
   name: string;
   contact?: number;
@@ -11,8 +13,8 @@ export class CustomerData {
   deleted: boolean;
   createdBy?: number;
   id?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: Moment;
+  updatedAt?: Moment;
   version?: number;
 
   constructor() {

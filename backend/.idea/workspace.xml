@@ -2,39 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2dbe866d-1c29-4d81-aa02-25e98f28ce59" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/docker/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/controllers/InstanceController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/Subscription.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/Tenant.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/repositories/TenantRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/requests/TenantRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/responses/DTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/services/InstanceService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/services/impl/InstanceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/mvnw.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/Oauth2AuthorizationServerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/Oauth2AuthorizationServerApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/config/AuthServerOauth2Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/config/AuthServerOauth2Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/config/CorsFilterConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/config/CorsFilterConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/config/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/BaseEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/Permission.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/Permission.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/enums/RoleEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/enums/RoleEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/repositories/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/services/impl/CustomUserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/services/impl/CustomUserDetailsServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/utils/CustomTokenEnhancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/utils/CustomTokenEnhancer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/01.sql" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/01.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oauth2-authorization-server/src/test/java/fr/dorianmaliszewski/oauth2authorizationserver/Oauth2AuthorizationServerApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/oauth2-authorization-server/src/test/java/fr/dorianmaliszewski/oauth2authorizationserver/Oauth2AuthorizationServerApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/eureka-server/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -47,38 +16,10 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/quote-service/src/main/java/com/easyerp/quoteservice/domains/Role.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quote-service/src/main/java/com/easyerp/quoteservice/domains/User.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/oauth2-authorization-server" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -100,12 +41,13 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -156,16 +98,17 @@
       <workItem from="1561156445505" duration="692000" />
       <workItem from="1561157158378" duration="326000" />
       <workItem from="1561201393455" duration="43000" />
+      <workItem from="1576415701852" duration="246000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1194000" />
+    <option name="totallyTimeSpent" value="1440000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-3" y="30" width="1926" height="1053" extended-state="6" />
+    <frame x="-1" y="0" width="1922" height="1043" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25773746" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26040554" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -173,6 +116,7 @@
       <window_info id="UI Designer" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info id="Web" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="GraphQL" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -228,22 +172,9 @@
     <entry file="file://$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/Role.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/schema.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/01.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/data.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quote-service/src/main/java/com/easyerp/quoteservice/domains/Role.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/schema.sql" />
+    <entry file="file://$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/01.sql" />
+    <entry file="file://$PROJECT_DIR$/oauth2-authorization-server/src/main/resources/data.sql" />
     <entry file="file://$PROJECT_DIR$/quote-service/src/main/java/com/easyerp/quoteservice/domains/User.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -252,9 +183,19 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oauth2-authorization-server/src/main/java/fr/dorianmaliszewski/oauth2authorizationserver/domains/Permission.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+        <state relative-caret-position="126">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quote-service/src/main/java/com/easyerp/quoteservice/domains/Role.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="8" column="7" lean-forward="true" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -309,7 +250,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>bill-service</last-edited>
+          <last-edited>oauth2-authorization-server</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

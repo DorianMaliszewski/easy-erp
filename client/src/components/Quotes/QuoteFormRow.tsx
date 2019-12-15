@@ -13,6 +13,15 @@ const QuoteFormRow: React.FC<any> = ({ line, index }) => {
   const handleChange = (field: any, value: any) => {
     quoteFormContext.handleLineChange(index, field, value);
   };
+
+  const getPostTaxPrice = () => {
+    return ((1 + quoteFormContext.quote.tva) * line.preTaxPrice).toFixed(2);
+  };
+
+  const getTotal = () => {
+    return ((1 + quoteFormContext.quote.tva) * line.preTaxPrice * line.quantity).toFixed(2);
+  };
+
   return (
     <TableRow>
       <TableCell>
@@ -41,12 +50,12 @@ const QuoteFormRow: React.FC<any> = ({ line, index }) => {
           inputProps={{
             "aria-label": "Prix Unitaire Hors Taxes"
           }}
-          value={line.puht}
-          onChange={(e: any) => handleChange("puht", parseFloat(e.target.value))}
+          value={line.preTaxPrice}
+          onChange={(e: any) => handleChange("preTaxPrice", parseFloat(e.target.value))}
         />
       </TableCell>
-      <TableCell align="right">{line.puttc}</TableCell>
-      <TableCell align="right">{line.total}</TableCell>
+      <TableCell align="right">{getPostTaxPrice()}</TableCell>
+      <TableCell align="right">{getTotal()}</TableCell>
       <TableCell>
         {index !== 0 && (
           <IconButton style={{ color: "red" }} aria-label="Delete" onClick={(e: any) => quoteFormContext.delLine(index)}>

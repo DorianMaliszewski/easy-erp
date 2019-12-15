@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { Button, Theme } from "@material-ui/core";
 import Splashscreen from "./Splashscreen";
 import { makeStyles } from "@material-ui/styles";
-import QuoteDetailDialogTopActions from "../components/Quotes/QuoteDetailDialogTopActions";
+import QuoteDetailDialogTopActions from "../components/Quotes/QuoteSavePDFAndViewPDFActions";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import UserContext from "../contexts/UserContext";
 import CustomerUserCard from "../components/Customers/CustomerUserCard";

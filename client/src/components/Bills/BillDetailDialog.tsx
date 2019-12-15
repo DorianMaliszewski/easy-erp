@@ -5,7 +5,7 @@ import { getBillStatus } from "../../utils/utils";
 import SearchIcon from "@material-ui/icons/Search";
 import routes from "../../routes";
 import { useHistory } from "react-router-dom";
-import QuoteDetailDialogTopActions from "../Quotes/QuoteDetailDialogTopActions";
+import QuoteDetailDialogTopActions from "../Quotes/QuoteSavePDFAndViewPDFActions";
 import BillDetailDialogContent from "./BillDetailDialogContent";
 
 const BillDetailDialog: React.FC<any> = ({ open, closeModal, bill }) => {

@@ -14,6 +14,7 @@ const CustomerProvider: React.FC<any> = props => {
   const [customerState, dispatch] = useReducer(customerReducer, initialState);
 
   const findAll = () => {
+    dispatch({ type: FIND_ALL_CUSTOMERS.REQUEST });
     return CustomerApi.getInstance()
       .findAll()
       .subscribe(dto => {

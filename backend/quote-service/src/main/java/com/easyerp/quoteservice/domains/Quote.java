@@ -1,12 +1,14 @@
 package com.easyerp.quoteservice.domains;
 
 import com.easyerp.quoteservice.enums.QuoteStatus;
+import com.easyerp.quoteservice.requests.QuoteLineRequest;
 import com.easyerp.quoteservice.requests.QuoteRequest;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,12 +20,15 @@ public class Quote extends BaseEntity {
     private Double total;
     private Long createdBy;
     private Long clientId;
+    private Double tva;
+
+    @OneToMany(mappedBy = "quote", targetEntity = QuoteLine.class, cascade = CascadeType.ALL)
+    private List<QuoteLine> lines;
 
     private Boolean deleted;
 
     public Quote(QuoteRequest quoteRequest) {
-        this.total = quoteRequest.getTotal();
-        this.createdBy = quoteRequest.getCreatedBy();
         this.clientId = quoteRequest.getClientId();
+        this.tva = quoteRequest.getTva();
     }
 }

@@ -11,6 +11,8 @@ import { useHistory } from "react-router-dom";
 import routes from "../../routes";
 import { BillData } from "../../models/BillData";
 import moment from "moment";
+import useCustomers from "../../hooks/useCustomers";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -27,6 +29,7 @@ const BillsTable: React.FC<any> = props => {
   const { bills } = props;
   const classes = useStyles();
   const history = useHistory();
+  const { customers } = useCustomers();
 
   const goToBill = (id: number) => {
     history.push(routes.BILLS_DETAIL.path.replace(":id", id.toString()));
@@ -50,10 +53,10 @@ const BillsTable: React.FC<any> = props => {
               <TableCell component="th" scope="row">
                 <BillStatusIcon status={row.status} />
               </TableCell>
-              <TableCell>{row.clientId}</TableCell>
+              <TableCell>{customers ? customers.find(customer => customer.id === row.clientId)?.name : <Skeleton width={100} />}</TableCell>
               <TableCell>{row.createdBy}</TableCell>
-              <TableCell>{moment(row.createdAt).fromNow()}</TableCell>
-              <TableCell>{row.updatedAt ? moment(row.updatedAt).fromNow() : "Jamais"}</TableCell>
+              <TableCell>{row.createdAt?.fromNow()}</TableCell>
+              <TableCell>{row.updatedAt ? row.updatedAt.fromNow() : "Jamais"}</TableCell>
             </TableRow>
           ))}
         </TableBody>

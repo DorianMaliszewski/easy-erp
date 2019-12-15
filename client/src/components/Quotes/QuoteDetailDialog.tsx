@@ -4,7 +4,7 @@ import { Dialog, DialogTitle, DialogActions, Button, DialogContent, Typography }
 import QuoteDetailDialogContentText from "./QuoteDetailDialogContentText";
 import { getQuoteStatus } from "../../utils/utils";
 import SearchIcon from "@material-ui/icons/Search";
-import QuoteDetailDialogTopActions from "./QuoteDetailDialogTopActions";
+import QuoteDetailDialogTopActions from "./QuoteSavePDFAndViewPDFActions";
 import routes from "../../routes";
 import { useHistory } from "react-router-dom";
 

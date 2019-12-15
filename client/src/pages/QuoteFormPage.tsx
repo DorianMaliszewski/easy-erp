@@ -13,7 +13,10 @@ const QuoteFormPage: React.FC<any> = props => {
   const quoteContext = useContext(QuoteContext);
 
   if (id && !quote.id) {
-    quoteContext.findById(parseInt(id, 10)).then((quoteFinded: QuoteData) => {
+    quoteContext.findById(parseInt(id, 10)).subscribe((quoteFinded: QuoteData) => {
+      if (!quoteFinded.lines) {
+        quoteFinded.lines = [];
+      }
       setQuote(quoteFinded);
     });
     return <Splashscreen text="Récupération du devis" />;

@@ -1,10 +1,13 @@
 import React from "react";
-import { IconButton } from "@material-ui/core";
+import { IconButton, makeStyles, Theme } from "@material-ui/core";
 
 import SaveIcon from "@material-ui/icons/Save";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { purple } from "@material-ui/core/colors";
 
 const QuoteDetailDialogTopActions: React.FC<any> = props => {
+  const classes = useStyles();
+
   const savePDF = (e: any) => {
     var aLink = document.createElement("a");
     aLink.href = "/assets/modele-devis.pdf";
@@ -20,17 +23,21 @@ const QuoteDetailDialogTopActions: React.FC<any> = props => {
   };
 
   return (
-    <div style={{ display: "flex", paddingLeft: 10 }}>
-      <IconButton color="secondary" title="Enregistrer au format PDF" onClick={savePDF}>
+    <>
+      <IconButton className={classes.saveButton} title="Enregistrer au format PDF" onClick={savePDF}>
         <SaveIcon />
       </IconButton>
       <IconButton title="Voir au format PDF" onClick={viewPDF}>
         <VisibilityIcon />
       </IconButton>
-    </div>
+    </>
   );
 };
 
-QuoteDetailDialogTopActions.propTypes = {};
+const useStyles = makeStyles((theme: Theme) => ({
+  saveButton: {
+    color: purple[500]
+  }
+}));
 
 export default QuoteDetailDialogTopActions;

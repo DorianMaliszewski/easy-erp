@@ -14,9 +14,7 @@
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.8.0:compile (default-compile) @ quote-service ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 15 source files to /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/target/classes
-[INFO] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java: /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java uses unchecked or unsafe operations.
-[INFO] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java: Recompile with -Xlint:unchecked for details.
+[INFO] Compiling 21 source files to /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/target/classes
 [INFO] 
 [INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ quote-service ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
@@ -49,24 +47,24 @@ Step 2/5 : ENV SPRING_DATASOURCE_URL=""   SPRING_DATASOURCE_USERNAME=""   SPRING
  ---> b18ca00d4eca
 Step 3/5 : ADD *.jar /app.jar
 
- ---> c391945813e1
+ ---> 353d08e7145c
 Step 4/5 : EXPOSE 8080
 
- ---> Running in f90240595133
-Removing intermediate container f90240595133
- ---> 3f209d3d5470
+ ---> Running in 1d050c4c8c81
+Removing intermediate container 1d050c4c8c81
+ ---> 586cbab09aef
 Step 5/5 : CMD java -jar /app.jar   --server.port=8080   --spring.datasource.url="${SPRING_DATASOURCE_URL}"   --spring.datasource.username="${SPRING_DATASOURCE_USERNAME}"   --spring.datasource.password="${SPRING_DATASOURCE_PASSWORD}"   --application.oauth.client-url="${OAUTHSERVICE_URL}"
 
- ---> Running in 241b736ab695
-Removing intermediate container 241b736ab695
- ---> cd19f9a93f97
+ ---> Running in 4eed6f15ab60
+Removing intermediate container 4eed6f15ab60
+ ---> 26bc6be6927b
 ProgressMessage{id=null, status=null, stream=null, error=null, progress=null, progressDetail=null}
-Successfully built cd19f9a93f97
+Successfully built 26bc6be6927b
 Successfully tagged easy-erp-quote-service:latest
 [INFO] Built easy-erp-quote-service
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  10.989 s
-[INFO] Finished at: 2019-12-15T00:23:04+01:00
+[INFO] Total time:  11.006 s
+[INFO] Finished at: 2019-12-15T23:11:22+01:00
 [INFO] ------------------------------------------------------------------------

@@ -6,11 +6,14 @@ import { Paper, Grid, Typography, Divider, Button, Link, Theme } from "@material
 import Splashscreen from "./Splashscreen";
 import { makeStyles } from "@material-ui/styles";
 import classnames from "classnames";
-import QuoteDetailDialogTopActions from "../components/Quotes/QuoteDetailDialogTopActions";
+import QuoteDetailDialogTopActions from "../components/Quotes/QuoteSavePDFAndViewPDFActions";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { getQuoteStatus } from "../utils/utils";
 import moment from "moment";
 import { BillData } from "../models/BillData";
+import CustomerContext from "../contexts/CustomerContext";
+import { CustomerData } from "../models/CustomerData";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
@@ -23,8 +26,13 @@ const useStyle = makeStyles((theme: Theme) => ({
 const BillDetail: React.FC<any> = props => {
   const history = useHistory();
   const { id } = useParams();
+
   const billContext = useContext(BillContext);
-  const [bill, setBill] = useState<any>();
+  const [bill, setBill] = useState<BillData>();
+
+  const [customer, setCustomer] = useState();
+  const customerContext = useContext(CustomerContext);
+
   const classes = useStyle();
 
   useEffect(() => {
@@ -32,6 +40,9 @@ const BillDetail: React.FC<any> = props => {
       billContext.findById(parseInt(id, 10)).subscribe(
         (b: BillData) => {
           setBill(b);
+          if (b.clientId) {
+            customerContext.findById(b.clientId).subscribe((c: CustomerData) => setCustomer(c));
+          }
         },
         (err: any) => {
           console.error(err);
@@ -45,7 +56,7 @@ const BillDetail: React.FC<any> = props => {
     return <Splashscreen text="Récupération de la facture" />;
   }
 
-  const billStatus = getQuoteStatus(bill.status);
+  const billStatus = getQuoteStatus(bill.status as string);
 
   return (
     <>
@@ -67,7 +78,7 @@ const BillDetail: React.FC<any> = props => {
             Client
           </Grid>
           <Grid item xs={6} sm={9}>
-            <Link href={routes.CUSTOMERS_DETAIL.path.replace(":id", "1")}>{bill.client}</Link>
+            <Link href={routes.CUSTOMERS_DETAIL.path.replace(":id", bill.clientId ? bill.clientId.toString() : "")}>{customer ? customer.name : <Skeleton />}</Link>
           </Grid>
           <Grid item xs={6} sm={3}>
             Etat
@@ -80,19 +91,19 @@ const BillDetail: React.FC<any> = props => {
             Créé par
           </Grid>
           <Grid item xs={6} sm={9}>
-            {bill.creator}
+            {bill.createdBy}
           </Grid>
           <Grid item xs={6} sm={3}>
             Créé
           </Grid>
           <Grid item xs={6} sm={9}>
-            {moment(bill.createdAt).fromNow()}
+            {bill.createdAt?.fromNow()}
           </Grid>
           <Grid item xs={6} sm={3}>
             Mis à jour
           </Grid>
           <Grid item xs={6} sm={9}>
-            {moment(bill.updatedAt).fromNow()}
+            {bill.updatedAt ? bill.updatedAt.fromNow() : "Jamais"}
           </Grid>
         </Grid>
       </Paper>

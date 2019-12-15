@@ -10,6 +10,8 @@ import QuoteStatusIcon from "./QuoteStatusIcon";
 import routes from "../../routes";
 import { useHistory } from "react-router-dom";
 import { QuoteData } from "../../models/QuoteData";
+import useCustomers from "../../hooks/useCustomers";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -25,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const QuotesTable: React.FC<any> = ({ quotes }) => {
   const history = useHistory();
   const classes = useStyles();
+  const { customers } = useCustomers();
 
   const goToQuote = (id: number) => {
     history.push(routes.QUOTES_DETAIL.path.replace(":id", id.toString()));
@@ -48,10 +51,10 @@ const QuotesTable: React.FC<any> = ({ quotes }) => {
               <TableCell component="th" scope="row">
                 <QuoteStatusIcon status={row.status} />
               </TableCell>
-              <TableCell>{row.clientId}</TableCell>
+              <TableCell>{customers ? customers.find(customer => customer.id === row.clientId)?.name : <Skeleton width={100} />}</TableCell>
               <TableCell>{row.createdBy}</TableCell>
-              <TableCell>{row.createdAt?.toLocaleString()}</TableCell>
-              <TableCell>{row.updatedAt ? row.updatedAt.toLocaleString() : "Jamais"}</TableCell>
+              <TableCell>{row.createdAt?.format("L LTS")}</TableCell>
+              <TableCell>{row.updatedAt ? row.updatedAt.format("L LTS") : "Jamais"}</TableCell>
             </TableRow>
           ))}
         </TableBody>

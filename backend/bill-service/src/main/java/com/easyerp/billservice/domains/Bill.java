@@ -19,27 +19,25 @@ import java.util.List;
 public class Bill extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private BillStatus status;
-    private Double price;
+    private Double total;
     private Long createdBy;
     private Long clientId;
+    private Double tva;
 
     @OneToMany(mappedBy = "bill", targetEntity = BillLine.class)
-    @JsonIgnoreProperties({"bill"})
     private List<BillLine> lines = new ArrayList<>();
 
     private Boolean deleted;
 
     public Bill(BillRequest billRequest) {
-        this.price = billRequest.getPrice();
+        this.total = billRequest.getTotal();
         this.createdBy = billRequest.getCreatedBy();
         this.clientId = billRequest.getClientId();
+        this.tva = billRequest.getTva();
     }
 
     public Bill(BillRequest billRequest, List<BillLine> lines) {
-        this.price = billRequest.getPrice();
-        this.createdBy = billRequest.getCreatedBy();
-        this.clientId = billRequest.getClientId();
+        this(billRequest);
         this.lines = lines;
-        // this.Biscotte = quoteRequest.getBiscotte();
     }
 }

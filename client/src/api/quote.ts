@@ -4,8 +4,11 @@ import { QUOTE_SERVICE, INSTANCE_URL } from "../constants";
 import { QuoteData } from "../models/QuoteData";
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import { map, catchError } from "rxjs/operators";
-import { of } from "rxjs";
+import { of, Observable } from "rxjs";
 import { DTO } from "../models/DTO";
+import moment from "moment";
+import { QuoteRequest } from "../models/ApiRequests/QuoteRequest";
+import { QuoteLineRequest } from "../models/ApiRequests/QuoteLineRequest";
 
 export class QuoteApi {
   private static INSTANCE = new QuoteApi();
@@ -24,7 +27,11 @@ export class QuoteApi {
       url: this.getApiUrl() + "/api/quotes",
       headers: getAjaxRequestHeaders()
     }).pipe(
-      map((res: AjaxResponse) => res.response as DTO<QuoteData>),
+      map((res: AjaxResponse) => {
+        const dto = res.response as DTO<QuoteData>;
+        dto.items = dto.items.map(item => this.convertJSONToQuoteData(item));
+        return dto;
+      }),
       catchError(err => {
         console.error(err);
         return of(new DTO<QuoteData>());
@@ -37,12 +44,45 @@ export class QuoteApi {
       method: "GET",
       url: this.getApiUrl() + "/api/quotes/" + id.toString(),
       headers: getAjaxRequestHeaders()
-    }).pipe(map((res: AjaxResponse) => res.response as QuoteData));
+    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
   }
 
-  public create(quote: QuoteData) {
-    return Axios.post(this.getApiUrl() + "/api/quotes", quote)
-      .then(res => res.data)
-      .catch(handleApiError("Erreur lors de la création d'un devis", {}));
+  public save(quote: QuoteData, draft: boolean = true): Observable<QuoteData> {
+    return quote.id ? this.update(quote, draft) : this.create(quote, draft);
+  }
+
+  public create(quote: QuoteData, draft: boolean = true): Observable<QuoteData> {
+    return ajax({
+      method: "POST",
+      url: this.getApiUrl() + "/api/quotes",
+      headers: getAjaxRequestHeaders(),
+      body: this.convertQuoteDataToRequest(quote, draft)
+    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+  }
+
+  public update(quote: QuoteData, draft: boolean = true): Observable<QuoteData> {
+    return ajax({
+      method: "PUT",
+      url: this.getApiUrl() + "/api/quotes/" + quote.id?.toString(),
+      headers: getAjaxRequestHeaders(),
+      body: this.convertQuoteDataToRequest(quote, draft)
+    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+  }
+
+  private convertJSONToQuoteData(item: QuoteData) {
+    item.createdAt = moment(item.createdAt);
+    if (item.updatedAt) {
+      item.updatedAt = moment(item.updatedAt);
+    }
+    return item;
+  }
+
+  private convertQuoteDataToRequest(quote: QuoteData, draft: boolean = true): QuoteRequest {
+    return {
+      lines: quote.lines.map((line, index) => ({ lineNumber: index, description: line.description, preTaxPrice: line.preTaxPrice, quantity: line.quantity } as QuoteLineRequest)),
+      draft,
+      clientId: quote.clientId,
+      tva: quote.tva
+    };
   }
 }
