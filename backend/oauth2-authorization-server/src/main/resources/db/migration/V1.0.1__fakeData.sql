@@ -31,7 +31,7 @@ UNLOCK TABLES;
 INSERT INTO subscription (name, price) VALUES ('Core', 0), ('Starter', 30.0), ('Advanced', 45.0), ('Pro', 60.0), ('Enterprise', 100.0);
 
 INSERT INTO tenant (version, name, phone, site, email, address, postal_code, instance_url, main_user_id, subscription_id) VALUES
-(0, 'Mon Entreprise', '+33619755845', 'http://myenterprise.com', 'contact@myenterpise.com', '16, rue jean desparmet', '69007', 'http:///', 1, 4);
+(0, 'Mon Entreprise', '+33619755845', 'http://myenterprise.com', 'contact@myenterpise.com', '16, rue jean desparmet', '69007', 'http://api.easy-erp.lan', 1, 4);
 
 LOCK TABLES `oauth_user` WRITE;
 INSERT INTO oauth_user (username, password, email, first_name, last_name, role_id, tenant_id) VALUES

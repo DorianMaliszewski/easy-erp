@@ -9,6 +9,7 @@ import QuoteDetailDialogTopActions from "../components/Quotes/QuoteDetailDialogT
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { getQuoteStatus } from "../utils/utils";
 import moment from "moment";
+import { QuoteData } from "../models/QuoteData";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -20,20 +21,21 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const QuoteDetail: React.FC<any> = () => {
   const quoteContext = useContext(QuoteContext);
-  const [quote, setQuote] = useState<any>();
+  const [quote, setQuote] = useState<QuoteData>();
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {
     if (id) {
-      quoteContext.findById(parseInt(id, 10)).then((q: any) => {
-        if (q) {
+      quoteContext.findById(parseInt(id, 10)).subscribe(
+        (q: QuoteData) => {
           setQuote(q);
-        } else {
+        },
+        (err: any) => {
           history.goBack();
         }
-      });
+      );
     }
   }, [id]);
 
@@ -41,7 +43,7 @@ const QuoteDetail: React.FC<any> = () => {
     return <Splashscreen text="Récupération du devis" />;
   }
 
-  const quoteStatus = getQuoteStatus(quote.status);
+  const quoteStatus = getQuoteStatus(quote.status as string);
 
   return (
     <>
@@ -63,7 +65,7 @@ const QuoteDetail: React.FC<any> = () => {
             Client
           </Grid>
           <Grid item xs={6} sm={9}>
-            {quote.client}
+            {quote.clientId}
           </Grid>
           <Grid item xs={6} sm={3}>
             Etat
@@ -76,7 +78,7 @@ const QuoteDetail: React.FC<any> = () => {
             Créé par
           </Grid>
           <Grid item xs={6} sm={9}>
-            {quote.creator}
+            {quote.createdBy}
           </Grid>
           <Grid item xs={6} sm={3}>
             Créé
@@ -88,7 +90,7 @@ const QuoteDetail: React.FC<any> = () => {
             Mis à jour
           </Grid>
           <Grid item xs={6} sm={9}>
-            {moment(quote.updatedAt).fromNow()}
+            {quote.updatedAt ? moment(quote.updatedAt).fromNow() : "Jamais"}
           </Grid>
         </Grid>
       </Paper>

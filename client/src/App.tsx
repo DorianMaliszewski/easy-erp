@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./App.css";
 import Signin from "./pages/Signin";
-import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import routes from "./routes";
 import { REFRESH_TOKEN } from "./constants";
 import AuthContext from "./contexts/AuthContext";
@@ -12,12 +12,14 @@ import ConnectedRouter from "./components/ConnectedRouter";
 
 moment.locale("fr");
 
-const App: React.FC<any> = ({ location, ...props }) => {
+const App: React.FC<any> = ({ ...props }) => {
   const authContext = useContext(AuthContext);
-  if (localStorage.getItem(REFRESH_TOKEN) && !authContext.user) {
+  const history = useHistory();
+  if (localStorage.getItem(REFRESH_TOKEN) && !authContext.user && !authContext.instanceUrl) {
     authContext.refreshToken().then((res: any) => {
       if (res === false) {
         authContext.setUser(null); // Modify state to rerender and redirect to login
+        history.push(routes.LOGIN.path);
       }
     });
     return <Splashscreen />;
@@ -32,4 +34,4 @@ const App: React.FC<any> = ({ location, ...props }) => {
   );
 };
 
-export default withRouter(App);
+export default App;

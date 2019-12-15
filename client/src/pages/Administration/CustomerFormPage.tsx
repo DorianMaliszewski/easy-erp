@@ -9,7 +9,7 @@ const CustomerFormPage: React.FC<any> = ({ match }) => {
   const customerContext = useContext(CustomerContext);
 
   if (match.params.id) {
-    customerContext.findById(parseInt(match.params.id, 10)).then((customerFinded: any) => {
+    customerContext.findById(parseInt(match.params.id, 10)).subscribe((customerFinded: any) => {
       setCustomer(customer);
     });
   }

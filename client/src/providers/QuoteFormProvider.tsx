@@ -56,7 +56,7 @@ const QuoteFormProvider: React.FC<any> = props => {
   };
 
   const submit = () => {
-    QuoteApi.create({ ...quote, tva });
+    QuoteApi.getInstance().create({ ...quote, tva });
     props.history.push(routes.MY_QUOTES.path);
   };
 

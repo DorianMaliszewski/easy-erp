@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 import QuoteContext from "../contexts/QuoteContext";
 import { quoteReducer } from "../reducers/quote";
 import { FIND_ALL_QUOTES } from "../actions/quote";
+import { QuoteApi } from "../api/quote";
 
 let id = 0;
 function createQuoteData(status: string, price: number, creator: string, client: string, createdAt: Date, updatedAt: Date) {
@@ -30,21 +31,15 @@ const QuoteProvider: React.FC<any> = props => {
 
   const findAll = () => {
     console.log("Statring promise");
-    return new Promise(resolve => {
-      setTimeout(() => {
-        console.log("Promise finished");
-        dispatch({ type: FIND_ALL_QUOTES.SUCCESS, quotes: quotesRows, numFound: quotesRows.length });
-        resolve(quotesRows);
-      }, 1000);
-    });
+    return QuoteApi.getInstance()
+      .findAll()
+      .subscribe(dto => {
+        dispatch({ type: FIND_ALL_QUOTES.SUCCESS, quotes: dto.items, numFound: dto.numFound });
+      });
   };
 
   const findById = (id: number) => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(quotesRows.find(q => q.id === id));
-      }, 1000);
-    });
+    return QuoteApi.getInstance().findOneById(id);
   };
 
   return <QuoteContext.Provider value={{ state: quoteState, findAll, findById }}>{props.children}</QuoteContext.Provider>;

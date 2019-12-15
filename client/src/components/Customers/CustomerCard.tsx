@@ -8,7 +8,7 @@ const CustomerCard: React.FC<any> = ({ customer }) => {
   return (
     <Paper className={classnames(classes.root)}>
       <Typography variant="h5" gutterBottom>
-        Fiche client : {customer.name}
+        Client n°{customer.id} : {customer.name}
       </Typography>
       <Divider />
       <Grid container style={{ paddingTop: 20 }} spacing={3}>
@@ -22,7 +22,7 @@ const CustomerCard: React.FC<any> = ({ customer }) => {
           Contact
         </Grid>
         <Grid item xs={8} sm={9}>
-          <Link href={routes.USER_DETAIL.path.replace(":id", "1")}>{customer.contact}</Link>
+          <Link href={routes.USER_DETAIL.path.replace(":id", customer.contact)}>{customer.contact}</Link>
         </Grid>
         <Grid item xs={4} sm={3}>
           Téléphone

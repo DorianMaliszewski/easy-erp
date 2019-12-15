@@ -19,16 +19,9 @@ const MyBills: React.FC<any> = props => {
   return (
     <>
       <Button color="primary" variant="contained" onClick={e => history.push(routes.QUOTES_FORM.path)}>
-        Créer un devis
+        Créer une facture
       </Button>
-      <BillsTable
-        bills={billContext.state.bills.sort((b1: any, b2: any) => {
-          if (!b1 && !b2) return 0;
-          if (!b1) return -1;
-          if (!b2) return 1;
-          return (getBillStatus(b1.status) as any).weight >= (getBillStatus(b2.status) as any).weight ? 1 : -1;
-        })}
-      />
+      <BillsTable bills={billContext.state.bills} />
     </>
   );
 };

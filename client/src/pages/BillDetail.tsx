@@ -10,6 +10,7 @@ import QuoteDetailDialogTopActions from "../components/Quotes/QuoteDetailDialogT
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { getQuoteStatus } from "../utils/utils";
 import moment from "moment";
+import { BillData } from "../models/BillData";
 
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
@@ -28,13 +29,15 @@ const BillDetail: React.FC<any> = props => {
 
   useEffect(() => {
     if (id) {
-      billContext.findById(parseInt(id, 10)).then((b: any) => {
-        if (b) {
+      billContext.findById(parseInt(id, 10)).subscribe(
+        (b: BillData) => {
           setBill(b);
-        } else {
+        },
+        (err: any) => {
+          console.error(err);
           history.goBack();
         }
-      });
+      );
     }
   }, [id]);
 

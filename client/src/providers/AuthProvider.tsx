@@ -8,6 +8,7 @@ import Axios from "axios";
 
 const AuthProvider: React.FC<any> = props => {
   const [user, setUser] = useState();
+  const [instanceUrl, setInstanceUrl] = useState("");
 
   const loginAction = (username: string, password: string) => {
     return login(username, password)
@@ -16,6 +17,7 @@ const AuthProvider: React.FC<any> = props => {
         localStorage.setItem(AUTH_TOKEN, res.access_token);
         localStorage.setItem(REFRESH_TOKEN, res.refresh_token);
         sessionStorage.setItem(INSTANCE_URL, res.instanceUrl);
+        setInstanceUrl(res.instanceUrl);
         Axios.defaults.headers.common["Authorization"] = "Bearer " + res.access_token;
         setUser(res.user);
         return true;
@@ -42,6 +44,7 @@ const AuthProvider: React.FC<any> = props => {
         sessionStorage.setItem(AUTH_TOKEN, res.access_token);
         localStorage.setItem(REFRESH_TOKEN, res.refresh_token);
         sessionStorage.setItem(INSTANCE_URL, res.instanceUrl);
+        setInstanceUrl(res.instanceUrl);
         Axios.defaults.headers.common["Authorization"] = "Bearer " + res.access_token;
         setUser(res.user);
         return true;
@@ -58,7 +61,7 @@ const AuthProvider: React.FC<any> = props => {
   const isMoreThanOrEqualAdmin = () => {
     return user && (user.role.name === "ROLE_ADMIN" || user.role.name === "ROLE_SUPER_ADMIN");
   };
-  return <AuthContext.Provider value={{ user, setUser, login: loginAction, isConnected, logout, isMoreThanOrEqualAdmin, refreshToken: refreshTokenAction }}>{props.children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, setUser, login: loginAction, isConnected, logout, isMoreThanOrEqualAdmin, refreshToken: refreshTokenAction, instanceUrl }}>{props.children}</AuthContext.Provider>;
 };
 
 export default withRouter(AuthProvider);

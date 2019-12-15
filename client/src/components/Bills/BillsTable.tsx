@@ -9,6 +9,8 @@ import Paper from "@material-ui/core/Paper";
 import BillStatusIcon from "./BillStatusIcon";
 import { useHistory } from "react-router-dom";
 import routes from "../../routes";
+import { BillData } from "../../models/BillData";
+import moment from "moment";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -43,15 +45,15 @@ const BillsTable: React.FC<any> = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {bills.map((row: any) => (
-            <TableRow onClick={e => goToBill(row.id)} hover key={row.id}>
+          {bills.map((row: BillData) => (
+            <TableRow onClick={e => goToBill(row.id as number)} hover key={row.id}>
               <TableCell component="th" scope="row">
                 <BillStatusIcon status={row.status} />
               </TableCell>
-              <TableCell>{row.client}</TableCell>
-              <TableCell>{row.creator}</TableCell>
-              <TableCell>{row.createdAt.toLocaleString()}</TableCell>
-              <TableCell>{row.updatedAt.toLocaleString()}</TableCell>
+              <TableCell>{row.clientId}</TableCell>
+              <TableCell>{row.createdBy}</TableCell>
+              <TableCell>{moment(row.createdAt).fromNow()}</TableCell>
+              <TableCell>{row.updatedAt ? moment(row.updatedAt).fromNow() : "Jamais"}</TableCell>
             </TableRow>
           ))}
         </TableBody>

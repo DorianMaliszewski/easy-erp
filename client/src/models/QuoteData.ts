@@ -5,8 +5,9 @@ export class QuoteData {
   createdAt?: Date;
   updatedAt?: Date;
   version?: number;
+  status?: string;
   total: number;
-  client?: number;
+  clientId?: number;
   createdBy?: number;
   deleted?: boolean;
   id?: number;

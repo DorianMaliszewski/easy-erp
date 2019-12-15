@@ -3,20 +3,7 @@ import CustomerContext from "../contexts/CustomerContext";
 import { FIND_ALL_CUSTOMERS, DELETE_CUSTOMER } from "../actions/customer";
 import { customerReducer } from "../reducers/customer";
 import CustomerApi from "../api/customer";
-
-let id = 0;
-function createData(name: string, contact: string, phone: string, email: string, site: string, address: string, postalCode: string, createdBy: string) {
-  id += 1;
-  return { id, name, contact, phone, email, site, address, postalCode, createdBy };
-}
-
-const customersRows = [
-  createData("Client", "John Doe", "0619755845", "contact@dorianmaliszewski.fr", "http://www.dorianmaliszewski.fr", "Mon adresse", "20137", "admin"),
-  createData("Client", "John Doe", "0619755845", "contact@dorianmaliszewski.fr", "http://www.dorianmaliszewski.fr", "Mon adresse", "20137", "admin"),
-  createData("Client", "John Doe", "0619755845", "contact@dorianmaliszewski.fr", "http://www.dorianmaliszewski.fr", "Mon adresse", "20137", "admin"),
-  createData("Client", "John Doe", "0619755845", "contact@dorianmaliszewski.fr", "http://www.dorianmaliszewski.fr", "Mon adresse", "20137", "admin"),
-  createData("Client", "John Doe", "0619755845", "contact@dorianmaliszewski.fr", "http://www.dorianmaliszewski.fr", "Mon adresse", "20137", "admin")
-];
+import { Observable } from "rxjs";
 
 const initialState = {
   isLoading: false,
@@ -28,22 +15,15 @@ const CustomerProvider: React.FC<any> = props => {
   const [customerState, dispatch] = useReducer(customerReducer, initialState);
 
   const findAll = () => {
-    console.log("Starting promise");
-    return new Promise(resolve => {
-      setTimeout(() => {
-        console.log("Promise finished");
-        dispatch({ type: FIND_ALL_CUSTOMERS.SUCCESS, customers: customersRows, numFound: customersRows.length });
-        resolve(customersRows);
-      }, 1000);
-    });
+    return CustomerApi.getInstance()
+      .findAll()
+      .subscribe(dto => {
+        dispatch({ type: FIND_ALL_CUSTOMERS.SUCCESS, customers: dto.items, numFound: dto.numFound });
+      });
   };
 
   const findById = (id: number) => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(customersRows.find(q => q.id === id));
-      }, 1000);
-    });
+    return CustomerApi.getInstance().findOneById(id);
   };
 
   const deleteCustomer = (id: number) => {
@@ -56,7 +36,7 @@ const CustomerProvider: React.FC<any> = props => {
   };
 
   const create = (customer: any) => {
-    return CustomerApi.create(customer);
+    return CustomerApi.getInstance().create(customer);
   };
 
   return <CustomerContext.Provider value={{ state: customerState, findAll, findById, deleteCustomer, create }}>{props.children}</CustomerContext.Provider>;

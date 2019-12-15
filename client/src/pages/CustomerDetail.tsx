@@ -5,6 +5,7 @@ import Splashscreen from "./Splashscreen";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import CustomerContext from "../contexts/CustomerContext";
 import CustomerCard from "../components/Customers/CustomerCard";
+import { CustomerData } from "../models/CustomerData";
 
 const CustomerDetail: React.FC<any> = props => {
   const history = useHistory();
@@ -15,14 +16,14 @@ const CustomerDetail: React.FC<any> = props => {
 
   useEffect(() => {
     if (id) {
-      console.log("Recherche du client");
-      customerContext.findById(parseInt(id, 10)).then((c: any) => {
-        if (c) {
+      customerContext.findById(parseInt(id, 10)).subscribe(
+        (c: CustomerData) => {
           setCustomer(c);
-        } else {
+        },
+        (err: any) => {
           history.goBack();
         }
-      });
+      );
     }
   }, [id]);
 

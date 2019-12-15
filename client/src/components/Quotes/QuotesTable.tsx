@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import QuoteStatusIcon from "./QuoteStatusIcon";
 import routes from "../../routes";
 import { useHistory } from "react-router-dom";
+import { QuoteData } from "../../models/QuoteData";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -42,15 +43,15 @@ const QuotesTable: React.FC<any> = ({ quotes }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {quotes.map((row: any) => (
-            <TableRow hover key={row.id} onClick={e => goToQuote(row.id)}>
+          {quotes.map((row: QuoteData) => (
+            <TableRow hover key={row.id} onClick={e => goToQuote(row.id as number)}>
               <TableCell component="th" scope="row">
                 <QuoteStatusIcon status={row.status} />
               </TableCell>
-              <TableCell>{row.client}</TableCell>
-              <TableCell>{row.creator}</TableCell>
-              <TableCell>{row.createdAt.toLocaleString()}</TableCell>
-              <TableCell>{row.updatedAt.toLocaleString()}</TableCell>
+              <TableCell>{row.clientId}</TableCell>
+              <TableCell>{row.createdBy}</TableCell>
+              <TableCell>{row.createdAt?.toLocaleString()}</TableCell>
+              <TableCell>{row.updatedAt ? row.updatedAt.toLocaleString() : "Jamais"}</TableCell>
             </TableRow>
           ))}
         </TableBody>
