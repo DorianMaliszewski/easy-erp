@@ -3,7 +3,6 @@ import BillsTable from "../components/Bills/BillsTable";
 import { Button } from "@material-ui/core";
 import BillContext from "../contexts/BillContext";
 import Splashscreen from "./Splashscreen";
-import { getBillStatus } from "../utils/utils";
 import routes from "../routes";
 import { useHistory } from "react-router-dom";
 

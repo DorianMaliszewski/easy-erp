@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import QuoteFormContext from "../contexts/QuoteFormContext";
 import { QuoteLineData } from "../models/QuoteLineData";
 import { QuoteApi } from "../api/quote";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import routes from "../routes";
 
 const QuoteFormProvider: React.FC<any> = props => {
   const [quote, setQuote] = useState(props.quote);
+  const history = useHistory();
   const [tva, setTva] = useState(0);
 
   const addLine = () => {
@@ -57,7 +58,7 @@ const QuoteFormProvider: React.FC<any> = props => {
 
   const submit = () => {
     QuoteApi.getInstance().create({ ...quote, tva });
-    props.history.push(routes.MY_QUOTES.path);
+    history.push(routes.MY_QUOTES.path);
   };
 
   useEffect(() => {
@@ -85,6 +86,4 @@ const QuoteFormProvider: React.FC<any> = props => {
   );
 };
 
-QuoteFormProvider.propTypes = {};
-
-export default withRouter(QuoteFormProvider);
+export default QuoteFormProvider;

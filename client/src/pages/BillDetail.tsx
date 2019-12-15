@@ -39,7 +39,7 @@ const BillDetail: React.FC<any> = props => {
         }
       );
     }
-  }, [id]);
+  }, [id, billContext, history]);
 
   if (!bill) {
     return <Splashscreen text="Récupération de la facture" />;

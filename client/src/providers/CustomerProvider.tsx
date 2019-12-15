@@ -3,7 +3,6 @@ import CustomerContext from "../contexts/CustomerContext";
 import { FIND_ALL_CUSTOMERS, DELETE_CUSTOMER } from "../actions/customer";
 import { customerReducer } from "../reducers/customer";
 import CustomerApi from "../api/customer";
-import { Observable } from "rxjs";
 
 const initialState = {
   isLoading: false,

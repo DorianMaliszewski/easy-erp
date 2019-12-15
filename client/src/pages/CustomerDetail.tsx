@@ -25,7 +25,7 @@ const CustomerDetail: React.FC<any> = props => {
         }
       );
     }
-  }, [id]);
+  }, [id, customerContext, history]);
 
   if (!customer) {
     return <Splashscreen text="Récupération du client" />;

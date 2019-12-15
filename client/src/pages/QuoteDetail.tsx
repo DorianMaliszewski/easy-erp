@@ -37,7 +37,7 @@ const QuoteDetail: React.FC<any> = () => {
         }
       );
     }
-  }, [id]);
+  }, [id, quoteContext, history]);
 
   if (!quote) {
     return <Splashscreen text="Récupération du devis" />;

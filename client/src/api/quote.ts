@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { handleApiError, getAjaxRequestHeaders } from ".";
-import { QUOTE_SERVICE, INSTANCE_URL, AUTH_TOKEN } from "../constants";
+import { QUOTE_SERVICE, INSTANCE_URL } from "../constants";
 import { QuoteData } from "../models/QuoteData";
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import { map, catchError } from "rxjs/operators";
