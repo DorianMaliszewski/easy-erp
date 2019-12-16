@@ -9,7 +9,6 @@ import classnames from "classnames";
 import QuoteDetailDialogTopActions from "../components/Quotes/QuoteSavePDFAndViewPDFActions";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { getQuoteStatus } from "../utils/utils";
-import moment from "moment";
 import { BillData } from "../models/BillData";
 import CustomerContext from "../contexts/CustomerContext";
 import { CustomerData } from "../models/CustomerData";
@@ -50,7 +49,7 @@ const BillDetail: React.FC<any> = props => {
         }
       );
     }
-  }, [id, billContext, history]);
+  }, [id, billContext, customerContext, history]);
 
   if (!bill) {
     return <Splashscreen text="Récupération de la facture" />;

@@ -1,5 +1,4 @@
-import Axios from "axios";
-import { handleApiError, getAjaxRequestHeaders } from ".";
+import { getAjaxRequestHeaders } from ".";
 import { QUOTE_SERVICE, INSTANCE_URL } from "../constants";
 import { QuoteData } from "../models/QuoteData";
 import { ajax, AjaxResponse } from "rxjs/ajax";
@@ -79,7 +78,7 @@ export class QuoteApi {
 
   private convertQuoteDataToRequest(quote: QuoteData, draft: boolean = true): QuoteRequest {
     return {
-      lines: quote.lines.map((line, index) => ({ lineNumber: index, description: line.description, preTaxPrice: line.preTaxPrice, quantity: line.quantity } as QuoteLineRequest)),
+      lines: quote.lines.map((line, index) => ({ lineNumber: index + 1, description: line.description, preTaxPrice: line.preTaxPrice, quantity: line.quantity } as QuoteLineRequest)),
       draft,
       clientId: quote.clientId,
       tva: quote.tva

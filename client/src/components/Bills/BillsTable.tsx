@@ -10,7 +10,6 @@ import BillStatusIcon from "./BillStatusIcon";
 import { useHistory } from "react-router-dom";
 import routes from "../../routes";
 import { BillData } from "../../models/BillData";
-import moment from "moment";
 import useCustomers from "../../hooks/useCustomers";
 import { Skeleton } from "@material-ui/lab";
 

@@ -53,7 +53,7 @@ const QuoteDetail: React.FC<any> = () => {
         }
       );
     }
-  }, [id, quoteContext, history]);
+  }, [id, quoteContext, history, customerContext]);
 
   if (!quote) {
     return <Splashscreen text="Récupération du devis" />;

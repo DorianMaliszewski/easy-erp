@@ -1,20 +1,18 @@
-import React, { useContext, useState } from "react";
-import { Table, TableHead, TableRow, TableCell, TextField, TableFooter, Fab, Button, Grid, makeStyles, Theme, withTheme } from "@material-ui/core";
+import React, { useContext } from "react";
+import { Table, TableHead, TableRow, TableCell, TextField, TableFooter, Button, Grid, makeStyles, Theme } from "@material-ui/core";
 import QuoteFormBody from "./QuoteFormBody";
 import SingleSelectAutoComplete from "../Autocomplete/SingleSelectAutoComplete";
 import QuoteFormContext from "../../contexts/QuoteFormContext";
 import AddIcon from "@material-ui/icons/Add";
 import CheckIcon from "@material-ui/icons/Check";
 import SaveIcon from "@material-ui/icons/Save";
-import CustomerContext from "../../contexts/CustomerContext";
-import { CustomerData } from "../../models/CustomerData";
 import useCustomers from "../../hooks/useCustomers";
 import { green, purple } from "@material-ui/core/colors";
 
 const QuoteForm: React.FC<any> = ({ quote }) => {
   const quoteFormContext = useContext(QuoteFormContext);
   const [clientSelected, setClientSelected] = React.useState(quoteFormContext.quote.clientId);
-  const { customers, isLoading, refresh } = useCustomers();
+  const { customers, isLoading } = useCustomers();
   const classes = useStyles();
 
   function handleChangeSelectedClient(event: any) {

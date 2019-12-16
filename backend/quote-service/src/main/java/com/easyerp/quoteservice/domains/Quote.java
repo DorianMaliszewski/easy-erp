@@ -22,8 +22,8 @@ public class Quote extends BaseEntity {
     private Long clientId;
     private Double tva;
 
-    @OneToMany(mappedBy = "quote", targetEntity = QuoteLine.class, cascade = CascadeType.ALL)
-    private List<QuoteLine> lines;
+    @OneToMany(mappedBy = "quote", targetEntity = QuoteLine.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QuoteLine> lines = new ArrayList<>();
 
     private Boolean deleted;
 

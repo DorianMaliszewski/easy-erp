@@ -1,4 +1,5 @@
 export class QuoteLineData {
+  lineNumber?: number;
   description: string;
   quantity: number;
   preTaxPrice: number;

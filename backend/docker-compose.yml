@@ -21,8 +21,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     depends_on:
       - db-oauth2
-    ports:
-      - 8081:8080
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.authorization-server.rule=Host(`oauth.easy-erp.lan`)"

@@ -12,6 +12,7 @@ import com.easyerp.quoteservice.utils.SecurityUtils;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +28,7 @@ public class QuoteServiceImpl implements QuoteService {
     @Override
     public Quote create(QuoteRequest quoteRequest, OAuth2Authentication authentication) {
         Quote quote = new Quote(quoteRequest);
-
+        quote = this.quoteRepository.saveAndFlush(quote);
         return feedQuoteAndSave(quote, quoteRequest, authentication);
     }
 
@@ -42,21 +43,25 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     private Quote feedQuoteAndSave(Quote quote, QuoteRequest quoteRequest, OAuth2Authentication authentication) {
-        quote.setLines(quoteRequest.getLines().parallelStream().map(quoteLineRequest -> {
-
+        var lines = quoteRequest.getLines().parallelStream().map(quoteLineRequest -> {
             var key =new QuoteLineCompositeKey();
             key.setQuote(quote);
             key.setLineNumber(quoteLineRequest.getLineNumber());
 
             QuoteLine quoteLine = this.quoteLineRepository.findById(key).orElse(new QuoteLine());
 
+            quoteLine.setLineNumber(quoteLineRequest.getLineNumber());
             quoteLine.setDescription(quoteLineRequest.getDescription());
             quoteLine.setPreTaxPrice(quoteLineRequest.getPreTaxPrice());
             quoteLine.setQuantity(quoteLineRequest.getQuantity());
             quoteLine.setQuote(quote);
 
             return quoteLine;
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toList());
+
+        quote.getLines().clear();
+        quote.getLines().addAll(this.quoteLineRepository.saveAll(lines));
+
 
         quote.setTva(quoteRequest.getTva());
         quote.setTotal(quote.getLines().stream().mapToDouble(quoteLine -> quoteLine.getQuantity() * quoteLine.getPreTaxPrice() * (1 + quoteRequest.getTva())).sum());
@@ -71,8 +76,6 @@ public class QuoteServiceImpl implements QuoteService {
                 quote.setStatus(QuoteStatus.NEED_CONFIRMATION);
             }
         }
-
-        System.out.println(quote.getTotal());
 
         return this.quoteRepository.saveAndFlush(quote);
     }
