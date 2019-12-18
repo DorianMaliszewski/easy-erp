@@ -46,8 +46,8 @@ const ConnectedRouter: React.FC = () => {
 
             <Route path={routes.MY_BILLS.path} component={MyBills} />
             <Route path={routes.BILLS_DETAIL.path} component={BillDetail} />
-            <Route path={routes.BILLS_FORM.path} component={BillForm} />
             <Route path={routes.BILLS_FORM.path + "/:id"} component={BillForm} />
+            <Route path={routes.BILLS_FORM.path} exact={true} component={BillForm} />
 
             <Route path={routes.MY_QUOTES.path} component={MyQuotes} />
             <Route path={routes.QUOTES_FORM.path + "/:id"} component={QuoteFormPage} />

@@ -36,6 +36,6 @@ public class TenantController {
 
     @GetMapping("/mine")
      public ResponseEntity findMine(Principal principal) {
-         Optional<User> user = this.tenantRepository.findTenantByUser()
+         return ResponseEntity.ok("ok");
      }
 }
