@@ -7,8 +7,14 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/bill-service/pom.xml" />
+        <option value="$PROJECT_DIR$/client-service/pom.xml" />
+        <option value="$PROJECT_DIR$/oauth2-authorization-server/pom.xml" />
+        <option value="$PROJECT_DIR$/quote-service/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="false" project-jdk-name="11.0.3 (2)" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="false" project-jdk-name="11.0.3 (2)" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/quote-service/classes" />
+  </component>
 </project>
