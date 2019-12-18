@@ -5,18 +5,16 @@ import fr.dorianmaliszewski.oauth2authorizationserver.repositories.TenantReposit
 import fr.dorianmaliszewski.oauth2authorizationserver.repositories.UserRepository;
 import fr.dorianmaliszewski.oauth2authorizationserver.requests.TenantRequest;
 import fr.dorianmaliszewski.oauth2authorizationserver.services.InstanceService;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class InstanceServiceImpl implements InstanceService {
 
     private final TenantRepository tenantRepository;
     private final UserRepository userRepository;
-
-    public InstanceServiceImpl(TenantRepository tenantRepository, UserRepository userRepository) {
-        this.tenantRepository = tenantRepository;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public Tenant create(TenantRequest tenantRequest) {

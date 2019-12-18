@@ -4,7 +4,7 @@ import useSnackbar from "../hooks/useSnackbar";
 import { TenantData } from "../models/TenantData";
 import { useHistory } from "react-router-dom";
 import { TenantApi } from "../api/TenantApi";
-import { tap, catchError } from "rxjs/operators";
+import { catchError, tap } from "rxjs/operators";
 
 const TenantProvider: React.FC<any> = props => {
   const [tenant, setTenant] = useState<TenantData>(props.tenant);

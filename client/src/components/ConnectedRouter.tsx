@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
-import { Switch, Route, Redirect, useHistory } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout";
 import routes from "../routes";
 import { AUTH_TOKEN } from "../constants";
 import AdministrationSwitch from "../components/Administration/AdministrationSwitch";
-
 // State
 import AuthContext from "../contexts/AuthContext";
 import BillForm from "../pages/BillFormPage";
@@ -64,6 +63,7 @@ const ConnectedRouter: React.FC = () => {
 
           <Route path={routes.MY_CUSTOMERS.path} component={MyCustomers} />
           <Route path={routes.CUSTOMERS_DETAIL.path} component={CustomerDetail} />
+
           <Route path={routes.CUSTOMERS_UPDATE.path} component={CustomerFormPage} />
           <Route path={routes.CUSTOMERS_ADD.path} exact component={CustomerFormPage} />
 
@@ -73,6 +73,7 @@ const ConnectedRouter: React.FC = () => {
           <Route path={routes.USER_UPDATE.path} component={UserFormPage} />
 
           <Route path={"/admin"} component={AdministrationSwitch} />
+
           <Redirect path="*" to={routes.DASHBOARD.path} />
         </Switch>
       </React.Suspense>

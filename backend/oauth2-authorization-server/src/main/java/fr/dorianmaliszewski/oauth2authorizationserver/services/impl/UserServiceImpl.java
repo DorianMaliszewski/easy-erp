@@ -21,7 +21,8 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final EmailService emailService;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, EmailService emailService) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            RoleRepository roleRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
@@ -51,7 +52,8 @@ public class UserServiceImpl implements UserService {
 
         this.feedUserWithUserRequest(user, userRequest);
 
-        if (!Objects.equals(userRequest.getRoleId(), this.roleRepository.findByName(RoleEnum.ROLE_SUPER_ADMIN).getId())) {
+        if (!Objects.equals(userRequest.getRoleId(),
+                this.roleRepository.findByName(RoleEnum.ROLE_SUPER_ADMIN).getId())) {
             user.setRole(this.roleRepository.findById(userRequest.getRoleId()).orElseThrow());
         } else {
             user.setRole(this.roleRepository.findByName(RoleEnum.ROLE_USER));
@@ -62,13 +64,13 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.save(user);
     }
 
-
     @Override
     public User updateInternalUser(Long id, UserRequest userRequest, OAuth2Authentication authentication) {
         User user = this.userRepository.findById(id).orElseThrow();
         this.feedUserWithUserRequest(user, userRequest);
 
-        if (!Objects.equals(userRequest.getRoleId(), this.roleRepository.findByName(RoleEnum.ROLE_SUPER_ADMIN).getId())) {
+        if (!Objects.equals(userRequest.getRoleId(),
+                this.roleRepository.findByName(RoleEnum.ROLE_SUPER_ADMIN).getId())) {
             user.setRole(this.roleRepository.findById(userRequest.getRoleId()).orElseThrow());
         } else {
             user.setRole(this.roleRepository.findByName(RoleEnum.ROLE_USER));
@@ -77,7 +79,6 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.save(user);
 
     }
-
 
     @Override
     public User updateCustomerUser(Long id, UserRequest userRequest, OAuth2Authentication authentication) {
@@ -88,8 +89,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
-    private void feedUserWithUserRequest (User user, UserRequest userRequest) {
+    private void feedUserWithUserRequest(User user, UserRequest userRequest) {
         user.setAccountExpired(false);
         user.setAccountLocked(false);
         user.setCredentialsExpired(false);
@@ -100,7 +100,6 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userRequest.getFirstName());
         user.setLastName(userRequest.getLastName());
         user.setPhoneNumber(userRequest.getPhoneNumber());
-
 
         if (userRequest.getPassword() != null) {
             user.setPassword(this.passwordEncoder.encode(userRequest.getPassword()));
@@ -114,8 +113,23 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void sendPasswordByEmail (User user, String password) {
-        System.out.println("Envoi du mot de passe " + password + " à l'utilisateur " + user.getUsername() + " email : " + user.getEmail());
-        this.emailService.sendSimpleMessage(user.getEmail(), "Votre inscription sur EASY-ERP ", "Bienvenue sur EASY-ERP : username :" + user.getUsername() + ", password : " + password);
+    @Override
+    public User findByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> optionalUser = this.userRepository.findByUsername(username);
+
+        if (optionalUser.isEmpty()) {
+            throw new BadCredentialsException("Bad credentials");
+        }
+
+        new AccountStatusUserDetailsChecker().check(optionalUser.get());
+
+        return optionalUser.get();
+    }
+
+    private void sendPasswordByEmail(User user, String password) {
+        System.out.println("Envoi du mot de passe " + password + " à l'utilisateur " + user.getUsername() + " email : "
+                + user.getEmail());
+        this.emailService.sendSimpleMessage(user.getEmail(), "Votre inscription sur EASY-ERP ",
+                "Bienvenue sur EASY-ERP : username :" + user.getUsername() + ", password : " + password);
     }
 }
