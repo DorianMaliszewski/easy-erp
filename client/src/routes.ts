@@ -16,6 +16,8 @@ const routes = {
   BILLS_DETAIL: { path: "/bills/detail/:id", title: "Détail facture" },
   BILLS_FORM: { path: "/bills/form", title: "Formulaire facture" },
   USER_DETAIL: { path: "/users/:id", title: "Détail d'un utilisateur" },
+  ADMIN_TENANT: { path: "/admin/tenant/details", title: "Administration de mon entreprise" },
+  ADMIN_TENANT_FORM: { path: "/admin/tenant/form", title: "Administration de mon entreprise" },
   ADMIN_USERS: { path: "/admin/users", title: "Administration des utilisateurs internes" },
   ADMIN_CLIENTS_USERS: { path: "/admin/clients-users", title: "Administration des utilisateurs client" },
   ADMIN_CLIENTS: { path: "/admin/clients", title: "Administration des clients" }

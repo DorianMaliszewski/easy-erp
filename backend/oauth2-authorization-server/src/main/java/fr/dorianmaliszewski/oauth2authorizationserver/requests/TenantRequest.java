@@ -15,4 +15,5 @@ public class TenantRequest {
     private String site;
     private String address;
     private String postalCode;
+    private String logo;
 }
