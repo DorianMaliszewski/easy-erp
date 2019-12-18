@@ -28,16 +28,16 @@ public class Tenant extends BaseEntity {
     private String email;
     private String site;
     private String address;
+    private String logo;
 
     @Column(length = 10)
     private String postalCode;
 
     private String instanceUrl;
 
-
     @OneToOne(targetEntity = User.class)
     @JoinColumn(name = "main_user_id")
-    @JsonIgnoreProperties({"tenant"})
+    @JsonIgnoreProperties({ "tenant" })
     private User mainUser;
 
     @OneToMany(targetEntity = User.class, mappedBy = "tenant")

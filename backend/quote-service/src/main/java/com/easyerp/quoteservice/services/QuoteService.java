@@ -8,4 +8,10 @@ public interface QuoteService {
     Quote create(QuoteRequest quoteRequest, OAuth2Authentication authentication);
 
     Quote update(Quote quote, QuoteRequest quoteRequest, OAuth2Authentication authentication);
+
+    Quote accept(Quote quote, OAuth2Authentication authentication);
+
+    Quote cancel(Quote quote, OAuth2Authentication authentication);
+
+    Quote send(Quote quote, OAuth2Authentication authentication);
 }

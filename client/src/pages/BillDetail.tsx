@@ -13,6 +13,7 @@ import { BillData } from "../models/BillData";
 import CustomerContext from "../contexts/CustomerContext";
 import { CustomerData } from "../models/CustomerData";
 import { Skeleton } from "@material-ui/lab";
+import { BILL_STATUS } from "../components/Bills/BillStatusIcon";
 
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
@@ -59,14 +60,21 @@ const BillDetail: React.FC<any> = props => {
 
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "row", alignContent: "center", alignItems: "center", paddingBottom: 20 }}>
-        <div style={{ flexGrow: 1 }}>
+      <Grid container justify="space-between">
+        <Grid item>
           <Button onClick={e => history.goBack()}>
             <ChevronLeftIcon /> Retour
           </Button>
-        </div>
-        <QuoteDetailDialogTopActions />
-      </div>
+        </Grid>
+        <Grid item>
+          {billStatus?.enum === BILL_STATUS.DRAFT.enum && (
+            <Button variant="contained" color="primary" onClick={e => history.push(routes.BILLS_FORM.path + "/" + bill.id)}>
+              Modifier
+            </Button>
+          )}
+          <QuoteDetailDialogTopActions />
+        </Grid>
+      </Grid>
       <Paper className={classnames(classes.root)}>
         <Typography variant="h5" gutterBottom>
           Facture n°{bill.id}

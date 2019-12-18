@@ -42,6 +42,24 @@ public class QuoteServiceImpl implements QuoteService {
         return feedQuoteAndSave(quote, quoteRequest, authentication);
     }
 
+    @Override
+    public Quote accept(Quote quote, OAuth2Authentication authentication) {
+        quote.setStatus(QuoteStatus.ACCEPTED);
+        return this.quoteRepository.saveAndFlush(quote);
+    }
+
+    @Override
+    public Quote cancel(Quote quote, OAuth2Authentication authentication) {
+        quote.setStatus(QuoteStatus.CANCELED);
+        return this.quoteRepository.saveAndFlush(quote);
+    }
+
+    @Override
+    public Quote send(Quote quote, OAuth2Authentication authentication) {
+        quote.setStatus(QuoteStatus.WAITING_CUSTOMER);
+        return this.quoteRepository.saveAndFlush(quote);
+    }
+
     private Quote feedQuoteAndSave(Quote quote, QuoteRequest quoteRequest, OAuth2Authentication authentication) {
         var lines = quoteRequest.getLines().parallelStream().map(quoteLineRequest -> {
             var key =new QuoteLineCompositeKey();
