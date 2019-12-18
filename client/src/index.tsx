@@ -6,7 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import MainProvider from "./providers/MainProvider";
 import { BrowserRouter } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import { blue, deepPurple } from "@material-ui/core/colors";
+import { blue, deepPurple, green } from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
   palette: {
