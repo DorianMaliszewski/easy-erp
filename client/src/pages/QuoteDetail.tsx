@@ -6,18 +6,16 @@ import { makeStyles } from "@material-ui/styles";
 import classnames from "classnames";
 import moment from "moment";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import EditIcon from "@material-ui/icons/Edit";
 
 import Splashscreen from "./Splashscreen";
-import QuoteSavePDFAndViewPDFActions from "../components/Quotes/QuoteSavePDFAndViewPDFActions";
 import QuoteContext from "../contexts/QuoteContext";
 import CustomerContext from "../contexts/CustomerContext";
 
 import { getQuoteStatus } from "../utils/utils";
 import { QuoteData } from "../models/QuoteData";
 import { CustomerData } from "../models/CustomerData";
-import { QUOTE_STATUS } from "../components/Quotes/QuoteStatusIcon";
-import routes from "../routes";
+import QuoteActionButtons from "../components/Quotes/QuoteActionButtons";
+import QuoteLineDetailTable from "../components/Quotes/QuoteLineDetailTable";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -70,61 +68,57 @@ const QuoteDetail: React.FC<any> = () => {
           </Button>
         </Grid>
         <Grid item>
-          <Grid container spacing={1} alignItems="center">
-            {quoteStatus?.enum === QUOTE_STATUS.DRAFT.enum && (
-              <Grid item>
-                <Button variant="contained" color="primary" startIcon={<EditIcon />} onClick={e => history.push(routes.QUOTES_FORM.path + "/" + quote.id?.toString())}>
-                  Modifier
-                </Button>
-              </Grid>
-            )}
-            <Grid item>
-              <QuoteSavePDFAndViewPDFActions />
-            </Grid>
-          </Grid>
+          <QuoteActionButtons quote={quote} />
         </Grid>
       </Grid>
-      <Paper className={classnames(classes.root)}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Typography variant="h5" gutterBottom>
-              Devis n°{quote.id}
-            </Typography>
-            <Divider />
+      <Grid item>
+        <Paper className={classnames(classes.root)}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Typography variant="h5" gutterBottom>
+                Devis n°{quote.id}
+              </Typography>
+              <Divider />
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              Client
+            </Grid>
+            <Grid item xs={6} sm={9}>
+              {customer ? customer.name : <Skeleton />}
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              Etat
+            </Grid>
+            <Grid container item xs={6} sm={9} direction="row" alignContent="center" alignItems="center">
+              {quoteStatus?.icon}
+              <div style={{ paddingLeft: 10 }}>{quoteStatus?.text}</div>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              Créé par
+            </Grid>
+            <Grid item xs={6} sm={9}>
+              {quote.createdBy}
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              Créé
+            </Grid>
+            <Grid item xs={6} sm={9}>
+              {moment(quote.createdAt).fromNow()}
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              Mis à jour
+            </Grid>
+            <Grid item xs={6} sm={9}>
+              {quote.updatedAt ? moment(quote.updatedAt).fromNow() : "Jamais"}
+            </Grid>
           </Grid>
-          <Grid item xs={6} sm={3}>
-            Client
-          </Grid>
-          <Grid item xs={6} sm={9}>
-            {customer ? customer.name : <Skeleton />}
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            Etat
-          </Grid>
-          <Grid container item xs={6} sm={9} direction="row" alignContent="center" alignItems="center">
-            {quoteStatus?.icon}
-            <div style={{ paddingLeft: 10 }}>{quoteStatus?.text}</div>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            Créé par
-          </Grid>
-          <Grid item xs={6} sm={9}>
-            {quote.createdBy}
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            Créé
-          </Grid>
-          <Grid item xs={6} sm={9}>
-            {moment(quote.createdAt).fromNow()}
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            Mis à jour
-          </Grid>
-          <Grid item xs={6} sm={9}>
-            {quote.updatedAt ? moment(quote.updatedAt).fromNow() : "Jamais"}
-          </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </Grid>
+      <Grid item>
+        <Paper className={classnames(classes.root)}>
+          <QuoteLineDetailTable quote={quote} />
+        </Paper>
+      </Grid>
     </Grid>
   );
 };
