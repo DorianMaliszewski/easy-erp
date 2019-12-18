@@ -48,6 +48,28 @@ public class QuoteController {
         return ResponseEntity.ok(quote);
     }
 
+    @PatchMapping("/{id}/send")
+    public ResponseEntity send (@PathVariable Long id, OAuth2Authentication authentication) {
+        Quote quote = this.quoteRepository.findById(id).orElseThrow();
+        quote = this.quoteService.send(quote, authentication);
+        return ResponseEntity.ok(quote);
+    }
+
+    @PatchMapping("/{id}/accept")
+    public ResponseEntity accept (@PathVariable Long id, OAuth2Authentication authentication) {
+        Quote quote = this.quoteRepository.findById(id).orElseThrow();
+        quote = this.quoteService.accept(quote, authentication);
+        return ResponseEntity.ok(quote);
+    }
+
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity cancel (@PathVariable Long id, OAuth2Authentication authentication) {
+        Quote quote = this.quoteRepository.findById(id).orElseThrow();
+        quote = this.quoteService.cancel(quote, authentication);
+        return ResponseEntity.ok(quote);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
         Quote quote = this.quoteRepository.findById(id).orElseThrow();

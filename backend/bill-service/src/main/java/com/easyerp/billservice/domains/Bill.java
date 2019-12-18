@@ -5,10 +5,7 @@ import com.easyerp.billservice.requests.BillRequest;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class Bill extends BaseEntity {
     private Long clientId;
     private Double tva;
 
-    @OneToMany(mappedBy = "bill", targetEntity = BillLine.class)
+    @OneToMany(mappedBy = "bill", targetEntity = BillLine.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BillLine> lines = new ArrayList<>();
 
     private Boolean deleted;

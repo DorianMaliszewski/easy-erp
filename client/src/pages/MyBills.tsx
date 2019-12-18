@@ -17,7 +17,7 @@ const MyBills: React.FC<any> = props => {
 
   return (
     <>
-      <Button color="primary" variant="contained" onClick={e => history.push(routes.QUOTES_FORM.path)}>
+      <Button color="primary" variant="contained" onClick={e => history.push(routes.BILLS_FORM.path)}>
         Créer une facture
       </Button>
       <BillsTable bills={billContext.state.bills} />

@@ -12,6 +12,7 @@ export class BillData {
   createdBy?: number;
   clientId?: number;
   lines: BillLineData[];
+  tva?: number;
   deleted?: boolean;
 
   constructor() {
@@ -24,7 +25,7 @@ export class BillLineData {
   lineNumber: number;
   description: string;
   quantity: number;
-  unitaryPrice: number;
+  preTaxPrice: number;
   createdAt?: Moment;
   updatedAt?: Moment;
   version?: number;
@@ -33,6 +34,6 @@ export class BillLineData {
     this.lineNumber = -1;
     this.description = "";
     this.quantity = 0;
-    this.unitaryPrice = 0;
+    this.preTaxPrice = 0;
   }
 }

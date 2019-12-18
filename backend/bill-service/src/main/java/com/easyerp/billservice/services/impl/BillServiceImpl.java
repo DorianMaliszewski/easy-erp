@@ -31,6 +31,7 @@ public class BillServiceImpl implements BillService {
 
         Bill bill = new Bill(billRequest);
         bill.setCreatedBy(0L);
+        bill = this.billRepository.saveAndFlush(bill);
 
         return feedBillAndSave(bill, billRequest, authentication);
     }
@@ -45,21 +46,26 @@ public class BillServiceImpl implements BillService {
     }
 
     private Bill feedBillAndSave(Bill bill, BillRequest billRequest, OAuth2Authentication authentication) {
-        bill.setLines(billRequest.getLines().parallelStream().map(billLineRequest -> {
+        var lines = billRequest.getLines().parallelStream().map(billLineRequest -> {
             var key =new BillLineCompositeKey();
             key.setBill(bill);
             key.setLineNumber(billLineRequest.getLineNumber());
 
             BillLine billLine = this.billLineRepository.findById(key).orElse(new BillLine());
 
+            billLine.setLineNumber(billLineRequest.getLineNumber());
             billLine.setDescription(billLineRequest.getDescription());
             billLine.setPreTaxPrice(billLineRequest.getPreTaxPrice());
             billLine.setQuantity(billLineRequest.getQuantity());
             billLine.setBill(bill);
 
             return billLine;
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toList());
 
+        bill.getLines().clear();
+        bill.getLines().addAll(this.billLineRepository.saveAll(lines));
+
+        bill.setClientId(billRequest.getClientId());
         bill.setTva(billRequest.getTva());
         bill.setTotal(billRequest.getLines().stream().mapToDouble(line -> line.getPreTaxPrice() * line.getQuantity() * (1 + billRequest.getTva())).sum());
 
@@ -73,14 +79,14 @@ public class BillServiceImpl implements BillService {
             }
         }
 
-        return this.billRepository.save(bill);
+        return this.billRepository.saveAndFlush(bill);
     }
 
     @Override
     public void publish(Bill bill, OAuth2Authentication authentication) {
-        if (!authentication.getName().equals(bill.getCreatedBy())) {
-            throw new ForbiddenException();
-        }
+//        if (!authentication.getName().equals(bill.getCreatedBy())) {
+//            throw new ForbiddenException();
+//        }
 
         if (SecurityUtils.isMoreThanOrEqualManager(authentication.getAuthorities())) {
             bill.setStatus(BillStatus.WAITING_CUSTOMER);
@@ -94,9 +100,9 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public void accept(Bill bill, OAuth2Authentication authentication) {
-        if (!bill.getClientId().equals(authentication.getName())) {
-            throw new ForbiddenException();
-        }
+//        if (!bill.getClientId().equals(authentication.getName())) {
+//            throw new ForbiddenException();
+//        }
         if (bill.getStatus() != BillStatus.WAITING_CUSTOMER) {
             throw new ConflictException();
         }
@@ -106,9 +112,9 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public void cancel(Bill bill, OAuth2Authentication authentication) {
-        if (!bill.getClientId().equals(authentication.getName())) {
-            throw new ForbiddenException();
-        }
+//        if (!bill.getClientId().equals(authentication.getName())) {
+//            throw new ForbiddenException();
+//        }
         if (bill.getStatus() != BillStatus.WAITING_CUSTOMER) {
             throw new ConflictException();
         }
