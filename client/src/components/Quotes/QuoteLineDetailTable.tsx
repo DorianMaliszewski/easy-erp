@@ -19,7 +19,7 @@ const QuoteLineDetailTable: React.FC<any> = ({ quote }) => {
       </TableHead>
       <TableBody>
         {quote.lines.map((line: QuoteLineData) => (
-          <QuoteLineDetailTableRow tva={quote.tva} quoteLine={line} />
+          <QuoteLineDetailTableRow key={line.lineNumber} tva={quote.tva} quoteLine={line} />
         ))}
         <TableRow>
           <TableCell className={classes.totalLine} colSpan={4}>

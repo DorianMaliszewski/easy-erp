@@ -1,6 +1,13 @@
-import { FIND_ALL_QUOTES } from "../actions/quote";
+import { FIND_ALL_QUOTES, QUOTE_UPDATE, QUOTE_ADD } from "../actions/quote";
+import { QuoteData } from "../models/QuoteData";
 
-export const quoteReducer = (state: any, action: any) => {
+type QuoteState = {
+  isLoading: boolean;
+  quotes: QuoteData[];
+  numFound: number;
+};
+
+export const quoteReducer = (state: QuoteState, action: any) => {
   switch (action.type) {
     case FIND_ALL_QUOTES.REQUEST:
       return {
@@ -11,12 +18,25 @@ export const quoteReducer = (state: any, action: any) => {
       return {
         ...state,
         quotes: action.quotes,
-        numFound: action.numFound
+        numFound: action.numFound,
+        isLoading: false
       };
     case FIND_ALL_QUOTES.FAIL:
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
+    case QUOTE_UPDATE.SUCCESS: {
+      const index = state.quotes.findIndex(q => q.id === action.quote.id);
+      if (index > -1) {
+        state.quotes.splice(index, 1, action.quote);
+      }
+      return { ...state };
+    }
+    case QUOTE_ADD.SUCCESS: {
+      state.quotes.push(action.quote);
+      return { ...state };
+    }
     default:
       return state;
   }

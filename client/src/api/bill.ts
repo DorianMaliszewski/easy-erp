@@ -8,6 +8,8 @@ import { of, Observable } from "rxjs";
 import moment from "moment";
 import { BillRequest } from "../models/ApiRequests/BillRequest";
 import { BillLineRequest } from "../models/ApiRequests/BillLineRequest";
+import { QuoteData } from "../models/QuoteData";
+import { convertGenericBillOrQuoteDataToRequest, convertJSONToGenericBillOrQuoteData } from "../utils/utils";
 
 export class BillApi {
   private static INSTANCE = new BillApi();
@@ -17,18 +19,18 @@ export class BillApi {
   }
 
   private getApiUrl() {
-    return sessionStorage.getItem(INSTANCE_URL) + "/" + BILL_SERVICE;
+    return sessionStorage.getItem(INSTANCE_URL) + "/" + BILL_SERVICE + "/api/bills";
   }
 
   public findAll() {
     return ajax({
       method: "GET",
-      url: this.getApiUrl() + "/api/bills",
+      url: this.getApiUrl(),
       headers: getAjaxRequestHeaders()
     }).pipe(
       map((res: AjaxResponse) => {
         const dto = res.response as DTO<BillData>;
-        dto.items = dto.items.map(item => this.convertJSONToBillData(item));
+        dto.items = dto.items.map(item => convertJSONToGenericBillOrQuoteData(item) as BillData);
         return dto;
       }),
       catchError(err => {
@@ -38,12 +40,12 @@ export class BillApi {
     );
   }
 
-  public findOneById(id: number) {
+  public findOneById(id: number): Observable<BillData> {
     return ajax({
       method: "GET",
-      url: this.getApiUrl() + "/api/bills/" + id,
+      url: this.getApiUrl() + "/" + id,
       headers: getAjaxRequestHeaders()
-    }).pipe(map((res: AjaxResponse) => this.convertJSONToBillData(res.response as BillData)));
+    }).pipe(map((res: AjaxResponse) => convertJSONToGenericBillOrQuoteData(res.response) as BillData));
   }
 
   public save(bill: BillData, draft: boolean = true): Observable<BillData> {
@@ -53,35 +55,51 @@ export class BillApi {
   public create(bill: BillData, draft: boolean = true): Observable<BillData> {
     return ajax({
       method: "POST",
-      url: this.getApiUrl() + "/api/bills",
+      url: this.getApiUrl(),
       headers: getAjaxRequestHeaders(),
-      body: this.convertBillDataToRequest(bill, draft)
-    }).pipe(map((res: AjaxResponse) => this.convertJSONToBillData(res.response as BillData)));
+      body: convertGenericBillOrQuoteDataToRequest(bill, draft)
+    }).pipe(map((res: AjaxResponse) => convertJSONToGenericBillOrQuoteData(res.response) as BillData));
   }
 
   public update(bill: BillData, draft: boolean = true): Observable<BillData> {
     return ajax({
       method: "PUT",
-      url: this.getApiUrl() + "/api/bills/" + bill.id?.toString(),
+      url: this.getApiUrl() + "/" + bill.id?.toString(),
       headers: getAjaxRequestHeaders(),
-      body: this.convertBillDataToRequest(bill, draft)
-    }).pipe(map((res: AjaxResponse) => this.convertJSONToBillData(res.response as BillData)));
+      body: convertGenericBillOrQuoteDataToRequest(bill, draft)
+    }).pipe(map((res: AjaxResponse) => convertJSONToGenericBillOrQuoteData(res.response) as BillData));
   }
 
-  private convertJSONToBillData(bill: BillData) {
-    bill.createdAt = moment(bill.createdAt);
-    if (bill.updatedAt) {
-      bill.updatedAt = moment(bill.updatedAt);
-    }
-    return bill;
+  public accept(billId: number): Observable<BillData> {
+    return ajax({
+      method: "PATCH",
+      url: this.getApiUrl() + "/" + billId + "/accept",
+      headers: getAjaxRequestHeaders()
+    }).pipe(map((res: AjaxResponse) => convertJSONToGenericBillOrQuoteData(res.response) as BillData));
   }
 
-  private convertBillDataToRequest(bill: BillData, draft: boolean = true): BillRequest {
-    return {
-      lines: bill.lines.map((line, index) => ({ lineNumber: index + 1, description: line.description, preTaxPrice: line.preTaxPrice, quantity: line.quantity } as BillLineRequest)),
-      draft,
-      clientId: bill.clientId,
-      tva: bill.tva as number
-    };
+  public send(billId: number): Observable<BillData> {
+    return ajax({
+      method: "PATCH",
+      url: this.getApiUrl() + "/" + billId + "/send",
+      headers: getAjaxRequestHeaders()
+    }).pipe(map((res: AjaxResponse) => convertJSONToGenericBillOrQuoteData(res.response) as BillData));
+  }
+
+  public cancel(billId: number): Observable<BillData> {
+    return ajax({
+      method: "PATCH",
+      url: this.getApiUrl() + "/" + billId + "/cancel",
+      headers: getAjaxRequestHeaders()
+    }).pipe(map((res: AjaxResponse) => convertJSONToGenericBillOrQuoteData(res.response) as BillData));
+  }
+
+  public createFromQuote(quote: QuoteData): Observable<BillData> {
+    return ajax({
+      method: "POST",
+      url: this.getApiUrl() + "/from-quote",
+      headers: getAjaxRequestHeaders(),
+      body: { ...convertGenericBillOrQuoteDataToRequest(quote), quoteId: quote.id }
+    }).pipe(map((res: AjaxResponse) => convertJSONToGenericBillOrQuoteData(res.response) as BillData));
   }
 }

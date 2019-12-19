@@ -2,6 +2,7 @@ package com.easyerp.quoteservice.controllers;
 
 import com.easyerp.quoteservice.domains.Quote;
 import com.easyerp.quoteservice.dtos.DTO;
+import com.easyerp.quoteservice.exceptions.ConflictException;
 import com.easyerp.quoteservice.repositories.QuoteRepository;
 import com.easyerp.quoteservice.requests.QuoteRequest;
 import com.easyerp.quoteservice.services.QuoteService;
@@ -59,6 +60,18 @@ public class QuoteController {
     public ResponseEntity accept (@PathVariable Long id, OAuth2Authentication authentication) {
         Quote quote = this.quoteRepository.findById(id).orElseThrow();
         quote = this.quoteService.accept(quote, authentication);
+        return ResponseEntity.ok(quote);
+    }
+
+
+    @PatchMapping("/{id}/link-to-bill/{billId}")
+    public ResponseEntity linkToBill(@PathVariable Long id, @PathVariable Long billId, OAuth2Authentication authentication) {
+        Quote quote = this.quoteRepository.findById(id).orElseThrow();
+        if (quote.getBillId() != null) {
+            throw new ConflictException();
+        }
+        quote.setBillId(billId);
+        quote = this.quoteRepository.saveAndFlush(quote);
         return ResponseEntity.ok(quote);
     }
 

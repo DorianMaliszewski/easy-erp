@@ -14,4 +14,4 @@ CMD java -jar /app.jar \
   --spring.datasource.url="${SPRING_DATASOURCE_URL}" \
   --spring.datasource.username="${SPRING_DATASOURCE_USERNAME}" \
   --spring.datasource.password="${SPRING_DATASOURCE_PASSWORD}" \
-  --application.oauth.client-url="${OAUTHSERVICE_URL}"
+  --security.oauth2.resource.token-info-uri="${OAUTHSERVICE_URL}"

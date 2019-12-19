@@ -16,4 +16,6 @@ public interface BillService {
     void cancel(Bill bill, OAuth2Authentication authentication);
 
     void send(Bill bill, OAuth2Authentication authentication);
+
+    Bill createFromQuote(BillRequest billRequest, OAuth2Authentication authentication);
 }
