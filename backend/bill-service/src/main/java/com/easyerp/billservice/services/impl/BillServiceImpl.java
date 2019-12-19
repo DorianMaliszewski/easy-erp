@@ -158,4 +158,16 @@ public class BillServiceImpl implements BillService {
                 Map.class);
         return feedBillAndSave(bill, billRequest, authentication);
     }
+
+    @Override
+    public Bill payed(Bill bill, OAuth2Authentication authentication) {
+        // if (!bill.getClientId().equals(authentication.getName())) {
+        // throw new ForbiddenException();
+        // }
+        if (bill.getStatus() != BillStatus.ACCEPTED) {
+            throw new ConflictException();
+        }
+        bill.setStatus(BillStatus.PAYED);
+        return this.billRepository.save(bill);
+    }
 }
