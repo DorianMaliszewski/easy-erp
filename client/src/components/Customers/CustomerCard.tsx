@@ -60,9 +60,7 @@ const CustomerCard: React.FC<any> = ({ customer }) => {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(2),
-    overflowX: "auto"
+    padding: theme.spacing(2)
   }
 }));
 

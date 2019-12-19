@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Table, TableHead, TableRow, TableCell, TableBody, makeStyles, Theme } from "@material-ui/core";
+import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles, Theme } from "@material-ui/core";
 import { QuoteLineData } from "../../models/QuoteLineData";
 import QuoteLineDetailTableRow from "./QuoteLineDetailTableRow";
 import { calculTotalTTC } from "../../utils/quote";

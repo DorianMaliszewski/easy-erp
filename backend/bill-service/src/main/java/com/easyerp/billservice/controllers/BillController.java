@@ -68,16 +68,15 @@ public class BillController {
         return ResponseEntity.ok(bill);
     }
 
-    @PatchMapping("/{id}/publish")
+    @PatchMapping("/{id}/payed")
     @PreAuthorize("!hasAuthority('ROLE_CLIENT')")
-    public ResponseEntity publish(@PathVariable Long id, OAuth2Authentication authentication) {
+    public ResponseEntity payed(@PathVariable Long id, OAuth2Authentication authentication) {
         Optional<Bill> optionalBill = this.billRepository.findById(id);
 
         if (optionalBill.isEmpty()) return ResponseEntity.notFound().build();
         if (optionalBill.get().getStatus() != BillStatus.DRAFT) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        this.billService.publish(optionalBill.get(), authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.billService.payed(optionalBill.get(), authentication));
     }
 
     @PatchMapping("/{id}/send")
@@ -88,8 +87,7 @@ public class BillController {
         if (optionalBill.isEmpty()) return ResponseEntity.notFound().build();
         if (optionalBill.get().getStatus() != BillStatus.NEED_CONFIRMATION) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        this.billService.send(optionalBill.get(), authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.billService.send(optionalBill.get(), authentication));
     }
 
     @PatchMapping("/{id}/accept")
@@ -100,8 +98,7 @@ public class BillController {
         if (optionalBill.isEmpty()) return ResponseEntity.notFound().build();
         if (optionalBill.get().getStatus() != BillStatus.WAITING_CUSTOMER) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        this.billService.accept(optionalBill.get(), authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.billService.accept(optionalBill.get(), authentication));
     }
 
     @PatchMapping("/{id}/cancel")
@@ -112,7 +109,6 @@ public class BillController {
         if (optionalBill.isEmpty()) return ResponseEntity.notFound().build();
         if (optionalBill.get().getStatus() != BillStatus.WAITING_CUSTOMER) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        this.billService.cancel(optionalBill.get(), authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.billService.cancel(optionalBill.get(), authentication));
     }
 }

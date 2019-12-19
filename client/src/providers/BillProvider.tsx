@@ -73,7 +73,7 @@ const BillProvider: React.FC<any> = props => {
     };
   };
 
-  return <BillContext.Provider value={{ state: billState, findAll, findById, createFromQuote }}>{props.children}</BillContext.Provider>;
+  return <BillContext.Provider value={{ state: billState, findAll, findById, createFromQuote, accept, send, cancel, save }}>{props.children}</BillContext.Provider>;
 };
 
 const useBillContext = () => {

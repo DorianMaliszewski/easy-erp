@@ -11,6 +11,10 @@ import com.easyerp.billservice.repositories.BillRepository;
 import com.easyerp.billservice.requests.BillRequest;
 import com.easyerp.billservice.services.BillService;
 import com.easyerp.billservice.utils.SecurityUtils;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
@@ -87,7 +91,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public void publish(Bill bill, OAuth2Authentication authentication) {
+    public Bill publish(Bill bill, OAuth2Authentication authentication) {
 //        if (!authentication.getName().equals(bill.getCreatedBy())) {
 //            throw new ForbiddenException();
 //        }
@@ -97,13 +101,11 @@ public class BillServiceImpl implements BillService {
         } else {
             bill.setStatus(BillStatus.NEED_CONFIRMATION);
         }
-
-        this.billRepository.save(bill);
-
+        return this.billRepository.save(bill);
     }
 
     @Override
-    public void accept(Bill bill, OAuth2Authentication authentication) {
+    public Bill accept(Bill bill, OAuth2Authentication authentication) {
 //        if (!bill.getClientId().equals(authentication.getName())) {
 //            throw new ForbiddenException();
 //        }
@@ -111,11 +113,11 @@ public class BillServiceImpl implements BillService {
             throw new ConflictException();
         }
         bill.setStatus(BillStatus.ACCEPTED);
-        this.billRepository.save(bill);
+        return this.billRepository.save(bill);
     }
 
     @Override
-    public void cancel(Bill bill, OAuth2Authentication authentication) {
+    public Bill cancel(Bill bill, OAuth2Authentication authentication) {
 //        if (!bill.getClientId().equals(authentication.getName())) {
 //            throw new ForbiddenException();
 //        }
@@ -123,11 +125,11 @@ public class BillServiceImpl implements BillService {
             throw new ConflictException();
         }
         bill.setStatus(BillStatus.CANCELED);
-        this.billRepository.save(bill);
+        return this.billRepository.save(bill);
     }
 
     @Override
-    public void send(Bill bill, OAuth2Authentication authentication) {
+    public Bill send(Bill bill, OAuth2Authentication authentication) {
         if (!SecurityUtils.isMoreThanOrEqualManager(authentication.getAuthorities())) {
             throw new ForbiddenException();
         }
@@ -135,7 +137,7 @@ public class BillServiceImpl implements BillService {
             throw new ConflictException();
         }
         bill.setStatus(BillStatus.WAITING_CUSTOMER);
-        this.billRepository.save(bill);
+        return this.billRepository.save(bill);
     }
 
     @Override
@@ -143,7 +145,22 @@ public class BillServiceImpl implements BillService {
         Bill bill = new Bill(billRequest);
         bill.setCreatedBy(0L);
         bill = this.billRepository.saveAndFlush(bill);
-        restTemplate.patchForObject("http://quote-service:8080/api/quotes/" + bill.getQuoteId() + "/link-to-bill/" + bill.getId(), null, Map.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity<Long>(bill.getId(), headers);
+        restTemplate.exchange("http://api.easy-erp.lan/quote-service/api/quotes/" + bill.getQuoteId() + "/link-to-bill/" + bill.getId(), HttpMethod.PATCH, entity, Void.class);
         return feedBillAndSave(bill, billRequest, authentication);
+    }
+
+    @Override
+    public Bill payed(Bill bill, OAuth2Authentication authentication) {
+//        if (!bill.getClientId().equals(authentication.getName())) {
+//            throw new ForbiddenException();
+//        }
+        if (bill.getStatus() != BillStatus.ACCEPTED) {
+            throw new ConflictException();
+        }
+        bill.setStatus(BillStatus.PAYED);
+        return this.billRepository.save(bill);
     }
 }

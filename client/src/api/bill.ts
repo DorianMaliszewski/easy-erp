@@ -5,9 +5,6 @@ import { map, catchError } from "rxjs/operators";
 import { DTO } from "../models/DTO";
 import { BillData } from "../models/BillData";
 import { of, Observable } from "rxjs";
-import moment from "moment";
-import { BillRequest } from "../models/ApiRequests/BillRequest";
-import { BillLineRequest } from "../models/ApiRequests/BillLineRequest";
 import { QuoteData } from "../models/QuoteData";
 import { convertGenericBillOrQuoteDataToRequest, convertJSONToGenericBillOrQuoteData } from "../utils/utils";
 

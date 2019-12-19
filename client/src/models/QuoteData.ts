@@ -1,4 +1,3 @@
-import { QuoteLineData } from "./QuoteLineData";
 import { Moment } from "moment";
 import { GenericBillOrQuoteData, GenericBillOrQuoteLineData } from "./GenericBillOrQuoteData";
 

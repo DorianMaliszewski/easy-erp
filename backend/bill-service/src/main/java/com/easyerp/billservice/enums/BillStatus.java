@@ -5,5 +5,6 @@ public enum BillStatus {
     NEED_CONFIRMATION,
     WAITING_CUSTOMER,
     ACCEPTED,
-    CANCELED
+    CANCELED,
+    PAYED
 }

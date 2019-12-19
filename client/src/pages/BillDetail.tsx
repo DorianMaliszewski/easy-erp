@@ -6,16 +6,14 @@ import { Paper, Grid, Typography, Divider, Button, Link, Theme } from "@material
 import Splashscreen from "./Splashscreen";
 import { makeStyles } from "@material-ui/styles";
 import classnames from "classnames";
-import QuoteDetailDialogTopActions from "../components/Quotes/QuoteSavePDFAndViewPDFActions";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { getQuoteStatus } from "../utils/utils";
 import { BillData } from "../models/BillData";
 import CustomerContext from "../contexts/CustomerContext";
 import { CustomerData } from "../models/CustomerData";
 import { Skeleton } from "@material-ui/lab";
-import { BILL_STATUS } from "../components/Bills/BillStatusIcon";
-import QuoteLineDetailTable from "../components/Quotes/QuoteLineDetailTable";
 import QuoteOrBillLineDetailTable from "../components/Tables/QuoteOrBillLineDetailTable/QuoteOrBillLineDetailTable";
+import BillActionButtons from "../components/Bills/BillActionButtons";
 
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
@@ -69,12 +67,7 @@ const BillDetail: React.FC<any> = props => {
           </Button>
         </Grid>
         <Grid item>
-          {billStatus?.enum === BILL_STATUS.DRAFT.enum && (
-            <Button variant="contained" color="primary" onClick={e => history.push(routes.BILLS_FORM.path + "/" + bill.id)}>
-              Modifier
-            </Button>
-          )}
-          <QuoteDetailDialogTopActions />
+          <BillActionButtons bill={bill} />
         </Grid>
       </Grid>
       <Grid item>
@@ -115,6 +108,18 @@ const BillDetail: React.FC<any> = props => {
             <Grid item xs={6} sm={9}>
               {bill.updatedAt ? bill.updatedAt.fromNow() : "Jamais"}
             </Grid>
+            {bill.quoteId && (
+              <>
+                <Grid item xs={6} sm={3}>
+                  Devis associé
+                </Grid>
+                <Grid item xs={6} sm={9}>
+                  <Button color="primary" variant="contained" onClick={e => history.push(routes.QUOTES_DETAIL.path.replace(":id", bill.quoteId ? bill.quoteId.toString() : ""))}>
+                    Voir le devis
+                  </Button>
+                </Grid>
+              </>
+            )}
           </Grid>
         </Paper>
       </Grid>

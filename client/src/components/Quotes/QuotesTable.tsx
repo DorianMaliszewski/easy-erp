@@ -5,7 +5,6 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import QuoteStatusIcon from "./QuoteStatusIcon";
 import routes from "../../routes";
 import { useHistory } from "react-router-dom";
@@ -35,52 +34,50 @@ const QuotesTable: React.FC<any> = ({ quotes, isLoading = true }) => {
 
   console.log("Rerender", quotes.length, isLoading);
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Status</TableCell>
-            <TableCell>Client</TableCell>
-            <TableCell>Crée par</TableCell>
-            <TableCell>Crée le</TableCell>
-            <TableCell>Mise à jour le</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {!isLoading ? (
-            quotes.map((row: QuoteData) => (
-              <TableRow hover key={row.id} onClick={e => goToQuote(row.id as number)}>
-                <TableCell component="th" scope="row">
-                  <QuoteStatusIcon status={row.status} />
-                </TableCell>
-                <TableCell>{customers ? customers.find(customer => customer.id === row.clientId)?.name : <Skeleton width={100} />}</TableCell>
-                <TableCell>{row.createdBy}</TableCell>
-                <TableCell>{row.createdAt?.format("L LTS")}</TableCell>
-                <TableCell>{row.updatedAt ? row.updatedAt.format("L LTS") : "Jamais"}</TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
+    <Table className={classes.table}>
+      <TableHead>
+        <TableRow>
+          <TableCell>Status</TableCell>
+          <TableCell>Client</TableCell>
+          <TableCell>Crée par</TableCell>
+          <TableCell>Crée le</TableCell>
+          <TableCell>Mise à jour le</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {!isLoading ? (
+          quotes.map((row: QuoteData) => (
+            <TableRow hover key={row.id} onClick={e => goToQuote(row.id as number)}>
               <TableCell component="th" scope="row">
-                <Skeleton />
+                <QuoteStatusIcon status={row.status} />
               </TableCell>
-              <TableCell>
-                <Skeleton />
-              </TableCell>
-              <TableCell>
-                <Skeleton />
-              </TableCell>
-              <TableCell>
-                <Skeleton />
-              </TableCell>
-              <TableCell>
-                <Skeleton />
-              </TableCell>
+              <TableCell>{customers ? customers.find(customer => customer.id === row.clientId)?.name : <Skeleton width={100} />}</TableCell>
+              <TableCell>{row.createdBy}</TableCell>
+              <TableCell>{row.createdAt?.format("L LTS")}</TableCell>
+              <TableCell>{row.updatedAt ? row.updatedAt.format("L LTS") : "Jamais"}</TableCell>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </Paper>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell component="th" scope="row">
+              <Skeleton />
+            </TableCell>
+            <TableCell>
+              <Skeleton />
+            </TableCell>
+            <TableCell>
+              <Skeleton />
+            </TableCell>
+            <TableCell>
+              <Skeleton />
+            </TableCell>
+            <TableCell>
+              <Skeleton />
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 };
 
