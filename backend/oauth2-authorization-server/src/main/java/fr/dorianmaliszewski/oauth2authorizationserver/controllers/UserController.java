@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Optional;
 
+import java.security.Principal;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -66,5 +69,10 @@ public class UserController {
     public ResponseEntity updateInternalUser(@RequestBody UserRequest user, @PathVariable Long id, OAuth2Authentication authentication) {
         User updatedUser = this.userService.updateInternalUser(id, user, authentication);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping("/me")
+    public Optional<User> findMe(Principal principal) {
+        return this.userRepository.findByUsername(principal.getName());
     }
 }

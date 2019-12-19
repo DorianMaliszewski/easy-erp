@@ -147,4 +147,15 @@ public class BillServiceImpl implements BillService {
         bill.setStatus(BillStatus.PAYED);
         return this.billRepository.save(bill);
     }
+
+    @Override
+    public Bill createFromQuote(BillRequest billRequest, OAuth2Authentication authentication) {
+        Bill bill = new Bill(billRequest);
+        bill.setCreatedBy(0L);
+        bill = this.billRepository.saveAndFlush(bill);
+        restTemplate.patchForObject(
+                "http://quote-service:8080/api/quotes/" + bill.getQuoteId() + "/link-to-bill/" + bill.getId(), null,
+                Map.class);
+        return feedBillAndSave(bill, billRequest, authentication);
+    }
 }

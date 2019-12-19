@@ -49,12 +49,20 @@ const QuotesTable: React.FC<any> = ({ quotes, isLoading = true }) => {
           quotes.map((row: QuoteData) => (
             <TableRow hover key={row.id} onClick={e => goToQuote(row.id as number)}>
               <TableCell component="th" scope="row">
-                <QuoteStatusIcon status={row.status} />
+                <Skeleton />
               </TableCell>
-              <TableCell>{customers ? customers.find(customer => customer.id === row.clientId)?.name : <Skeleton width={100} />}</TableCell>
-              <TableCell>{row.createdBy}</TableCell>
-              <TableCell>{row.createdAt?.format("L LTS")}</TableCell>
-              <TableCell>{row.updatedAt ? row.updatedAt.format("L LTS") : "Jamais"}</TableCell>
+              <TableCell>
+                <Skeleton />
+              </TableCell>
+              <TableCell>
+                <Skeleton />
+              </TableCell>
+              <TableCell>
+                <Skeleton />
+              </TableCell>
+              <TableCell>
+                <Skeleton />
+              </TableCell>
             </TableRow>
           ))
         ) : (
