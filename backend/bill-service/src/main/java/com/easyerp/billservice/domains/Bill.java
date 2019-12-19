@@ -19,6 +19,7 @@ public class Bill extends BaseEntity {
     private Double total;
     private Long createdBy;
     private Long clientId;
+    private Long quoteId;
     private Double tva;
 
     @OneToMany(mappedBy = "bill", targetEntity = BillLine.class, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -27,10 +28,9 @@ public class Bill extends BaseEntity {
     private Boolean deleted;
 
     public Bill(BillRequest billRequest) {
-        this.total = billRequest.getTotal();
-        this.createdBy = billRequest.getCreatedBy();
         this.clientId = billRequest.getClientId();
         this.tva = billRequest.getTva();
+        this.quoteId = billRequest.getQuoteId();
     }
 
     public Bill(BillRequest billRequest, List<BillLine> lines) {

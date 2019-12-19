@@ -11,19 +11,23 @@ import com.easyerp.billservice.repositories.BillRepository;
 import com.easyerp.billservice.requests.BillRequest;
 import com.easyerp.billservice.services.BillService;
 import com.easyerp.billservice.utils.SecurityUtils;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class BillServiceImpl implements BillService {
     private final BillRepository billRepository;
     private final BillLineRepository billLineRepository;
+    private final OAuth2RestOperations restTemplate;
 
-    public BillServiceImpl(BillRepository billRepository, BillLineRepository billLineRepository) {
+    public BillServiceImpl(BillRepository billRepository, BillLineRepository billLineRepository, OAuth2RestOperations restTemplate) {
         this.billRepository = billRepository;
         this.billLineRepository = billLineRepository;
+        this.restTemplate = restTemplate;
     }
 
     @Override
@@ -132,5 +136,14 @@ public class BillServiceImpl implements BillService {
         }
         bill.setStatus(BillStatus.WAITING_CUSTOMER);
         this.billRepository.save(bill);
+    }
+
+    @Override
+    public Bill createFromQuote(BillRequest billRequest, OAuth2Authentication authentication) {
+        Bill bill = new Bill(billRequest);
+        bill.setCreatedBy(0L);
+        bill = this.billRepository.saveAndFlush(bill);
+        restTemplate.patchForObject("http://quote-service:8080/api/quotes/" + bill.getQuoteId() + "/link-to-bill/" + bill.getId(), null, Map.class);
+        return feedBillAndSave(bill, billRequest, authentication);
     }
 }

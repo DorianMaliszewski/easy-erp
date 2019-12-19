@@ -9,6 +9,7 @@ import com.easyerp.billservice.services.BillService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,13 @@ public class BillController {
     @PreAuthorize("!hasAuthority('ROLE_CLIENT')")
     public ResponseEntity create(@RequestBody BillRequest billRequest, OAuth2Authentication authentication) {
         Bill bill = this.billService.create(billRequest, authentication);
+        return ResponseEntity.ok(bill);
+    }
+
+    @PostMapping("from-quote")
+    @PreAuthorize("!hasAuthority('ROLE_CLIENT')")
+    public ResponseEntity createFromQuote(@RequestBody BillRequest billRequest, OAuth2Authentication authentication) {
+        Bill bill = this.billService.createFromQuote(billRequest, authentication);
         return ResponseEntity.ok(bill);
     }
 

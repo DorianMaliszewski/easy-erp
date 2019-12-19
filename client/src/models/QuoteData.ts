@@ -14,6 +14,7 @@ export class QuoteData implements GenericBillOrQuoteData {
   deleted?: boolean;
   tva: number;
   id?: number;
+  billId?: number;
 
   constructor() {
     this.lines = [];

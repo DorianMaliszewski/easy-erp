@@ -47,24 +47,24 @@ Step 2/5 : ENV SPRING_DATASOURCE_URL=""   SPRING_DATASOURCE_USERNAME=""   SPRING
  ---> b18ca00d4eca
 Step 3/5 : ADD *.jar /app.jar
 
- ---> 9434d749b86b
+ ---> 27960f896fff
 Step 4/5 : EXPOSE 8080
 
- ---> Running in c2e26b219fb4
-Removing intermediate container c2e26b219fb4
- ---> b0fb4d6ac7a6
+ ---> Running in 8f5ec69cd792
+Removing intermediate container 8f5ec69cd792
+ ---> a5b89dadc78d
 Step 5/5 : CMD java -jar /app.jar   --server.port=8080   --spring.datasource.url="${SPRING_DATASOURCE_URL}"   --spring.datasource.username="${SPRING_DATASOURCE_USERNAME}"   --spring.datasource.password="${SPRING_DATASOURCE_PASSWORD}"   --application.oauth.client-url="${OAUTHSERVICE_URL}"
 
- ---> Running in f036e1679536
-Removing intermediate container f036e1679536
- ---> 2c91e2450789
+ ---> Running in ba29dae90e7f
+Removing intermediate container ba29dae90e7f
+ ---> 07dd51dbcd25
 ProgressMessage{id=null, status=null, stream=null, error=null, progress=null, progressDetail=null}
-Successfully built 2c91e2450789
+Successfully built 07dd51dbcd25
 Successfully tagged easy-erp-quote-service:latest
 [INFO] Built easy-erp-quote-service
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  10.913 s
-[INFO] Finished at: 2019-12-18T11:55:46+01:00
+[INFO] Total time:  10.963 s
+[INFO] Finished at: 2019-12-19T16:46:28+01:00
 [INFO] ------------------------------------------------------------------------

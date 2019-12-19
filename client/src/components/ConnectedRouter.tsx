@@ -35,36 +35,34 @@ const ConnectedRouter: React.FC = () => {
 
   return (
     <MainLayout>
-      <ToastProvider horizontal="right">
-        <React.Suspense fallback={<div></div>}>
-          <Switch>
-            <Route path={routes.DASHBOARD.path} exact component={Dashboard} />
-            <Route path={routes.USER_DETAIL.path} component={UserDetail} />
-            <Route path={routes.DASHBOARD.path} component={Dashboard} />
-            <Route exact path={routes.MY_AGENDA.path} component={MyAgenda} />
-            <Route path={routes.EVENTS_DETAIL.path} component={EventDetail} />
+      <React.Suspense fallback={<div></div>}>
+        <Switch>
+          <Route path={routes.DASHBOARD.path} exact component={Dashboard} />
+          <Route path={routes.USER_DETAIL.path} component={UserDetail} />
+          <Route path={routes.DASHBOARD.path} component={Dashboard} />
+          <Route exact path={routes.MY_AGENDA.path} component={MyAgenda} />
+          <Route path={routes.EVENTS_DETAIL.path} component={EventDetail} />
 
-            <Route path={routes.MY_BILLS.path} component={MyBills} />
-            <Route path={routes.BILLS_DETAIL.path} component={BillDetail} />
-            <Route path={routes.BILLS_FORM.path + "/:id"} component={BillForm} />
-            <Route path={routes.BILLS_FORM.path} exact={true} component={BillForm} />
+          <Route path={routes.MY_BILLS.path} component={MyBills} />
+          <Route path={routes.BILLS_DETAIL.path} component={BillDetail} />
+          <Route path={routes.BILLS_FORM.path + "/:id"} component={BillForm} />
+          <Route path={routes.BILLS_FORM.path} exact={true} component={BillForm} />
 
-            <Route path={routes.MY_QUOTES.path} component={MyQuotes} />
-            <Route path={routes.QUOTES_FORM.path + "/:id"} component={QuoteFormPage} />
-            <Route path={routes.QUOTES_FORM.path} component={QuoteFormPage} />
-            <Route path={routes.QUOTES_DETAIL.path} component={QuoteDetail} />
+          <Route path={routes.MY_QUOTES.path} component={MyQuotes} />
+          <Route path={routes.QUOTES_FORM.path + "/:id"} component={QuoteFormPage} />
+          <Route path={routes.QUOTES_FORM.path} component={QuoteFormPage} />
+          <Route path={routes.QUOTES_DETAIL.path} component={QuoteDetail} />
 
-            <Route path={routes.MY_CUSTOMERS.path} component={MyCustomers} />
-            <Route path={routes.CUSTOMERS_DETAIL.path} component={CustomerDetail} />
-            <Route path={routes.CUSTOMERS_FORM.path} component={CustomerFormPage} />
+          <Route path={routes.MY_CUSTOMERS.path} component={MyCustomers} />
+          <Route path={routes.CUSTOMERS_DETAIL.path} component={CustomerDetail} />
+          <Route path={routes.CUSTOMERS_FORM.path} component={CustomerFormPage} />
 
-            <Route path={routes.MY_PROFILE.path} component={MyProfile} />
-            <Route path={routes.USER_DETAIL.path} component={UserDetail} />
-            {authContext.isMoreThanOrEqualAdmin() ? <Route path={"/admin"} component={AdministrationSwitch} /> : null}
-            <Redirect path="*" to={routes.DASHBOARD.path} />
-          </Switch>
-        </React.Suspense>
-      </ToastProvider>
+          <Route path={routes.MY_PROFILE.path} component={MyProfile} />
+          <Route path={routes.USER_DETAIL.path} component={UserDetail} />
+          {authContext.isMoreThanOrEqualAdmin() ? <Route path={"/admin"} component={AdministrationSwitch} /> : null}
+          <Redirect path="*" to={routes.DASHBOARD.path} />
+        </Switch>
+      </React.Suspense>
     </MainLayout>
   );
 };

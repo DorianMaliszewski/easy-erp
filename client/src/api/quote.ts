@@ -68,6 +68,30 @@ export class QuoteApi {
     }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
   }
 
+  public accept(quoteId: number) {
+    return ajax({
+      method: "PATCH",
+      url: this.getApiUrl() + "/api/quotes/" + quoteId + "/accept",
+      headers: getAjaxRequestHeaders()
+    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+  }
+
+  public send(quoteId: number) {
+    return ajax({
+      method: "PATCH",
+      url: this.getApiUrl() + "/api/quotes/" + quoteId + "/send",
+      headers: getAjaxRequestHeaders()
+    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+  }
+
+  public cancel(quoteId: number) {
+    return ajax({
+      method: "PATCH",
+      url: this.getApiUrl() + "/api/quotes/" + quoteId + "/cancel",
+      headers: getAjaxRequestHeaders()
+    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+  }
+
   private convertJSONToQuoteData(item: QuoteData) {
     item.createdAt = moment(item.createdAt);
     if (item.updatedAt) {

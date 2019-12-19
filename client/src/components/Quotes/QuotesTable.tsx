@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const QuotesTable: React.FC<any> = ({ quotes }) => {
+const QuotesTable: React.FC<any> = ({ quotes, isLoading = true }) => {
   const history = useHistory();
   const classes = useStyles();
   const { customers } = useCustomers();
@@ -33,6 +33,7 @@ const QuotesTable: React.FC<any> = ({ quotes }) => {
     history.push(routes.QUOTES_DETAIL.path.replace(":id", id.toString()));
   };
 
+  console.log("Rerender", quotes.length, isLoading);
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
@@ -46,17 +47,37 @@ const QuotesTable: React.FC<any> = ({ quotes }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {quotes.map((row: QuoteData) => (
-            <TableRow hover key={row.id} onClick={e => goToQuote(row.id as number)}>
+          {!isLoading ? (
+            quotes.map((row: QuoteData) => (
+              <TableRow hover key={row.id} onClick={e => goToQuote(row.id as number)}>
+                <TableCell component="th" scope="row">
+                  <QuoteStatusIcon status={row.status} />
+                </TableCell>
+                <TableCell>{customers ? customers.find(customer => customer.id === row.clientId)?.name : <Skeleton width={100} />}</TableCell>
+                <TableCell>{row.createdBy}</TableCell>
+                <TableCell>{row.createdAt?.format("L LTS")}</TableCell>
+                <TableCell>{row.updatedAt ? row.updatedAt.format("L LTS") : "Jamais"}</TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
               <TableCell component="th" scope="row">
-                <QuoteStatusIcon status={row.status} />
+                <Skeleton />
               </TableCell>
-              <TableCell>{customers ? customers.find(customer => customer.id === row.clientId)?.name : <Skeleton width={100} />}</TableCell>
-              <TableCell>{row.createdBy}</TableCell>
-              <TableCell>{row.createdAt?.format("L LTS")}</TableCell>
-              <TableCell>{row.updatedAt ? row.updatedAt.format("L LTS") : "Jamais"}</TableCell>
+              <TableCell>
+                <Skeleton />
+              </TableCell>
+              <TableCell>
+                <Skeleton />
+              </TableCell>
+              <TableCell>
+                <Skeleton />
+              </TableCell>
+              <TableCell>
+                <Skeleton />
+              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </Paper>
