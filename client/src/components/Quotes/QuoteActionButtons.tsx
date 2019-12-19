@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid, Button, makeStyles, Theme } from "@material-ui/core";
 
 import EditIcon from "@material-ui/icons/Edit";
@@ -73,6 +73,12 @@ const QuoteActionButtons: React.FC<any> = ({ quote }) => {
     });
   };
 
+  const handleShowBillClick = (e: React.MouseEvent) => {
+    if (quote.billId) {
+      history.push(routes.BILLS_DETAIL.path.replace(":id", quote.billId));
+    }
+  };
+
   return (
     <Grid container spacing={1} alignItems="center">
       {quoteStatus?.enum === QUOTE_STATUS.DRAFT.enum && (
@@ -110,13 +116,20 @@ const QuoteActionButtons: React.FC<any> = ({ quote }) => {
           </Button>
         </Grid>
       )}
-      {quoteStatus?.enum === QUOTE_STATUS.ACCEPTED.enum && (
-        <Grid item>
-          <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleClick(() => handleCreateBill, MESSAGES.MODALS_MESSAGES.CREATE_BILL_FROM_QUOTE)}>
-            Créer la facture
-          </Button>
-        </Grid>
-      )}
+      {quoteStatus?.enum === QUOTE_STATUS.ACCEPTED.enum &&
+        (!quote.billId ? (
+          <Grid item>
+            <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleClick(() => handleCreateBill, MESSAGES.MODALS_MESSAGES.CREATE_BILL_FROM_QUOTE)}>
+              Créer la facture
+            </Button>
+          </Grid>
+        ) : (
+          <Grid item>
+            <Button variant="contained" color="primary" onClick={handleShowBillClick}>
+              Voir la facture associée
+            </Button>
+          </Grid>
+        ))}
       <Grid item>
         <QuoteSavePDFAndViewPDFActions />
       </Grid>

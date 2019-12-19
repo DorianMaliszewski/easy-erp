@@ -5,7 +5,6 @@ import { FIND_ALL_QUOTES, QUOTE_UPDATE, QUOTE_ADD } from "../actions/quote";
 import { QuoteApi } from "../api/quote";
 import { QuoteData } from "../models/QuoteData";
 import useSnackbar from "../hooks/useSnackbar";
-import { useHistory } from "react-router-dom";
 import { map, catchError } from "rxjs/operators";
 import { of } from "rxjs";
 
@@ -18,7 +17,6 @@ const initialState = {
 const QuoteProvider: React.FC<any> = props => {
   const [quoteState, dispatch] = useReducer(quoteReducer, initialState);
   const snackbar = useSnackbar();
-  const history = useHistory();
 
   const findAll = () => {
     console.log("Statring promise");

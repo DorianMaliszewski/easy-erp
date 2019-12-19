@@ -1,7 +1,5 @@
 import React from "react";
 import { TableRow, TableCell } from "@material-ui/core";
-import { BillLineData } from "../../../models/BillData";
-import { QuoteLineData } from "../../../models/QuoteLineData";
 import { calculPostTaxPriceLine } from "../../../utils/quote";
 import { GenericBillOrQuoteLineData } from "../../../models/GenericBillOrQuoteData";
 type QuoteOrBillLineDetailTableProps = {

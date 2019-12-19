@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
@@ -28,8 +28,13 @@ type MainLayoutProps = any;
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const classes = useStyles();
-  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("sm"));
-  const [openDrawer, setOpenDrawer] = React.useState(!matches);
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"));
+  const [openDrawer, setOpenDrawer] = React.useState(true);
+
+  useEffect(() => {
+    setOpenDrawer(matches);
+  }, [matches]);
+
   const toggleDrawer = (event: any) => {
     setOpenDrawer(!openDrawer);
   };

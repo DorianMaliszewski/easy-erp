@@ -5,7 +5,6 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import BillStatusIcon from "./BillStatusIcon";
 import { useHistory } from "react-router-dom";
 import routes from "../../routes";
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const BillsTable: React.FC<any> = props => {
-  const { bills } = props;
+  const { bills, isLoading } = props;
   const classes = useStyles();
   const history = useHistory();
   const { customers } = useCustomers();
@@ -35,19 +34,19 @@ const BillsTable: React.FC<any> = props => {
   };
 
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Status</TableCell>
-            <TableCell>Client</TableCell>
-            <TableCell>Crée par</TableCell>
-            <TableCell>Crée le</TableCell>
-            <TableCell>Mise à jour le</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {bills.map((row: BillData) => (
+    <Table className={classes.table}>
+      <TableHead>
+        <TableRow>
+          <TableCell>Status</TableCell>
+          <TableCell>Client</TableCell>
+          <TableCell>Crée par</TableCell>
+          <TableCell>Crée le</TableCell>
+          <TableCell>Mise à jour le</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {!isLoading && bills ? (
+          bills.map((row: BillData) => (
             <TableRow onClick={e => goToBill(row.id as number)} hover key={row.id}>
               <TableCell component="th" scope="row">
                 <BillStatusIcon status={row.status} />
@@ -57,10 +56,28 @@ const BillsTable: React.FC<any> = props => {
               <TableCell>{row.createdAt?.fromNow()}</TableCell>
               <TableCell>{row.updatedAt ? row.updatedAt.fromNow() : "Jamais"}</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell component="th" scope="row">
+              <Skeleton />
+            </TableCell>
+            <TableCell>
+              <Skeleton />
+            </TableCell>
+            <TableCell>
+              <Skeleton />
+            </TableCell>
+            <TableCell>
+              <Skeleton />
+            </TableCell>
+            <TableCell>
+              <Skeleton />
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 };
 

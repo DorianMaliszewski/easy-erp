@@ -6,7 +6,6 @@ import { AUTH_TOKEN } from "../constants";
 import AdministrationSwitch from "../components/Administration/AdministrationSwitch";
 
 // State
-import ToastProvider from "../providers/ToastProvider";
 import AuthContext from "../contexts/AuthContext";
 import BillForm from "../pages/BillFormPage";
 

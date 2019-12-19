@@ -1,6 +1,3 @@
-import { QuoteLineData } from "../models/QuoteLineData";
-import { QuoteData } from "../models/QuoteData";
-import { BillData, BillLineData } from "../models/BillData";
 import { GenericBillOrQuoteLineData, GenericBillOrQuoteData } from "../models/GenericBillOrQuoteData";
 
 export const calculPostTaxPriceLine = (tva: number, itemLine: GenericBillOrQuoteLineData) => {

@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import QuoteFormContext from "../contexts/QuoteFormContext";
 import { QuoteLineData } from "../models/QuoteLineData";
-import { QuoteApi } from "../api/quote";
 import { QuoteData } from "../models/QuoteData";
-import useSnackbar from "../hooks/useSnackbar";
 import { useQuoteContext } from "./QuoteProvider";
 
 const QuoteFormProvider: React.FC<any> = props => {
   const [quote, setQuote] = useState<QuoteData>(props.quote);
-  const snackbar = useSnackbar();
   const quoteContext = useQuoteContext();
 
   const addLine = () => {
