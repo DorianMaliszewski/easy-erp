@@ -13,7 +13,7 @@ import java.util.List;
 public class Client extends BaseEntity {
 
     private String name;
-    private Long contact;
+    private String contact;
     private String phone;
     private String email;
     private String site;
@@ -22,7 +22,7 @@ public class Client extends BaseEntity {
     private String postalCode;
     private Boolean enabled = true;
     private Boolean deleted = false;
-    private Long createdBy;
+    private String createdBy;
 
     public Client(ClientRequest clientRequest) {
         this.name = clientRequest.getName();

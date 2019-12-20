@@ -12,25 +12,22 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import { TableOrder, stableSort, getSorting } from "./BillOrQuoteTableEnhancedUtils";
-import { GenericBillOrQuoteData } from "../../../models/GenericBillOrQuoteData";
-import BillStatusIcon from "../../Bills/BillStatusIcon";
-import useCustomers from "../../../hooks/useCustomers";
+import { TableOrder, stableSort, getSorting } from "./CustomerTableEnhancedUtils";
 import { Skeleton } from "@material-ui/lab";
-import { TableHeadCell } from "../SortingTable/SortingTable";
-import routes from "../../../routes";
+import { TableHeadCell } from "../../Tables/SortingTable/SortingTable";
 import { useHistory } from "react-router-dom";
+import routes from "../../../routes";
 
 const headCells: TableHeadCell[] = [
-  { id: "status", numeric: false, disablePadding: false, label: "Status" },
-  { id: "client", numeric: false, disablePadding: false, label: "Client" },
-  { id: "createdBy", numeric: false, disablePadding: false, label: "Créée par" },
-  { id: "createdAt", numeric: false, disablePadding: false, label: "Créée le" },
-  { id: "updatedAt", numeric: false, disablePadding: false, label: "Mise à jour le" }
+  { id: "name", numeric: false, disablePadding: false, label: "Nom" },
+  { id: "contact", numeric: false, disablePadding: false, label: "Contact" },
+  { id: "phone", numeric: false, disablePadding: false, label: "Téléphone" },
+  { id: "email", numeric: false, disablePadding: false, label: "E-mail" }
 ];
 
-interface BillOrQuoteTableEnhancedHeadProps {
+interface CustomerTableEnhancedHeadProps {
   classes: ReturnType<typeof useStyles>;
   onRequestSort: (event: React.MouseEvent, property: any) => void;
   order: TableOrder;
@@ -39,7 +36,7 @@ interface BillOrQuoteTableEnhancedHeadProps {
   headCells: TableHeadCell[];
 }
 
-function BillOrQuoteTableEnhancedHead(props: BillOrQuoteTableEnhancedHeadProps) {
+function CustomerTableEnhancedHead(props: CustomerTableEnhancedHeadProps) {
   const { classes, order, orderBy, onRequestSort, headCells } = props;
   const createSortHandler = (property: any) => (event: React.MouseEvent) => {
     onRequestSort(event, property);
@@ -83,11 +80,11 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface BillOrQuoteTableEnhancedToolbarProps {
+interface CustomerTableEnhancedToolbarProps {
   numSelected: number;
 }
 
-const BillOrQuoteTableEnhancedToolbar = (props: BillOrQuoteTableEnhancedToolbarProps) => {
+const CustomerTableEnhancedToolbar = (props: CustomerTableEnhancedToolbarProps) => {
   const classes = useToolbarStyles();
   const { numSelected } = props;
 
@@ -97,45 +94,69 @@ const BillOrQuoteTableEnhancedToolbar = (props: BillOrQuoteTableEnhancedToolbarP
         [classes.highlight]: numSelected > 0
       })}
     >
-      <Typography className={classes.title} variant="h6" id="tableTitle">
-        Factures
-      </Typography>
-      <Tooltip title="Filter list">
-        <IconButton aria-label="filter list">
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
+      {numSelected > 0 ? (
+        <Typography className={classes.title} color="inherit" variant="subtitle1">
+          {numSelected} selected
+        </Typography>
+      ) : (
+        <Typography className={classes.title} variant="h6" id="tableTitle">
+          Nutrition
+        </Typography>
+      )}
+      {numSelected > 0 ? (
+        <Tooltip title="Delete">
+          <IconButton aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Tooltip title="Filter list">
+          <IconButton aria-label="filter list">
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
+      )}
     </Toolbar>
   );
 };
 
-const useStyles = makeStyles((theme: Theme) => ({
-  visuallyHidden: {
-    border: 0,
-    clip: "rect(0 0 0 0)",
-    height: 1,
-    margin: -1,
-    overflow: "hidden",
-    padding: 0,
-    position: "absolute",
-    top: 20,
-    width: 1
-  }
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: "100%"
+    },
+    paper: {
+      width: "100%",
+      marginBottom: theme.spacing(2)
+    },
+    table: {
+      minWidth: 750
+    },
+    visuallyHidden: {
+      border: 0,
+      clip: "rect(0 0 0 0)",
+      height: 1,
+      margin: -1,
+      overflow: "hidden",
+      padding: 0,
+      position: "absolute",
+      top: 20,
+      width: 1
+    }
+  })
+);
 
-type BillOrQuoteTableEnhancedProps = {
-  rows: GenericBillOrQuoteData[];
+type CustomerTableEnhancedProps = {
+  rows: any;
   isLoading?: boolean;
-  handleRowClick: Function;
 };
 
-export const BillOrQuoteTableEnhanced: React.FC<BillOrQuoteTableEnhancedProps> = ({ rows, isLoading = false, handleRowClick }) => {
+export const CustomerTableEnhanced: React.FC<CustomerTableEnhancedProps> = ({ rows, isLoading = false }) => {
   const classes = useStyles();
-  const [order, setOrder] = React.useState<TableOrder>("desc");
+  const [order, setOrder] = React.useState<TableOrder>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("id");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
-  const { customers } = useCustomers();
   const history = useHistory();
 
   const handleRequestSort = (event: React.MouseEvent, property: any) => {
@@ -145,7 +166,7 @@ export const BillOrQuoteTableEnhanced: React.FC<BillOrQuoteTableEnhancedProps> =
   };
 
   const handleClick = (event: React.MouseEvent, id: number) => {
-    history.push(routes.BILLS_DETAIL.path.replace(":id", id.toString()));
+    history.push(routes.CUSTOMERS_DETAIL.path.replace(":id", id.toString()));
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -157,27 +178,22 @@ export const BillOrQuoteTableEnhanced: React.FC<BillOrQuoteTableEnhancedProps> =
     setPage(0);
   };
 
-  const emptyRows = (): number => {
-    return rows ? rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage) : 1;
-  };
-
   return (
     <div>
-      <Table aria-labelledby="sortedTable" aria-label="sorted-table">
-        <BillOrQuoteTableEnhancedHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} rowCount={rows ? rows.length : 0} headCells={headCells} />
+      <Table className={classes.table} aria-labelledby="customers-table-enhanced" aria-label="customers-table-enhanced">
+        <CustomerTableEnhancedHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} rowCount={rows.length} headCells={headCells} />
         <TableBody>
-          {rows && !isLoading ? (
-            stableSort(rows, getSorting(order, orderBy), customers)
+          {!isLoading && rows ? (
+            stableSort(rows, getSorting(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: any, index: number) => (
-                <TableRow hover onClick={event => handleRowClick(event, row.id ? row.id.toString() : "")} tabIndex={-1} key={row.id}>
+                <TableRow hover onClick={event => handleClick(event, row.id)} tabIndex={-1} key={row.id}>
                   <TableCell component="th" scope="row">
-                    <BillStatusIcon status={row.status} />
+                    {row.name}
                   </TableCell>
-                  <TableCell>{row.client ? row.client : <Skeleton width={100} />}</TableCell>
-                  <TableCell>{row.createdBy}</TableCell>
-                  <TableCell>{row.createdAt?.fromNow()}</TableCell>
-                  <TableCell>{row.updatedAt ? row.updatedAt.fromNow() : "Jamais"}</TableCell>
+                  <TableCell>{row.contact}</TableCell>
+                  <TableCell>{row.phone}</TableCell>
+                  <TableCell>{row.email}</TableCell>
                 </TableRow>
               ))
           ) : (
@@ -194,26 +210,21 @@ export const BillOrQuoteTableEnhanced: React.FC<BillOrQuoteTableEnhancedProps> =
               <TableCell>
                 <Skeleton />
               </TableCell>
-              <TableCell>
-                <Skeleton />
-              </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-      {rows && rows.length > 25 && (
-        <TablePagination
-          rowsPerPageOptions={[25, 50, 75, 100]}
-          component="div"
-          count={rows ? rows.length : 0}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          labelDisplayedRows={info => info.from + " - " + info.to + " sur " + info.count}
-          labelRowsPerPage="Lignes par page"
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      )}
+      <TablePagination
+        rowsPerPageOptions={[25, 50, 75, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        labelRowsPerPage="Lignes par page"
+        labelDisplayedRows={info => `${info.from}-${info.to} sur ${info.count}`}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </div>
   );
 };

@@ -18,7 +18,13 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client create(ClientRequest clientRequest, OAuth2Authentication authentication) {
         Client client = new Client(clientRequest);
-        client.setCreatedBy(1L);
+        client.setCreatedBy(authentication.getName());
+        return this.clientRepository.save(client);
+    }
+
+    @Override
+    public Client update(ClientRequest clientRequest, OAuth2Authentication authentication) {
+        Client client = new Client(clientRequest);
         return this.clientRepository.save(client);
     }
 }

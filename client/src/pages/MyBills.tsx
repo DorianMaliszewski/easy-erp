@@ -17,6 +17,10 @@ const MyBills: React.FC<any> = props => {
     }
   }, [billContext]);
 
+  const handleRowClick = (event: any, id: string) => {
+    history.push(routes.BILLS_DETAIL.path.replace(":id", id));
+  };
+
   return (
     <Grid container spacing={3} direction="column">
       <Grid item>
@@ -26,7 +30,7 @@ const MyBills: React.FC<any> = props => {
       </Grid>
       <Grid item>
         <Paper className={classes.paper}>
-          <BillOrQuoteTableEnhanced rows={billContext.state.bills} />
+          <BillOrQuoteTableEnhanced rows={billContext.state.bills} isLoading={billContext.state.isLoading} handleRowClick={handleRowClick} />
         </Paper>
       </Grid>
     </Grid>

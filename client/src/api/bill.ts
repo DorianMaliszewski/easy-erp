@@ -91,6 +91,14 @@ export class BillApi {
     }).pipe(map((res: AjaxResponse) => convertJSONToGenericBillOrQuoteData(res.response) as BillData));
   }
 
+  public payed(billId: number): Observable<BillData> {
+    return ajax({
+      method: "PATCH",
+      url: this.getApiUrl() + "/" + billId + "/payed",
+      headers: getAjaxRequestHeaders()
+    }).pipe(map((res: AjaxResponse) => convertJSONToGenericBillOrQuoteData(res.response) as BillData));
+  }
+
   public createFromQuote(quote: QuoteData): Observable<BillData> {
     return ajax({
       method: "POST",

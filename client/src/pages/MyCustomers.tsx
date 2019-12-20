@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
-import CustomersTable from "../components/Customers/CustomersTable";
 import CustomerContext from "../contexts/CustomerContext";
 import Splashscreen from "./Splashscreen";
+import { CustomerTableEnhanced } from "../components/Customers/CustomerTableEnhanced/CustomerTableEnhanced";
 
 const MyCustomers: React.FC<any> = props => {
   const customerContext = useContext(CustomerContext);
@@ -15,7 +15,7 @@ const MyCustomers: React.FC<any> = props => {
   }
   return (
     <>
-      <CustomersTable customers={customerContext.state.customers} />
+      <CustomerTableEnhanced rows={customerContext.state.customers} isLoading={customerContext.state.isLoading} />
     </>
   );
 };

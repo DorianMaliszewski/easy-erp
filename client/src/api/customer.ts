@@ -1,4 +1,4 @@
-import { INSTANCE_URL, CLIENT_SERVICE, AUTH_TOKEN } from "../constants";
+import { INSTANCE_URL, CLIENT_SERVICE } from "../constants";
 
 //Models
 import { CustomerData } from "../models/CustomerData";
@@ -10,11 +10,7 @@ import { ajax, AjaxResponse } from "rxjs/ajax";
 import { of } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import Axios from "axios";
-
-const requestHeaders = {
-  "Content-Type": "application/json",
-  Authorization: "Bearer " + localStorage.getItem(AUTH_TOKEN)
-};
+import { getAjaxRequestHeaders } from ".";
 
 class CustomerApi {
   private static SINGLETON = new CustomerApi();
@@ -31,7 +27,7 @@ class CustomerApi {
     return ajax({
       url: this.getServiceUrl() + "/api/clients",
       method: "GET",
-      headers: requestHeaders
+      headers: getAjaxRequestHeaders()
     }).pipe(
       map((res: AjaxResponse) => res.response as DTO<CustomerData>),
       catchError(error => {
@@ -45,12 +41,17 @@ class CustomerApi {
     return ajax({
       url: this.getServiceUrl() + "/api/clients/" + id.toString(),
       method: "GET",
-      headers: requestHeaders
+      headers: getAjaxRequestHeaders()
     }).pipe(map((res: AjaxResponse) => res.response as CustomerData));
   }
 
   public create(customer: CustomerData) {
-    return Axios.post(this.getServiceUrl() + "/api/client").then(res => res.data);
+    return ajax({
+      url: this.getServiceUrl() + "/api/clients/",
+      method: "POST",
+      headers: getAjaxRequestHeaders(),
+      body: customer
+    }).pipe(map((res: AjaxResponse) => res.response as CustomerData));
   }
 }
 

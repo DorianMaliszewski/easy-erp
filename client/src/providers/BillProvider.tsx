@@ -6,7 +6,7 @@ import { BillApi } from "../api/bill";
 import { QuoteData } from "../models/QuoteData";
 import useSnackbar from "../hooks/useSnackbar";
 import { BillData } from "../models/BillData";
-import { map, catchError } from "rxjs/operators";
+import { map, catchError, tap } from "rxjs/operators";
 import { of } from "rxjs";
 
 const initialState = {
@@ -33,36 +33,54 @@ const BillProvider: React.FC<any> = props => {
   };
 
   const createFromQuote = (quote: QuoteData) => {
-    return BillApi.getInstance().createFromQuote(quote);
+    return BillApi.getInstance()
+      .createFromQuote(quote)
+      .pipe(tap(result => updateState(result, true)));
   };
 
   const accept = (id: number) => {
-    return BillApi.getInstance().accept(id);
+    return BillApi.getInstance()
+      .accept(id)
+      .pipe(tap(result => updateState(result, true)));
   };
 
   const send = (id: number) => {
-    return BillApi.getInstance().send(id);
+    return BillApi.getInstance()
+      .send(id)
+      .pipe(tap(result => updateState(result, true)));
   };
 
   const cancel = (id: number) => {
-    return BillApi.getInstance().cancel(id);
+    return BillApi.getInstance()
+      .cancel(id)
+      .pipe(tap(result => updateState(result, true)));
+  };
+
+  const payed = (id: number) => {
+    return BillApi.getInstance()
+      .payed(id)
+      .pipe(tap(result => updateState(result, true)));
   };
 
   const save = (bill: BillData, isDraft: boolean = true) => {
     return BillApi.getInstance()
       .save(bill)
       .pipe(
-        map((result: QuoteData) => {
+        map((result: BillData) => {
           snackbar.show(isDraft ? "Brouillon enregistrée" : "Modification enregistrée", "success");
-          if (bill.id) {
-            dispatch({ type: BILL_UPDATE.SUCCESS, bill: result });
-          } else {
-            dispatch({ type: BILL_ADD.SUCCESS, bill: result });
-          }
-          return result;
+          return updateState(result, bill.id ? true : false);
         }),
         catchError(handleError(bill))
       );
+  };
+
+  const updateState = (bill: BillData, isCreate: boolean) => {
+    if (!isCreate) {
+      dispatch({ type: BILL_UPDATE.SUCCESS, bill: bill });
+    } else {
+      dispatch({ type: BILL_ADD.SUCCESS, bill: bill });
+    }
+    return bill;
   };
 
   const handleError = (bill: BillData) => {
@@ -73,7 +91,7 @@ const BillProvider: React.FC<any> = props => {
     };
   };
 
-  return <BillContext.Provider value={{ state: billState, findAll, findById, createFromQuote, accept, send, cancel, save }}>{props.children}</BillContext.Provider>;
+  return <BillContext.Provider value={{ state: billState, findAll, findById, createFromQuote, accept, send, cancel, save, payed }}>{props.children}</BillContext.Provider>;
 };
 
 const useBillContext = () => {
