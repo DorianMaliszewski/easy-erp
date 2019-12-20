@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
-import CustomerContext from "../contexts/CustomerContext";
 import { CustomerData } from "../models/CustomerData";
+import { useCustomersContext } from "../providers/CustomerProvider";
 
 const useCustomers = () => {
-  const customerContext = useContext(CustomerContext);
+  const customerContext = useCustomersContext();
   useEffect(() => {
     if (!customerContext.state.customers && !customerContext.state.isLoading) {
       customerContext.findAll();

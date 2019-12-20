@@ -3,16 +3,16 @@ import { useParams, useHistory } from "react-router-dom";
 import { Button, Grid } from "@material-ui/core";
 import Splashscreen from "./Splashscreen";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import CustomerContext from "../contexts/CustomerContext";
 import CustomerCard from "../components/Customers/CustomerCard";
 import { CustomerData } from "../models/CustomerData";
 import routes from "../routes";
+import { useCustomersContext } from "../providers/CustomerProvider";
 
 const CustomerDetail: React.FC<any> = props => {
   const history = useHistory();
   const { id } = useParams();
 
-  const customerContext = useContext(CustomerContext);
+  const customerContext = useCustomersContext();
   const [customer, setCustomer] = useState<any>();
 
   useEffect(() => {

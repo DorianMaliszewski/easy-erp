@@ -9,13 +9,13 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 import Splashscreen from "./Splashscreen";
 import QuoteContext from "../contexts/QuoteContext";
-import CustomerContext from "../contexts/CustomerContext";
 
 import { getQuoteStatus } from "../utils/utils";
 import { QuoteData } from "../models/QuoteData";
 import { CustomerData } from "../models/CustomerData";
 import QuoteActionButtons from "../components/Quotes/QuoteActionButtons";
 import QuoteLineDetailTable from "../components/Quotes/QuoteLineDetailTable";
+import { useCustomersContext } from "../providers/CustomerProvider";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -28,7 +28,7 @@ const QuoteDetail: React.FC<any> = () => {
   const [quote, setQuote] = useState<QuoteData>();
 
   const [customer, setCustomer] = useState<CustomerData>();
-  const customerContext = useContext(CustomerContext);
+  const customerContext = useCustomersContext();
 
   const classes = useStyles();
   const history = useHistory();

@@ -9,11 +9,11 @@ import classnames from "classnames";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { getQuoteStatus } from "../utils/utils";
 import { BillData } from "../models/BillData";
-import CustomerContext from "../contexts/CustomerContext";
 import { CustomerData } from "../models/CustomerData";
 import { Skeleton } from "@material-ui/lab";
 import QuoteOrBillLineDetailTable from "../components/Tables/QuoteOrBillLineDetailTable/QuoteOrBillLineDetailTable";
 import BillActionButtons from "../components/Bills/BillActionButtons";
+import { useCustomersContext } from "../providers/CustomerProvider";
 
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
@@ -31,7 +31,7 @@ const BillDetail: React.FC<any> = props => {
   const [bill, setBill] = useState<BillData>();
 
   const [customer, setCustomer] = useState();
-  const customerContext = useContext(CustomerContext);
+  const customerContext = useCustomersContext();
 
   const classes = useStyle();
 
