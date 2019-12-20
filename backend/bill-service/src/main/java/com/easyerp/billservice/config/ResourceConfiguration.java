@@ -9,7 +9,6 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.web.client.RestTemplate;
 
 @EnableResourceServer
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
