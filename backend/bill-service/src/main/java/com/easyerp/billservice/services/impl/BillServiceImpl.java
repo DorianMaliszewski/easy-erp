@@ -151,7 +151,7 @@ public class BillServiceImpl implements BillService {
     @Override
     public Bill createFromQuote(BillRequest billRequest, OAuth2Authentication authentication) {
         Bill bill = new Bill(billRequest);
-        bill.setCreatedBy(0L);
+        bill.setCreatedBy(authentication.getName());
         bill = this.billRepository.saveAndFlush(bill);
         restTemplate.patchForObject(
                 "http://quote-service:8080/api/quotes/" + bill.getQuoteId() + "/link-to-bill/" + bill.getId(), null,

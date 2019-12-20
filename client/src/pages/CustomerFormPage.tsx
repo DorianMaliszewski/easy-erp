@@ -2,15 +2,13 @@ import React, { useState, useContext, useEffect, useMemo } from "react";
 import { CustomerData } from "../models/CustomerData";
 import { Typography } from "@material-ui/core";
 import AdminCustomerForm from "../components/Administration/AdminCustomers/AdminCustomerForm";
-import { useParams, useHistory } from "react-router-dom";
-import routes from "../routes";
+import { useParams } from "react-router-dom";
 import { useCustomersContext } from "../providers/CustomerProvider";
 
 const CustomerFormPage: React.FC<any> = () => {
   const { id } = useParams();
   const [customer, setCustomer] = useState(new CustomerData());
   const customerContext = useCustomersContext();
-  const history = useHistory();
 
   useEffect(() => {
     if (id) {
@@ -21,10 +19,8 @@ const CustomerFormPage: React.FC<any> = () => {
   }, [id]);
 
   const submit = () => {
-    customerContext.save(customer).subscribe((data: any) => {
-      if (data.id) {
-        history.push(routes.CUSTOMERS_DETAIL.path.replace(":id", data.id));
-      }
+    customerContext.create(customer).then((data: any) => {
+      console.log("Retour de create", data);
     });
   };
 

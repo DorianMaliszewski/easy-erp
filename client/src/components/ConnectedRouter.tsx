@@ -63,7 +63,6 @@ const ConnectedRouter: React.FC = () => {
 
           <Route path={routes.MY_CUSTOMERS.path} component={MyCustomers} />
           <Route path={routes.CUSTOMERS_DETAIL.path} component={CustomerDetail} />
-
           <Route path={routes.CUSTOMERS_UPDATE.path} component={CustomerFormPage} />
           <Route path={routes.CUSTOMERS_ADD.path} exact component={CustomerFormPage} />
 

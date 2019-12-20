@@ -86,7 +86,9 @@ public class QuoteController {
     }
 
     @PatchMapping("/{id}/link-to-bill/{billId}")
-    public ResponseEntity linkToBill(@PathVariable Long id, @PathVariable Long billId, OAuth2Authentication authentication) {
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_UPDATE_QUOTES')")
+    public ResponseEntity linkToBill(@PathVariable Long id, @PathVariable Long billId,
+            OAuth2Authentication authentication) {
         Quote quote = this.quoteRepository.findById(id).orElseThrow();
         if (quote.getBillId() != null) {
             throw new ConflictException();
@@ -95,7 +97,6 @@ public class QuoteController {
         quote = this.quoteRepository.saveAndFlush(quote);
         return ResponseEntity.ok(quote);
     }
-
 
     @PatchMapping("/{id}/cancel")
     @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_MANAGE_QUOTES')")
