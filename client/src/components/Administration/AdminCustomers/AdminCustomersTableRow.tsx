@@ -6,15 +6,15 @@ import routes from "../../../routes";
 import { useHistory } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import ClearIcon from "@material-ui/icons/Clear";
-import CustomerContext from "../../../contexts/CustomerContext";
 import ConfirmDialog from "../../ConfirmDialog";
 import { MESSAGES } from "../../../constants";
 import { makeStyles } from "@material-ui/styles";
+import { useCustomersContext } from "../../../providers/CustomerProvider";
 
 const AdminCustomersTableRow: React.FC<any> = ({ customer }) => {
   const history = useHistory();
   const classes = useStyles();
-  const customerContext = useContext(CustomerContext);
+  const customerContext = useCustomersContext();
   const [openDialog, setOpenDialog] = useState(false);
 
   const goToCustomer = (id: number) => {

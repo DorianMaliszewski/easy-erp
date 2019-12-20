@@ -7,5 +7,5 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 public interface ClientService {
     Client create(ClientRequest quoteRequest, OAuth2Authentication authentication);
 
-    Client update(ClientRequest clientRequest, OAuth2Authentication authentication);
+    Client update(Long id, ClientRequest clientRequest, OAuth2Authentication authentication);
 }

@@ -25,6 +25,10 @@ public class Client extends BaseEntity {
     private String createdBy;
 
     public Client(ClientRequest clientRequest) {
+        this.setFromClientRequest(clientRequest);
+    }
+
+    public void setFromClientRequest(ClientRequest clientRequest) {
         this.name = clientRequest.getName();
         this.contact = clientRequest.getContact();
         this.phone = clientRequest.getPhone();

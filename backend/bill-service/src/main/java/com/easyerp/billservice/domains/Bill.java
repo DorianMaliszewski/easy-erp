@@ -2,7 +2,6 @@ package com.easyerp.billservice.domains;
 
 import com.easyerp.billservice.enums.BillStatus;
 import com.easyerp.billservice.requests.BillRequest;
-import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;

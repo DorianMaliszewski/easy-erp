@@ -3,7 +3,7 @@ import AuthProvider from "./AuthProvider";
 import DashboardProvider from "./DashboardProvider";
 import { QuoteProvider } from "./QuoteProvider";
 import { BillProvider } from "./BillProvider";
-import CustomerProvider from "./CustomerProvider";
+import { CustomerProvider } from "./CustomerProvider";
 import UserProvider from "./UserProvider";
 import ToastProvider from "./ToastProvider";
 
