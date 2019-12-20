@@ -1,18 +1,22 @@
-import React, { useState, useContext } from "react";
-import { CustomerData } from "../../models/CustomerData";
+import React, { useState, useContext, useEffect, useMemo } from "react";
+import { CustomerData } from "../models/CustomerData";
 import { Typography } from "@material-ui/core";
-import AdminCustomerForm from "../../components/Administration/AdminCustomers/AdminCustomerForm";
-import CustomerContext from "../../contexts/CustomerContext";
+import AdminCustomerForm from "../components/Administration/AdminCustomers/AdminCustomerForm";
+import CustomerContext from "../contexts/CustomerContext";
+import { useParams } from "react-router-dom";
 
-const CustomerFormPage: React.FC<any> = ({ match }) => {
+const CustomerFormPage: React.FC<any> = () => {
+  const { id } = useParams();
   const [customer, setCustomer] = useState(new CustomerData());
   const customerContext = useContext(CustomerContext);
 
-  if (match.params.id) {
-    customerContext.findById(parseInt(match.params.id, 10)).subscribe((customerFinded: any) => {
-      setCustomer(customer);
-    });
-  }
+  useEffect(() => {
+    if (id) {
+      customerContext.findById(parseInt(id, 10)).subscribe((customerFinded: any) => {
+        setCustomer(customerFinded);
+      });
+    }
+  }, [id]);
 
   const submit = () => {
     customerContext.create(customer).then((data: any) => {

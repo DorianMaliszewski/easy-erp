@@ -22,7 +22,7 @@ const Clients: React.FC<any> = props => {
   const history = useHistory();
   return (
     <>
-      <Button color="primary" variant="contained" onClick={(e: any) => history.push(routes.CUSTOMERS_FORM.path)}>
+      <Button color="primary" variant="contained" onClick={(e: any) => history.push(routes.CUSTOMERS_ADD.path)}>
         Créer un client
       </Button>
       <AdminCustomersTable customers={rows} />

@@ -34,12 +34,19 @@ public class ClientController {
     @GetMapping("/{id}")
     public ResponseEntity findOneById(@PathVariable Long id) {
         var client = this.clientRepository.findById(id);
-        return client.isPresent() ? ResponseEntity.ok(client) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("The client doesn't exist");
+        return client.isPresent() ? ResponseEntity.ok(client)
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("The client doesn't exist");
     }
 
     @PostMapping
     public ResponseEntity create(@RequestBody ClientRequest clientRequest, OAuth2Authentication authentication) {
         Client client = this.clientService.create(clientRequest, authentication);
+        return ResponseEntity.ok(client);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity update(@RequestBody ClientRequest clientRequest, OAuth2Authentication authentication) {
+        Client client = this.clientService.update(clientRequest, authentication);
         return ResponseEntity.ok(client);
     }
 

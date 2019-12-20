@@ -61,7 +61,7 @@ type CustomDrawerProps = {
 const CustomDrawer: React.FC<CustomDrawerProps> = ({ toggleDrawer, open }) => {
   const classes = useStyles();
   const history = useHistory();
-  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("sm"));
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"));
 
   const handleLogout = (event: React.MouseEvent) => {
     localStorage.removeItem(AUTH_TOKEN);

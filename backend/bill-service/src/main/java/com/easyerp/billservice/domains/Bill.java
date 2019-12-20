@@ -17,7 +17,7 @@ public class Bill extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private BillStatus status;
     private Double total;
-    private Long createdBy;
+    private String createdBy;
     private Long clientId;
     private Long quoteId;
     private Double tva;

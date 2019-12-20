@@ -28,38 +28,36 @@ public class BillServiceImpl implements BillService {
     private final BillLineRepository billLineRepository;
     private final OAuth2RestOperations restTemplate;
 
-    public BillServiceImpl(BillRepository billRepository, BillLineRepository billLineRepository, OAuth2RestOperations restTemplate) {
+    public BillServiceImpl(final BillRepository billRepository, final BillLineRepository billLineRepository,
+            final OAuth2RestOperations restTemplate) {
         this.billRepository = billRepository;
         this.billLineRepository = billLineRepository;
         this.restTemplate = restTemplate;
     }
 
     @Override
-    public Bill create(BillRequest billRequest, OAuth2Authentication authentication) {
+    public Bill create(final BillRequest billRequest, final OAuth2Authentication authentication) {
 
         Bill bill = new Bill(billRequest);
-        bill.setCreatedBy(0L);
+        bill.setCreatedBy(authentication.getName());
         bill = this.billRepository.saveAndFlush(bill);
 
         return feedBillAndSave(bill, billRequest, authentication);
     }
 
     @Override
-    public Bill update(Bill bill, BillRequest billRequest, OAuth2Authentication authentication) {
-//        if (!authentication.getName().equals(bill.getCreatedBy().toString())) {
-//            throw new ForbiddenException();
-//        }
-
+    public Bill update(final Bill bill, final BillRequest billRequest, final OAuth2Authentication authentication) {
         return feedBillAndSave(bill, billRequest, authentication);
     }
 
-    private Bill feedBillAndSave(Bill bill, BillRequest billRequest, OAuth2Authentication authentication) {
-        var lines = billRequest.getLines().parallelStream().map(billLineRequest -> {
-            var key =new BillLineCompositeKey();
+    private Bill feedBillAndSave(final Bill bill, final BillRequest billRequest,
+            final OAuth2Authentication authentication) {
+        final var lines = billRequest.getLines().parallelStream().map(billLineRequest -> {
+            final var key = new BillLineCompositeKey();
             key.setBill(bill);
             key.setLineNumber(billLineRequest.getLineNumber());
 
-            BillLine billLine = this.billLineRepository.findById(key).orElse(new BillLine());
+            final BillLine billLine = this.billLineRepository.findById(key).orElse(new BillLine());
 
             billLine.setLineNumber(billLineRequest.getLineNumber());
             billLine.setDescription(billLineRequest.getDescription());
@@ -75,7 +73,8 @@ public class BillServiceImpl implements BillService {
 
         bill.setClientId(billRequest.getClientId());
         bill.setTva(billRequest.getTva());
-        bill.setTotal(billRequest.getLines().stream().mapToDouble(line -> line.getPreTaxPrice() * line.getQuantity() * (1 + billRequest.getTva())).sum());
+        bill.setTotal(billRequest.getLines().stream()
+                .mapToDouble(line -> line.getPreTaxPrice() * line.getQuantity() * (1 + billRequest.getTva())).sum());
 
         if (billRequest.isDraft()) {
             bill.setStatus(BillStatus.DRAFT);
@@ -91,11 +90,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Bill publish(Bill bill, OAuth2Authentication authentication) {
-//        if (!authentication.getName().equals(bill.getCreatedBy())) {
-//            throw new ForbiddenException();
-//        }
-
+    public Bill publish(final Bill bill, final OAuth2Authentication authentication) {
         if (SecurityUtils.isMoreThanOrEqualManager(authentication.getAuthorities())) {
             bill.setStatus(BillStatus.WAITING_CUSTOMER);
         } else {
@@ -105,10 +100,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Bill accept(Bill bill, OAuth2Authentication authentication) {
-//        if (!bill.getClientId().equals(authentication.getName())) {
-//            throw new ForbiddenException();
-//        }
+    public Bill accept(final Bill bill, final OAuth2Authentication authentication) {
         if (bill.getStatus() != BillStatus.WAITING_CUSTOMER) {
             throw new ConflictException();
         }
@@ -117,10 +109,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Bill cancel(Bill bill, OAuth2Authentication authentication) {
-//        if (!bill.getClientId().equals(authentication.getName())) {
-//            throw new ForbiddenException();
-//        }
+    public Bill cancel(final Bill bill, final OAuth2Authentication authentication) {
         if (bill.getStatus() != BillStatus.WAITING_CUSTOMER) {
             throw new ConflictException();
         }
@@ -129,10 +118,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Bill send(Bill bill, OAuth2Authentication authentication) {
-        if (!SecurityUtils.isMoreThanOrEqualManager(authentication.getAuthorities())) {
-            throw new ForbiddenException();
-        }
+    public Bill send(final Bill bill, final OAuth2Authentication authentication) {
         if (bill.getStatus() != BillStatus.NEED_CONFIRMATION) {
             throw new ConflictException();
         }
@@ -141,22 +127,20 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Bill createFromQuote(BillRequest billRequest, OAuth2Authentication authentication) {
+    public Bill createFromQuote(final BillRequest billRequest, final OAuth2Authentication authentication) {
         Bill bill = new Bill(billRequest);
-        bill.setCreatedBy(0L);
+        bill.setCreatedBy(authentication.getName());
         bill = this.billRepository.saveAndFlush(bill);
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity entity = new HttpEntity<Long>(bill.getId(), headers);
-        restTemplate.exchange("http://api.easy-erp.lan/quote-service/api/quotes/" + bill.getQuoteId() + "/link-to-bill/" + bill.getId(), HttpMethod.PATCH, entity, Void.class);
+        final HttpEntity entity = new HttpEntity<Long>(bill.getId(), headers);
+        restTemplate.exchange("http://api.easy-erp.lan/quote-service/api/quotes/" + bill.getQuoteId() + "/link-to-bill/"
+                + bill.getId(), HttpMethod.PATCH, entity, Void.class);
         return feedBillAndSave(bill, billRequest, authentication);
     }
 
     @Override
-    public Bill payed(Bill bill, OAuth2Authentication authentication) {
-//        if (!bill.getClientId().equals(authentication.getName())) {
-//            throw new ForbiddenException();
-//        }
+    public Bill payed(final Bill bill, final OAuth2Authentication authentication) {
         if (bill.getStatus() != BillStatus.ACCEPTED) {
             throw new ConflictException();
         }

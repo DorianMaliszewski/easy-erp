@@ -21,7 +21,7 @@ const EventDetail = React.lazy(() => import("../pages/EventDetail"));
 const BillDetail = React.lazy(() => import("../pages/BillDetail"));
 const CustomerDetail = React.lazy(() => import("../pages/CustomerDetail"));
 const QuoteFormPage = React.lazy(() => import("../pages/QuoteFormPage"));
-const CustomerFormPage = React.lazy(() => import("../pages/Administration/CustomerFormPage"));
+const CustomerFormPage = React.lazy(() => import("../pages/CustomerFormPage"));
 const UserDetail = React.lazy(() => import("../pages/UserDetail"));
 
 const ConnectedRouter: React.FC = () => {
@@ -54,7 +54,8 @@ const ConnectedRouter: React.FC = () => {
 
           <Route path={routes.MY_CUSTOMERS.path} component={MyCustomers} />
           <Route path={routes.CUSTOMERS_DETAIL.path} component={CustomerDetail} />
-          <Route path={routes.CUSTOMERS_FORM.path} component={CustomerFormPage} />
+          <Route path={routes.CUSTOMERS_UPDATE.path} component={CustomerFormPage} />
+          <Route path={routes.CUSTOMERS_ADD.path} exact component={CustomerFormPage} />
 
           <Route path={routes.MY_PROFILE.path} component={MyProfile} />
           <Route path={routes.USER_DETAIL.path} component={UserDetail} />

@@ -9,7 +9,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClientRequest {
     private String name;
-    private Long contact;
+    private String contact;
     private String phone;
     private String email;
     private String site;

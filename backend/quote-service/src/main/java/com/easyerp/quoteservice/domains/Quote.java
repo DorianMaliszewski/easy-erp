@@ -18,7 +18,7 @@ public class Quote extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private QuoteStatus status;
     private Double total;
-    private Long createdBy;
+    private String createdBy;
     private Long clientId;
     private Double tva;
     private Long billId;

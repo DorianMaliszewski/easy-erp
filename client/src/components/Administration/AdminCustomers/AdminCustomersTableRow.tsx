@@ -23,7 +23,7 @@ const AdminCustomersTableRow: React.FC<any> = ({ customer }) => {
 
   const editCustomer = (event: any, id: number) => {
     event.stopPropagation();
-    history.push(routes.CUSTOMERS_FORM.path.replace(":id", id.toString()));
+    history.push(routes.CUSTOMERS_UPDATE.path.replace(":id", id.toString()));
   };
 
   const deleteCustomer = () => {

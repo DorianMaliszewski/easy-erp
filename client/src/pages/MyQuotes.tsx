@@ -17,6 +17,10 @@ const MyQuotes: React.FC<any> = props => {
     }
   }, [quoteContext]);
 
+  const handleRowClick = (event: any, id: string) => {
+    history.push(routes.QUOTES_DETAIL.path.replace(":id", id));
+  };
+
   return (
     <Grid container spacing={3} direction="column">
       <Grid item>
@@ -26,7 +30,7 @@ const MyQuotes: React.FC<any> = props => {
       </Grid>
       <Grid item>
         <Paper className={classes.paper}>
-          <BillOrQuoteTableEnhanced rows={quoteContext.state.quotes} isLoading={quoteContext.state.isLoading} />
+          <BillOrQuoteTableEnhanced rows={quoteContext.state.quotes} isLoading={quoteContext.state.isLoading} handleRowClick={handleRowClick} />
         </Paper>
       </Grid>
     </Grid>
