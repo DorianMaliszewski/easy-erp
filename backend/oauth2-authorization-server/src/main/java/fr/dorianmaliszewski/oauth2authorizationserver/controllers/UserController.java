@@ -35,9 +35,4 @@ public class UserController {
     public Optional<User> findMe(Principal principal) {
         return this.userRepository.findByUsername(principal.getName());
     }
-
-    @GetMapping("/me")
-    public Optional<User> findMe(Principal principal) {
-        return this.userRepository.findByUsername(principal.getName());
-    }
 }
