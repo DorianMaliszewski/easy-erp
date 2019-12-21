@@ -56,23 +56,19 @@ public class UserController {
         return ResponseEntity.ok(newUser);
     }
 
-
     @PutMapping("/customers/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
-    public ResponseEntity updateCustomerUser(@RequestBody UserRequest user, @PathVariable Long id, OAuth2Authentication authentication) {
+    public ResponseEntity updateCustomerUser(@RequestBody UserRequest user, @PathVariable Long id,
+            OAuth2Authentication authentication) {
         User updatedUser = this.userService.updateCustomerUser(id, user, authentication);
         return ResponseEntity.ok(updatedUser);
     }
 
     @PutMapping("/internal/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
-    public ResponseEntity updateInternalUser(@RequestBody UserRequest user, @PathVariable Long id, OAuth2Authentication authentication) {
+    public ResponseEntity updateInternalUser(@RequestBody UserRequest user, @PathVariable Long id,
+            OAuth2Authentication authentication) {
         User updatedUser = this.userService.updateInternalUser(id, user, authentication);
         return ResponseEntity.ok(updatedUser);
-    }
-
-    @GetMapping("/me")
-    public Optional<User> findMe(Principal principal) {
-        return this.userRepository.findByUsername(principal.getName());
     }
 }
