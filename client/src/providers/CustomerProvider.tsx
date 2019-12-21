@@ -83,7 +83,6 @@ const CustomerProvider: React.FC<any> = props => {
 
 const useCustomersContext = () => {
   const customerContext = React.useContext(CustomerContext);
-
   return customerContext;
 };
 

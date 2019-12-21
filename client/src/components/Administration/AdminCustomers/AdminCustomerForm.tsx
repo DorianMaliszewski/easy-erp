@@ -24,17 +24,15 @@ const AdminCustomerForm: React.FC<AdminCustomerFormProps> = ({ customer, setCust
         <TextField variant="outlined" required id="name" name="name" label="Nom du client" fullWidth value={customer.name} onChange={handleChange} />
       </Grid>
       <Grid item>
-      <Autocomplete
+        <Autocomplete
           id="contact"
-          options={[{firstName: 'Administrateur', lastName: 'Admin', username: 'admin'}]}
-          getOptionLabel={(option: UserData) => (option.firstName + " " + option.lastName)}
+          options={[{ firstName: "Administrateur", lastName: "Admin", username: "admin" }]}
+          getOptionLabel={(option: UserData) => option.firstName + " " + option.lastName}
           loading={false}
           getOptionSelected={(option, value) => option.username === value}
-          value={customer.contact ? customer.contact : ""} 
+          value={customer.contact ? customer.contact : ""}
           onChange={handleChange}
-          renderInput={params => (
-            <TextField {...params} variant="outlined" required id="contact" name="contact" label="Contact" fullWidth  />
-          )}
+          renderInput={params => <TextField {...params} variant="outlined" required id="contact" name="contact" label="Contact" fullWidth />}
         />
       </Grid>
       <Grid item>
