@@ -27,7 +27,7 @@ const UserReinitPasswordGridItem: React.FC<any> = () => {
           Réinitialiser le mot de passe
         </Button>
       </Grid>
-      <UserResetPasswordDialog open={openDialog} closeModal={setOpenDialog} />
+      <UserResetPasswordDialog open={openDialog} closeModal={(e: any) => setOpenDialog(false)} />
     </>
   );
 };

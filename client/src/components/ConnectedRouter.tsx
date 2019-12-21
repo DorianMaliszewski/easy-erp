@@ -8,6 +8,7 @@ import AdministrationSwitch from "../components/Administration/AdministrationSwi
 // State
 import AuthContext from "../contexts/AuthContext";
 import BillForm from "../pages/BillFormPage";
+import Splashscreen from "../pages/Splashscreen";
 
 // Pages
 const Dashboard = React.lazy(() => import("../pages/Dashboard"));
@@ -30,6 +31,14 @@ const ConnectedRouter: React.FC = () => {
 
   if (!localStorage.getItem(AUTH_TOKEN)) {
     history.push(routes.LOGIN.path);
+  }
+
+  if (!authContext.user) {
+    return (
+      <MainLayout>
+        <Splashscreen text=" " />
+      </MainLayout>
+    );
   }
 
   return (
@@ -59,7 +68,7 @@ const ConnectedRouter: React.FC = () => {
 
           <Route path={routes.MY_PROFILE.path} component={MyProfile} />
           <Route path={routes.USER_DETAIL.path} component={UserDetail} />
-          {authContext.isMoreThanOrEqualAdmin() ? <Route path={"/admin"} component={AdministrationSwitch} /> : null}
+          <Route path={"/admin"} component={AdministrationSwitch} />
           <Redirect path="*" to={routes.DASHBOARD.path} />
         </Switch>
       </React.Suspense>

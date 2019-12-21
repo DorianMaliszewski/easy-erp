@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import BillContext from "../contexts/BillContext";
 import { FIND_ALL_BILLS, BILL_UPDATE, BILL_ADD } from "../actions/bill";
 import { billReducer } from "../reducers/bill";
-import { BillApi } from "../api/bill";
+import { BillApi } from "../api/BillApi";
 import { QuoteData } from "../models/QuoteData";
 import useSnackbar from "../hooks/useSnackbar";
 import { BillData } from "../models/BillData";

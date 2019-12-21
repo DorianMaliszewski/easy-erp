@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import { FIND_ALL_CUSTOMERS, DELETE_CUSTOMER, CUSTOMER_UPDATE, CUSTOMER_ADD } from "../actions/customer";
 import { customerReducer } from "../reducers/customer";
-import CustomerApi from "../api/customer";
+import CustomerApi from "../api/CustomerApi";
 import { tap, catchError, map } from "rxjs/operators";
 import { CustomerData } from "../models/CustomerData";
 import { of } from "rxjs";

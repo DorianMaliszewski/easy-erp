@@ -4,11 +4,8 @@ import DashboardProvider from "./DashboardProvider";
 import { QuoteProvider } from "./QuoteProvider";
 import { BillProvider } from "./BillProvider";
 import { CustomerProvider } from "./CustomerProvider";
-import UserProvider from "./UserProvider";
-<<<<<<< HEAD
+import { UserProvider } from "./UserProvider";
 import { TenantProvider } from "./TenantProvider";
-=======
->>>>>>> a0302a8... Ajout cancel, send, accept sur devis et create from devis
 import ToastProvider from "./ToastProvider";
 
 const MainProvider: React.FC<any> = props => {

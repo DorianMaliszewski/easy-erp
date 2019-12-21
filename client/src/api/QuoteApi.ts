@@ -1,7 +1,6 @@
-import { getAjaxRequestHeaders } from ".";
+import { HttpClient } from "./HttpClient";
 import { QUOTE_SERVICE, INSTANCE_URL } from "../constants";
 import { QuoteData } from "../models/QuoteData";
-import { ajax, AjaxResponse } from "rxjs/ajax";
 import { map, catchError } from "rxjs/operators";
 import { of, Observable } from "rxjs";
 import { DTO } from "../models/DTO";
@@ -21,13 +20,9 @@ export class QuoteApi {
   }
 
   public findAll() {
-    return ajax({
-      method: "GET",
-      url: this.getApiUrl() + "/api/quotes",
-      headers: getAjaxRequestHeaders()
-    }).pipe(
-      map((res: AjaxResponse) => {
-        const dto = res.response as DTO<QuoteData>;
+    return HttpClient.GET(this.getApiUrl() + "/api/quotes").pipe(
+      map((res: any) => {
+        const dto = res as DTO<QuoteData>;
         dto.items = dto.items.map(item => this.convertJSONToQuoteData(item));
         return dto;
       }),
@@ -39,11 +34,7 @@ export class QuoteApi {
   }
 
   public findOneById(id: number) {
-    return ajax({
-      method: "GET",
-      url: this.getApiUrl() + "/api/quotes/" + id.toString(),
-      headers: getAjaxRequestHeaders()
-    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+    return HttpClient.GET(this.getApiUrl() + "/api/quotes/" + id.toString()).pipe(map((res: any) => this.convertJSONToQuoteData(res as QuoteData)));
   }
 
   public save(quote: QuoteData, draft: boolean = true): Observable<QuoteData> {
@@ -51,45 +42,25 @@ export class QuoteApi {
   }
 
   public create(quote: QuoteData, draft: boolean = true): Observable<QuoteData> {
-    return ajax({
-      method: "POST",
-      url: this.getApiUrl() + "/api/quotes",
-      headers: getAjaxRequestHeaders(),
-      body: this.convertQuoteDataToRequest(quote, draft)
-    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+    return HttpClient.POST(this.getApiUrl() + "/api/quotes", this.convertQuoteDataToRequest(quote, draft)).pipe(map((res: any) => this.convertJSONToQuoteData(res as QuoteData)));
   }
 
   public update(quote: QuoteData, draft: boolean = true): Observable<QuoteData> {
-    return ajax({
-      method: "PUT",
-      url: this.getApiUrl() + "/api/quotes/" + quote.id?.toString(),
-      headers: getAjaxRequestHeaders(),
-      body: this.convertQuoteDataToRequest(quote, draft)
-    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+    return HttpClient.PUT(this.getApiUrl() + "/api/quotes/" + quote.id?.toString(), this.convertQuoteDataToRequest(quote, draft)).pipe(
+      map((res: any) => this.convertJSONToQuoteData(res as QuoteData))
+    );
   }
 
   public accept(quoteId: number) {
-    return ajax({
-      method: "PATCH",
-      url: this.getApiUrl() + "/api/quotes/" + quoteId + "/accept",
-      headers: getAjaxRequestHeaders()
-    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+    return HttpClient.PATCH(this.getApiUrl() + "/api/quotes/" + quoteId + "/accept").pipe(map((res: any) => this.convertJSONToQuoteData(res as QuoteData)));
   }
 
   public send(quoteId: number) {
-    return ajax({
-      method: "PATCH",
-      url: this.getApiUrl() + "/api/quotes/" + quoteId + "/send",
-      headers: getAjaxRequestHeaders()
-    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+    return HttpClient.PATCH(this.getApiUrl() + "/api/quotes/" + quoteId + "/send").pipe(map((res: any) => this.convertJSONToQuoteData(res as QuoteData)));
   }
 
   public cancel(quoteId: number) {
-    return ajax({
-      method: "PATCH",
-      url: this.getApiUrl() + "/api/quotes/" + quoteId + "/cancel",
-      headers: getAjaxRequestHeaders()
-    }).pipe(map((res: AjaxResponse) => this.convertJSONToQuoteData(res.response as QuoteData)));
+    return HttpClient.PATCH(this.getApiUrl() + "/api/quotes/" + quoteId + "/cancel").pipe(map((res: any) => this.convertJSONToQuoteData(res as QuoteData)));
   }
 
   private convertJSONToQuoteData(item: QuoteData) {

@@ -7,6 +7,7 @@ import Navbar from "./Navbar";
 import Copyright from "./Copyright";
 import CustomDrawer from "./CustomDrawer";
 import { useMediaQuery, Theme } from "@material-ui/core";
+import MobileDrawer from "./MobileDrawer";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,7 +43,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <div className={classes.root}>
       <CssBaseline />
       <Navbar toggleDrawer={toggleDrawer} open={openDrawer} />
-      <CustomDrawer toggleDrawer={toggleDrawer} open={openDrawer} />
+      {matches ? <CustomDrawer toggleDrawer={toggleDrawer} open={openDrawer} /> : <MobileDrawer toggleDrawer={toggleDrawer} open={openDrawer} />}
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="xl" className={classes.container}>

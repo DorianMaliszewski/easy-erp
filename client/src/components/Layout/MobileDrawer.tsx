@@ -1,4 +1,5 @@
 import React from "react";
+import { SwipeableDrawer } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
@@ -56,30 +57,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-type CustomDrawerProps = {
-  open: boolean;
-  toggleDrawer: (event: any) => void;
-};
-
-const CustomDrawer: React.FC<CustomDrawerProps> = ({ toggleDrawer, open }) => {
-  const classes = useStyles();
+const MobileDrawer: React.FC<any> = ({ toggleDrawer, open }) => {
   const history = useHistory();
   const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"));
   const authContext = React.useContext(AuthContext);
-
+  const classes = useStyles();
   const handleLogout = (event: React.MouseEvent) => {
     localStorage.removeItem(AUTH_TOKEN);
     history.push(routes.LOGIN.path);
   };
 
   return (
-    <Drawer
-      variant="permanent"
-      classes={{
-        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
-      }}
-      open={open}
-    >
+    <SwipeableDrawer open={open} onClose={toggleDrawer} onOpen={toggleDrawer}>
       <div className={classes.toolbarIcon}>
         {!matches ? (
           <IconButton onClick={toggleDrawer}>
@@ -116,8 +105,8 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ toggleDrawer, open }) => {
           <ListItemText>Se déconnecter</ListItemText>
         </ListItem>
       </List>
-    </Drawer>
+    </SwipeableDrawer>
   );
 };
 
-export default CustomDrawer;
+export default MobileDrawer;

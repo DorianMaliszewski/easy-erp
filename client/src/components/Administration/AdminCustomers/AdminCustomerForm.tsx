@@ -2,8 +2,8 @@ import React from "react";
 import { Grid, TextField, Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import { CustomerData } from "../../../models/CustomerData";
-import SingleSelectAutoComplete from "../../Autocomplete/SingleSelectAutoComplete";
 import { Autocomplete } from "@material-ui/lab";
+import { UserData } from "../../../models/UserData";
 
 interface AdminCustomerFormProps {
   customer: CustomerData;
@@ -17,6 +17,7 @@ const AdminCustomerForm: React.FC<AdminCustomerFormProps> = ({ customer, setCust
     newCustomer[event.target.id as keyof CustomerData] = event.target.value as any;
     setCustomer(newCustomer);
   };
+
   return (
     <Grid container spacing={3} direction="column">
       <Grid item>
@@ -26,7 +27,7 @@ const AdminCustomerForm: React.FC<AdminCustomerFormProps> = ({ customer, setCust
       <Autocomplete
           id="contact"
           options={[{firstName: 'Administrateur', lastName: 'Admin', username: 'admin'}]}
-          getOptionLabel={(option: any) => (JSON.stringify(option) + option.firstName + " " + option.lastName)}
+          getOptionLabel={(option: UserData) => (option.firstName + " " + option.lastName)}
           loading={false}
           getOptionSelected={(option, value) => option.username === value}
           value={customer.contact ? customer.contact : ""} 

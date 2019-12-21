@@ -21,7 +21,7 @@ const BillStatusIcon: React.FC<any> = props => {
 };
 
 BillStatusIcon.propTypes = {
-  status: PropTypes.string.isRequired
+  status: PropTypes.string
 };
 
 export default BillStatusIcon;

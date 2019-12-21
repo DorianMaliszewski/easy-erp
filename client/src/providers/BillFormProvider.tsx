@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { BillData, BillLineData } from "../models/BillData";
 import useSnackbar from "../hooks/useSnackbar";
-import { BillApi } from "../api/bill";
+import { BillApi } from "../api/BillApi";
 import routes from "../routes";
 
 const BillFormContext = React.createContext<any>({});

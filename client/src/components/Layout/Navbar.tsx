@@ -10,6 +10,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useLocation } from "react-router-dom";
 import routes from "../../routes";
+import { useMediaQuery, Theme } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -52,11 +53,12 @@ const Navbar: React.FC<NavbarProps> = ({ toggleDrawer, open }) => {
   const classes = useStyles();
   const location = useLocation();
   const pageTitle = Object.values(routes).find(route => route.path === location.pathname);
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"));
 
   return (
-    <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+    <AppBar position="absolute" className={clsx(classes.appBar, matches && classes.appBarShift)}>
       <Toolbar className={classes.toolbar}>
-        <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={toggleDrawer} className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
+        <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={toggleDrawer} className={clsx(classes.menuButton, matches && open && classes.menuButtonHidden)}>
           <MenuIcon />
         </IconButton>
         <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>

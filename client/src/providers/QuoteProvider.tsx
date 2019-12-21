@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import QuoteContext from "../contexts/QuoteContext";
 import { quoteReducer } from "../reducers/quote";
 import { FIND_ALL_QUOTES, QUOTE_UPDATE, QUOTE_ADD } from "../actions/quote";
-import { QuoteApi } from "../api/quote";
+import { QuoteApi } from "../api/QuoteApi";
 import { QuoteData } from "../models/QuoteData";
 import useSnackbar from "../hooks/useSnackbar";
 import { map, catchError, tap } from "rxjs/operators";
