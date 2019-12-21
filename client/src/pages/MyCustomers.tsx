@@ -11,7 +11,9 @@ const MyCustomers: React.FC<any> = props => {
   const history = useHistory();
 
   useEffect(() => {
-    if (!customerContext.state.customers) customerContext.findAll();
+    if (!customerContext.state.customers && !customerContext.state.isLoading) {
+      customerContext.findAll().subscribe();
+    }
   }, [customerContext]);
 
   if (!customerContext.state.customers) {

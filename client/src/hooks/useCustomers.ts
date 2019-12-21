@@ -6,7 +6,7 @@ const useCustomers = () => {
   const customerContext = useCustomersContext();
   useEffect(() => {
     if (!customerContext.state.customers && !customerContext.state.isLoading) {
-      customerContext.findAll();
+      customerContext.findAll().subscribe();
     }
   }, [customerContext]);
 

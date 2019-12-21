@@ -34,8 +34,10 @@ const CustomerProvider: React.FC<any> = props => {
   const findById = (id: number) => {
     let customerFinded = null;
     if (customerState.customers) {
-      customerState.customers.find((customer: CustomerData) => customer.id === id);
+      customerFinded = customerState.customers.find((customer: CustomerData) => customer.id === id);
     }
+    console.log(customerFinded);
+
     return customerFinded ? of(customerFinded) : findAll().pipe(map((dto: DTO<CustomerData>) => dto.items.find(c => c.id === id)));
   };
 
@@ -53,7 +55,7 @@ const CustomerProvider: React.FC<any> = props => {
       .pipe(
         tap((result: CustomerData) => {
           snackbar.show("Modification enregistrée", "success");
-          return updateState(result, customer.id ? true : false);
+          return updateState(result, customer.id ? false : true);
         }),
         catchError(handleError(customer))
       );
@@ -81,9 +83,7 @@ const CustomerProvider: React.FC<any> = props => {
 
 const useCustomersContext = () => {
   const customerContext = React.useContext(CustomerContext);
-  if (!customerContext.state.customers && !customerContext.state.isLoading) {
-    customerContext.findAll().subscribe();
-  }
+
   return customerContext;
 };
 

@@ -7,6 +7,7 @@ import CustomerCard from "../components/Customers/CustomerCard";
 import { CustomerData } from "../models/CustomerData";
 import routes from "../routes";
 import { useCustomersContext } from "../providers/CustomerProvider";
+import EditIcon from "@material-ui/icons/Edit";
 
 const CustomerDetail: React.FC<any> = props => {
   const history = useHistory();
@@ -41,7 +42,7 @@ const CustomerDetail: React.FC<any> = props => {
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="primary" onClick={e => history.push(routes.CUSTOMERS_UPDATE.path.replace(":id", customer.id))}>
+          <Button startIcon={<EditIcon />} variant="contained" color="primary" onClick={e => history.push(routes.CUSTOMERS_UPDATE.path.replace(":id", customer.id))}>
             Modifier
           </Button>
         </Grid>

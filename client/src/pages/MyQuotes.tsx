@@ -13,7 +13,7 @@ const MyQuotes: React.FC<any> = props => {
 
   useEffect(() => {
     if (!quoteContext.state.isLoading && quoteContext.state.quotes.length === 0) {
-      quoteContext.findAll();
+      quoteContext.findAll().subscribe();
     }
   }, [quoteContext]);
 

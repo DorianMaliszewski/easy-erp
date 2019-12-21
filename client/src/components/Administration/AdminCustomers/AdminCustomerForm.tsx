@@ -2,6 +2,8 @@ import React from "react";
 import { Grid, TextField, Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import { CustomerData } from "../../../models/CustomerData";
+import SingleSelectAutoComplete from "../../Autocomplete/SingleSelectAutoComplete";
+import { Autocomplete } from "@material-ui/lab";
 
 interface AdminCustomerFormProps {
   customer: CustomerData;
@@ -21,7 +23,18 @@ const AdminCustomerForm: React.FC<AdminCustomerFormProps> = ({ customer, setCust
         <TextField variant="outlined" required id="name" name="name" label="Nom du client" fullWidth value={customer.name} onChange={handleChange} />
       </Grid>
       <Grid item>
-        <TextField variant="outlined" required id="contact" name="contact" label="Nom du contact" fullWidth value={customer.contact ? customer.contact : ""} onChange={handleChange} />
+      <Autocomplete
+          id="contact"
+          options={[{firstName: 'Administrateur', lastName: 'Admin', username: 'admin'}]}
+          getOptionLabel={(option: any) => (JSON.stringify(option) + option.firstName + " " + option.lastName)}
+          loading={false}
+          getOptionSelected={(option, value) => option.username === value}
+          value={customer.contact ? customer.contact : ""} 
+          onChange={handleChange}
+          renderInput={params => (
+            <TextField {...params} variant="outlined" required id="contact" name="contact" label="Contact" fullWidth  />
+          )}
+        />
       </Grid>
       <Grid item>
         <TextField variant="outlined" required id="phone" name="phone" label="Téléphone" fullWidth value={customer.phone ? customer.phone : ""} onChange={handleChange} />
