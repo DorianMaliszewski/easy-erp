@@ -2,10 +2,11 @@ import React, { useReducer } from "react";
 
 import { userReducer } from "../reducers/user";
 import { UserApi } from "../api/UserApi";
-import { FIND_ALL_USER } from "../actions/user";
+import { FIND_ALL_USER, USER_ADD, USER_UPDATE } from "../actions/user";
 
 import { tap, map } from "rxjs/operators";
 import { of } from "rxjs";
+import { UserData } from "../models/UserData";
 
 const UserContext = React.createContext<any>({});
 
@@ -29,7 +30,7 @@ const UserProvider: React.FC<any> = props => {
       );
   };
 
-  const findOneById = (id: number) => {
+  const findById = (id: number) => {
     let userFinded = null;
     if (userState.users) {
       userFinded = userState.users.find((u: any) => u.id === id);
@@ -62,7 +63,26 @@ const UserProvider: React.FC<any> = props => {
     }
   };
 
-  return <UserContext.Provider value={{ state: userState, findAll, get, findOneById, getCustomerUsers, getInternalUsers }}>{props.children}</UserContext.Provider>;
+  const save = (user: UserData) => {
+    return UserApi.getInstance()
+      .save(user)
+      .pipe(
+        tap((u: UserData) => {
+          return updateState(u, user.id ? false : true);
+        })
+      );
+  };
+
+  const updateState = (user: UserData, isCreate: boolean) => {
+    if (isCreate) {
+      dispatch({ type: USER_ADD.SUCCESS, user: user });
+    } else {
+      dispatch({ type: USER_UPDATE.SUCCESS, user: user });
+    }
+    return user;
+  };
+
+  return <UserContext.Provider value={{ state: userState, findAll, get, findById, getCustomerUsers, getInternalUsers, save }}>{props.children}</UserContext.Provider>;
 };
 
 const useUserContext = () => {

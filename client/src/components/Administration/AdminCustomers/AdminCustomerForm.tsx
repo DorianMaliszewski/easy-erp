@@ -4,6 +4,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import { CustomerData } from "../../../models/CustomerData";
 import { Autocomplete } from "@material-ui/lab";
 import { UserData } from "../../../models/UserData";
+import { useUserContext } from "../../../providers/UserProvider";
 
 interface AdminCustomerFormProps {
   customer: CustomerData;
@@ -12,9 +13,24 @@ interface AdminCustomerFormProps {
 }
 
 const AdminCustomerForm: React.FC<AdminCustomerFormProps> = ({ customer, setCustomer, handleSubmit }) => {
+  const [contacts, setContacts] = React.useState<any>();
+  const userContext = useUserContext();
+
+  React.useEffect(() => {
+    if (!contacts && !userContext.state.isLoading) {
+      userContext.getInternalUsers().subscribe((users: any) => setContacts(users));
+    }
+  }, [userContext]);
+
   const handleChange = (event: any) => {
     const newCustomer: any = { ...customer };
     newCustomer[event.target.id as keyof CustomerData] = event.target.value as any;
+    setCustomer(newCustomer);
+  };
+
+  const handleContactChange = (event: any, value: any) => {
+    const newCustomer: any = { ...customer };
+    newCustomer.contact = value.username;
     setCustomer(newCustomer);
   };
 
@@ -26,12 +42,16 @@ const AdminCustomerForm: React.FC<AdminCustomerFormProps> = ({ customer, setCust
       <Grid item>
         <Autocomplete
           id="contact"
-          options={[{ firstName: "Administrateur", lastName: "Admin", username: "admin" }]}
-          getOptionLabel={(option: UserData) => option.firstName + " " + option.lastName}
-          loading={false}
-          getOptionSelected={(option, value) => option.username === value}
-          value={customer.contact ? customer.contact : ""}
-          onChange={handleChange}
+          options={contacts}
+          getOptionLabel={(option: UserData) => {
+            return option.firstName + " " + option.lastName;
+          }}
+          loading={!contacts}
+          getOptionSelected={(option, value) => {
+            return option.username === value;
+          }}
+          value={customer.contact && contacts ? contacts.find((c: any) => c.username === customer.contact) : null}
+          onChange={handleContactChange}
           renderInput={params => <TextField {...params} variant="outlined" required id="contact" name="contact" label="Contact" fullWidth />}
         />
       </Grid>

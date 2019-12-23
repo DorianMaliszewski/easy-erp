@@ -22,7 +22,9 @@ const CustomerFormPage: React.FC<any> = () => {
 
   const submit = () => {
     customerContext.save(customer).subscribe((data: any) => {
-      history.push(routes.CUSTOMERS_DETAIL.path.replace(":id", data.id));
+      if (data.id) {
+        history.push(routes.CUSTOMERS_DETAIL.path.replace(":id", data.id));
+      }
     });
   };
 

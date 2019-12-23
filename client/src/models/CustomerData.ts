@@ -2,7 +2,7 @@ import { Moment } from "moment";
 
 export class CustomerData {
   name: string;
-  contact?: number;
+  contact?: string;
   phone: string;
   email: string;
   site: string;

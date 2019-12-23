@@ -14,6 +14,10 @@ export function initInterceptor() {
         config.headers.append("Content-Type", "application/json");
         config.headers.append("Authorization", "Bearer " + localStorage.getItem(AUTH_TOKEN));
       }
+
+      if (config.body) {
+        config.body = JSON.stringify(config.body);
+      }
       return [url, config];
     },
 

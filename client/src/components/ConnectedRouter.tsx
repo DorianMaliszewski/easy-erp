@@ -9,6 +9,7 @@ import AdministrationSwitch from "../components/Administration/AdministrationSwi
 import AuthContext from "../contexts/AuthContext";
 import BillForm from "../pages/BillFormPage";
 import Splashscreen from "../pages/Splashscreen";
+import UserFormPage from "../pages/Administration/UserFormPage";
 
 // Pages
 const Dashboard = React.lazy(() => import("../pages/Dashboard"));
@@ -67,7 +68,10 @@ const ConnectedRouter: React.FC = () => {
           <Route path={routes.CUSTOMERS_ADD.path} exact component={CustomerFormPage} />
 
           <Route path={routes.MY_PROFILE.path} component={MyProfile} />
-          <Route path={routes.USER_DETAIL.path} component={UserDetail} />
+          <Route path={routes.USER_DETAIL.path} exact component={UserDetail} />
+          <Route path={routes.USER_ADD.path} exact component={UserFormPage} />
+          <Route path={routes.USER_UPDATE.path} component={UserFormPage} />
+
           <Route path={"/admin"} component={AdministrationSwitch} />
           <Redirect path="*" to={routes.DASHBOARD.path} />
         </Switch>

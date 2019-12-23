@@ -99,6 +99,13 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
+        <!-- Password Generator -->
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

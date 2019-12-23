@@ -18,7 +18,7 @@ const UserDetail: React.FC<any> = () => {
 
   useEffect(() => {
     if (id) {
-      userContext.findOneById(parseInt(id, 10)).subscribe((u: UserData) => setUser(u));
+      userContext.findById(parseInt(id, 10)).subscribe((u: UserData) => setUser(u));
     }
   }, [id]);
 
