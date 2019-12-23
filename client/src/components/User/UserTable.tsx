@@ -10,6 +10,8 @@ import { makeStyles } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
 import routes from "../../routes";
 import { Theme } from "@material-ui/core";
+import { UserData } from "../../models/UserData";
+import useCustomers from "../../hooks/useCustomers";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -24,6 +26,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 const UserTable: React.FC<any> = ({ users, isLoading }) => {
   const classes = useStyles();
   const history = useHistory();
+  const { customers } = useCustomers();
+
+  const getCustomerName = (row: UserData) => {
+    if (!row.clientId) return "Aucun client";
+    const customerFinded = customers.find(c => c.id === row.clientId);
+    return customerFinded ? customerFinded.name : "Non trouvé";
+  };
+
   return (
     <Paper className={classes.root}>
       <Table className={classes.table} aria-label="simple table">
@@ -37,14 +47,14 @@ const UserTable: React.FC<any> = ({ users, isLoading }) => {
         </TableHead>
         <TableBody>
           {users && users.map ? (
-            users.map((row: any) => (
-              <TableRow key={row.id} hover onClick={e => history.push(routes.USER_DETAIL.path.replace(":id", row.id as string))}>
+            users.map((row: UserData) => (
+              <TableRow key={row.id} hover onClick={e => history.push(routes.USER_DETAIL.path.replace(":id", row.id ? row.id.toString() : ""))}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.firstName + " " + row.lastName}
                 </TableCell>
                 <TableCell>{row.email}</TableCell>
-                <TableCell>{row.phone}</TableCell>
-                <TableCell>{row.client}</TableCell>
+                <TableCell>{row.phoneNumber ? row.phoneNumber : "Non renseigné"}</TableCell>
+                <TableCell>{getCustomerName(row)}</TableCell>
               </TableRow>
             ))
           ) : (

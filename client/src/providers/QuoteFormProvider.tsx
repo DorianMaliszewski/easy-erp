@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import QuoteFormContext from "../contexts/QuoteFormContext";
 import { QuoteLineData } from "../models/QuoteLineData";
-import { QuoteApi } from "../api/quote";
 import { QuoteData } from "../models/QuoteData";
-import useSnackbar from "../hooks/useSnackbar";
+import { useQuoteContext } from "./QuoteProvider";
 
 const QuoteFormProvider: React.FC<any> = props => {
   const [quote, setQuote] = useState<QuoteData>(props.quote);
-  const snackbar = useSnackbar();
+  const quoteContext = useQuoteContext();
 
   const addLine = () => {
     const newQuote = { ...quote };
@@ -39,26 +38,22 @@ const QuoteFormProvider: React.FC<any> = props => {
   };
 
   const submit = () => {
-    QuoteApi.getInstance()
-      .save(quote, false)
-      .subscribe((result: QuoteData) => {
-        snackbar.show("Modification enregistrée", "success");
-      }, handleError);
+    quoteContext.save(quote, false).subscribe((newQuote: QuoteData) => {
+      console.log(newQuote);
+      if (newQuote) {
+        setQuote(newQuote);
+      }
+    });
   };
 
   const saveDraft = () => {
-    QuoteApi.getInstance()
-      .save(quote)
-      .subscribe((result: QuoteData) => {
-        snackbar.show("Brouillon enregistrée", "success");
-      }, handleError);
-  };
+    quoteContext.save(quote, true).subscribe((newQuote: QuoteData) => {
+      console.log(newQuote);
 
-  const handleError = () => {
-    return (error: any) => {
-      console.log("An error occured", error);
-      snackbar.show("Une erreur est survenue, veuillez réessayer", "error");
-    };
+      if (newQuote) {
+        setQuote(newQuote);
+      }
+    });
   };
 
   return (

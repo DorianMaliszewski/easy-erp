@@ -2,6 +2,7 @@ package com.easyerp.clientservice.controllers;
 
 import com.easyerp.clientservice.domains.Client;
 import com.easyerp.clientservice.dtos.DTO;
+import com.easyerp.clientservice.exceptions.ClientNotFoundException;
 import com.easyerp.clientservice.repositories.ClientRepository;
 import com.easyerp.clientservice.requests.ClientRequest;
 import com.easyerp.clientservice.services.ClientService;
@@ -33,13 +34,20 @@ public class ClientController {
 
     @GetMapping("/{id}")
     public ResponseEntity findOneById(@PathVariable Long id) {
-        var client = this.clientRepository.findById(id);
-        return client.isPresent() ? ResponseEntity.ok(client) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("The client doesn't exist");
+        var client = this.clientRepository.findById(id).orElseThrow(ClientNotFoundException::new);
+        return ResponseEntity.ok(client);
     }
 
     @PostMapping
     public ResponseEntity create(@RequestBody ClientRequest clientRequest, OAuth2Authentication authentication) {
         Client client = this.clientService.create(clientRequest, authentication);
+        return ResponseEntity.ok(client);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity update(@PathVariable Long id, @RequestBody ClientRequest clientRequest,
+            OAuth2Authentication authentication) {
+        Client client = this.clientService.update(id, clientRequest, authentication);
         return ResponseEntity.ok(client);
     }
 

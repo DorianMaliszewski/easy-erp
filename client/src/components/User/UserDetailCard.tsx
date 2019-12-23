@@ -7,8 +7,7 @@ import UserReinitPasswordGridItem from "./UserReinitPasswordGridItem";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
-    padding: theme.spacing(1),
-    margin: theme.spacing(2)
+    padding: theme.spacing(2)
   },
   gridLine: {
     paddingTop: theme.spacing(1)
@@ -31,33 +30,37 @@ const UserDetailCard: React.FC<any> = ({ user }) => {
             {user.id}
           </Typography>
         </Grid>
-        <Grid item className={classes.gridLine} xs={12}>
+        <Grid item xs={12}>
           <Divider />
         </Grid>
-        <Grid item className={classes.gridLine} xs={12} sm={6}>
+        <Grid item xs={12} sm={6}>
           <Typography variant="body1" component="p">
             Nom
           </Typography>
         </Grid>
-        <Grid item className={classes.gridLine} xs={12} sm={6}>
+        <Grid item xs={12} sm={6}>
           <Typography variant="body1" component="p">
-            {user.name}
+            {user.firstName + " " + user.lastName}
           </Typography>
         </Grid>
-        <Grid item className={classes.gridLine} xs={12}>
+        <Grid item xs={12}>
           <Divider />
         </Grid>
-        <Grid item className={classes.gridLine} xs={12} sm={6}>
+        <Grid item xs={12} sm={6}>
           <Typography variant="body1" component="p">
             Email
           </Typography>
         </Grid>
-        <Grid item className={classes.gridLine} xs={12} sm={6}>
+        <Grid item xs={12} sm={6}>
           <Typography variant="body1" component="p">
             {user.email}
           </Typography>
         </Grid>
-        {authContext.user.id === user.id ? <UserResetPasswordGridItem user={user} /> : authContext.isMoreThanOrEqualAdmin() && <UserReinitPasswordGridItem />}
+        {authContext.user.id === user.id ? (
+          <UserResetPasswordGridItem user={user} />
+        ) : (
+          authContext.isMoreThanOrEqualAdmin() && user.role && user.role.name !== "ROLE_SUPER_ADMIN" && <UserReinitPasswordGridItem />
+        )}
       </Grid>
     </Paper>
   );

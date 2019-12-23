@@ -1,8 +1,8 @@
-import { QuoteLineData } from "./QuoteLineData";
 import { Moment } from "moment";
+import { GenericBillOrQuoteData, GenericBillOrQuoteLineData } from "./GenericBillOrQuoteData";
 
-export class QuoteData {
-  lines: QuoteLineData[] = [];
+export class QuoteData implements GenericBillOrQuoteData {
+  lines: GenericBillOrQuoteLineData[] = [];
   createdAt?: Moment;
   updatedAt?: Moment;
   version?: number;
@@ -13,6 +13,7 @@ export class QuoteData {
   deleted?: boolean;
   tva: number;
   id?: number;
+  billId?: number;
 
   constructor() {
     this.lines = [];
