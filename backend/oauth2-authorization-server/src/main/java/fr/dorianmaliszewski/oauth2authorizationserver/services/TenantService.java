@@ -1,5 +1,10 @@
 package fr.dorianmaliszewski.oauth2authorizationserver.services;
 
+
+import fr.dorianmaliszewski.oauth2authorizationserver.domains.Tenant;
+import fr.dorianmaliszewski.oauth2authorizationserver.requests.TenantRequest;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+
 import java.util.List;
 import java.util.Optional;
 
