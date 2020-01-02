@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
@@ -7,6 +7,7 @@ import Navbar from "./Navbar";
 import Copyright from "./Copyright";
 import CustomDrawer from "./CustomDrawer";
 import { useMediaQuery, Theme } from "@material-ui/core";
+import MobileDrawer from "./MobileDrawer";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,8 +29,13 @@ type MainLayoutProps = any;
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const classes = useStyles();
-  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("sm"));
-  const [openDrawer, setOpenDrawer] = React.useState(!matches);
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"));
+  const [openDrawer, setOpenDrawer] = React.useState(true);
+
+  useEffect(() => {
+    setOpenDrawer(matches);
+  }, [matches]);
+
   const toggleDrawer = (event: any) => {
     setOpenDrawer(!openDrawer);
   };
@@ -37,7 +43,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <div className={classes.root}>
       <CssBaseline />
       <Navbar toggleDrawer={toggleDrawer} open={openDrawer} />
-      <CustomDrawer toggleDrawer={toggleDrawer} open={openDrawer} />
+      {matches ? <CustomDrawer toggleDrawer={toggleDrawer} open={openDrawer} /> : <MobileDrawer toggleDrawer={toggleDrawer} open={openDrawer} />}
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="xl" className={classes.container}>

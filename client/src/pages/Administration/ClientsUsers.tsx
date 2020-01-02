@@ -1,31 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useContext } from "react";
-import UserContext from "../../contexts/UserContext";
-import usePromise from "../../hooks/usePromise";
-import CustomSnackbar from "../../components/CustomSnackbar/CustomSnackbar";
+import { useUserContext } from "../../providers/UserProvider";
 
 const UserTable = React.lazy(() => import("../../components/User/UserTable"));
 
 const ClientsUsers: React.FC<any> = props => {
-  const userContext = useContext(UserContext);
-  const { data, error, isLoading } = usePromise(userContext.findAll, null);
-  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
+  const userContext = useUserContext();
+  const [customersUsers, setCustomersUsers] = React.useState<any>();
 
-  useEffect(() => {
-    if (error) {
-      setShowErrorSnackbar(true);
+  React.useEffect(() => {
+    if (!customersUsers && !userContext.state.isLoading) {
+      userContext.getCustomerUsers().subscribe((users: any) => setCustomersUsers(users));
     }
-  }, [error]);
+  }, [userContext]);
 
   return (
-    <>
-      {data && (
-        <React.Suspense fallback={<div>Chargement</div>}>
-          <UserTable users={data} isLoading={isLoading} />
-        </React.Suspense>
-      )}
-      <CustomSnackbar open={showErrorSnackbar} variant="error" message="Une erreur est survenue" setOpen={setShowErrorSnackbar} />
-    </>
+    <React.Suspense fallback={<div>Chargement</div>}>
+      <UserTable users={customersUsers} isLoading={userContext.state.isLoading} />
+    </React.Suspense>
   );
 };
 

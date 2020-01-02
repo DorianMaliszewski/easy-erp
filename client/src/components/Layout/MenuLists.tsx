@@ -16,6 +16,9 @@ import EuroSymbolIcon from "@material-ui/icons/EuroSymbol";
 import DescriptionIcon from "@material-ui/icons/Description";
 import EnterpriseIcon from "@material-ui/icons/AccountBalance";
 
+import AuthContext from "../../contexts/AuthContext";
+
+
 type ListItemLinkProps = {
   icon: any;
   path: string;
@@ -63,6 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const AdministrationMenuList: React.FC = (props: any) => {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
+  const authContext = React.useContext(AuthContext);
   return (
     <List>
       <ListItem button onClick={e => setOpen(!open)}>
@@ -74,9 +78,10 @@ export const AdministrationMenuList: React.FC = (props: any) => {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List disablePadding>
-          <ListItemLink className={classes.nested} text="Mon entreprise" icon={EnterpriseIcon} path={routes.ADMIN_TENANT.path} />
+          {authContext.user && authContext.user.role.name === "ROLE_SUPER_ADMIN" && (
+            <ListItemLink className={classes.nested} text="Mon entreprise" icon={EnterpriseIcon} path={routes.ADMIN_TENANT.path} />
+          )}
           <ListItemLink className={classes.nested} text="Utilisateurs internes" icon={PeopleIcon} path={routes.ADMIN_USERS.path} />
-          <ListItemLink className={classes.nested} text="Client" icon={StoreIcon} path={routes.ADMIN_CLIENTS.path} />
           <ListItemLink className={classes.nested} text="Utilisateurs clients" icon={PeopleIcon} path={routes.ADMIN_CLIENTS_USERS.path} />
         </List>
       </Collapse>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, Divider, Grid, Typography } from "@material-ui/core";
+
+import { Divider, Typography, Grid, Button } from "@material-ui/core";
 import Splashscreen from "../Splashscreen";
 import { TenantData } from "../../models/TenantData";
 import { TenantApi } from "../../api/TenantApi";

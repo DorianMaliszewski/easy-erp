@@ -1,5 +1,6 @@
 export class UserData {
     username: string;
+    id?: number;
     password: string;
     email: string;
     firstName: string;

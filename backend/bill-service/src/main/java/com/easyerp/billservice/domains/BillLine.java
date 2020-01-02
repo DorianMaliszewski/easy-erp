@@ -1,18 +1,23 @@
 package com.easyerp.billservice.domains;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import com.easyerp.billservice.requests.BillLineRequest;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
@@ -38,7 +43,7 @@ public class BillLine implements Serializable {
     @Version
     private Integer version;
 
-    public BillLine(BillLineRequest billLineRequest) {
+    public BillLine(final BillLineRequest billLineRequest) {
         this.lineNumber = billLineRequest.getLineNumber();
         this.description = billLineRequest.getDescription();
         this.quantity = billLineRequest.getQuantity();

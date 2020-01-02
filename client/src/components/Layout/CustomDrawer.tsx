@@ -11,6 +11,8 @@ import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { useHistory } from "react-router-dom";
 import routes from "../../routes";
 import { AUTH_TOKEN } from "../../constants";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import AuthContext from "../../contexts/AuthContext";
 
 const drawerWidth = 240;
 
@@ -26,6 +28,7 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     whiteSpace: "nowrap",
     overflowY: "auto",
+    overflowX: "hidden",
     maxHeight: "100vh",
     width: drawerWidth,
     transition: theme.transitions.create("width", {
@@ -61,7 +64,8 @@ type CustomDrawerProps = {
 const CustomDrawer: React.FC<CustomDrawerProps> = ({ toggleDrawer, open }) => {
   const classes = useStyles();
   const history = useHistory();
-  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("sm"));
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"));
+  const authContext = React.useContext(AuthContext);
 
   const handleLogout = (event: React.MouseEvent) => {
     localStorage.removeItem(AUTH_TOKEN);
@@ -86,6 +90,17 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ toggleDrawer, open }) => {
             Menu
           </Typography>
         )}
+      </div>
+      <Divider />
+      <div>
+        <List>
+          <ListItem button>
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            {authContext.user && <ListItemText primary={authContext.user.firstName} secondary={authContext.user.username} />}
+          </ListItem>
+        </List>
       </div>
       <Divider />
       <MainMenuList />

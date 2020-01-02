@@ -34,11 +34,6 @@ public class QuoteServiceImpl implements QuoteService {
 
     @Override
     public Quote update(Quote quote, QuoteRequest quoteRequest, OAuth2Authentication authentication) {
-
-//        if (!authentication.getName().equals(quote.getCreatedBy().toString())) {
-//            throw new ForbiddenException();
-//        }
-
         return feedQuoteAndSave(quote, quoteRequest, authentication);
     }
 
@@ -62,7 +57,7 @@ public class QuoteServiceImpl implements QuoteService {
 
     private Quote feedQuoteAndSave(Quote quote, QuoteRequest quoteRequest, OAuth2Authentication authentication) {
         var lines = quoteRequest.getLines().parallelStream().map(quoteLineRequest -> {
-            var key =new QuoteLineCompositeKey();
+            var key = new QuoteLineCompositeKey();
             key.setQuote(quote);
             key.setLineNumber(quoteLineRequest.getLineNumber());
 
@@ -80,9 +75,11 @@ public class QuoteServiceImpl implements QuoteService {
         quote.getLines().clear();
         quote.getLines().addAll(this.quoteLineRepository.saveAll(lines));
 
-
         quote.setTva(quoteRequest.getTva());
-        quote.setTotal(quote.getLines().stream().mapToDouble(quoteLine -> quoteLine.getQuantity() * quoteLine.getPreTaxPrice() * (1 + quoteRequest.getTva())).sum());
+        quote.setTotal(quote.getLines().stream()
+                .mapToDouble(
+                        quoteLine -> quoteLine.getQuantity() * quoteLine.getPreTaxPrice() * (1 + quoteRequest.getTva()))
+                .sum());
 
         if (quoteRequest.isDraft()) {
             quote.setStatus(QuoteStatus.DRAFT);

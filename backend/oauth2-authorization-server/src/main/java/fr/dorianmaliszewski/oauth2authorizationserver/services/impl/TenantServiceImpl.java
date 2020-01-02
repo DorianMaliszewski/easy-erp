@@ -30,6 +30,7 @@ public class TenantServiceImpl implements TenantService {
         Tenant tenant = new Tenant(tenantRequest);
         tenant.setCreatedAt(new Date());
         tenant.setMainUser(user);
+
         return this.tenantRepository.saveAndFlush(tenant);
     }
 

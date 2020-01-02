@@ -9,11 +9,15 @@ public interface BillService {
 
     Bill update(Bill bill, BillRequest billRequest, OAuth2Authentication authentication);
 
-    void publish(Bill bill, OAuth2Authentication authentication);
+    Bill publish(Bill bill, OAuth2Authentication authentication);
 
-    void accept(Bill bill, OAuth2Authentication authentication);
+    Bill accept(Bill bill, OAuth2Authentication authentication);
 
-    void cancel(Bill bill, OAuth2Authentication authentication);
+    Bill cancel(Bill bill, OAuth2Authentication authentication);
 
-    void send(Bill bill, OAuth2Authentication authentication);
+    Bill send(Bill bill, OAuth2Authentication authentication);
+
+    Bill createFromQuote(BillRequest billRequest, OAuth2Authentication authentication);
+
+    Bill payed(Bill bill, OAuth2Authentication authentication);
 }

@@ -2,7 +2,8 @@ import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { BillData, BillLineData } from "../models/BillData";
 import useSnackbar from "../hooks/useSnackbar";
-import { BillApi } from "../api/bill";
+import { BillApi } from "../api/BillApi";
+import routes from "../routes";
 
 const BillFormContext = React.createContext<any>({});
 
@@ -44,6 +45,7 @@ const BillFormProvider: React.FC<any> = props => {
     BillApi.getInstance()
       .save(bill, false)
       .subscribe((result: BillData) => {
+        history.push(routes.BILLS_FORM.path + "/" + result.id);
         snackbar.show("Modification enregistrée", "success");
       }, handleError);
   };
@@ -52,6 +54,7 @@ const BillFormProvider: React.FC<any> = props => {
     BillApi.getInstance()
       .save(bill)
       .subscribe((result: BillData) => {
+        history.push(routes.BILLS_FORM.path + "/" + result.id);
         snackbar.show("Brouillon enregistrée", "success");
       }, handleError);
   };
