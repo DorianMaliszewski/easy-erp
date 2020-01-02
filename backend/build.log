@@ -1,0 +1,220 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.easy-erp:quote-service >---------------------
+[INFO] Building quote-service 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ quote-service ---
+[INFO] Deleting /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/target
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ quote-service ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.0:compile (default-compile) @ quote-service ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 21 source files to /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/target/classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[90,27] method linkToBill(java.lang.Long,java.lang.Long,org.springframework.security.oauth2.provider.OAuth2Authentication) is already defined in class com.easyerp.quoteservice.controllers.QuoteController
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[42,14] cannot find symbol
+  symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[48,14] cannot find symbol
+  symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[54,14] cannot find symbol
+  symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[59,33] cannot find symbol
+  symbol:   method getLines()
+  location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[61,16] cannot find symbol
+  symbol:   method setQuote(com.easyerp.quoteservice.domains.Quote)
+  location: variable key of type com.easyerp.quoteservice.domains.QuoteLineCompositeKey
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[64,81] constructor QuoteLine in class com.easyerp.quoteservice.domains.QuoteLine cannot be applied to given types;
+  required: com.easyerp.quoteservice.requests.QuoteLineRequest
+  found: no arguments
+  reason: actual and formal argument lists differ in length
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[70,22] cannot find symbol
+  symbol:   method setQuote(com.easyerp.quoteservice.domains.Quote)
+  location: variable quoteLine of type com.easyerp.quoteservice.domains.QuoteLine
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[75,14] cannot find symbol
+  symbol:   method getLines()
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[76,14] cannot find symbol
+  symbol:   method getLines()
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[78,34] cannot find symbol
+  symbol:   method getTva()
+  location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[79,29] cannot find symbol
+  symbol:   method getLines()
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[81,110] cannot find symbol
+  symbol:   method getTva()
+  location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[84,25] cannot find symbol
+  symbol:   method isDraft()
+  location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[85,18] cannot find symbol
+  symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[89,22] cannot find symbol
+  symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[91,22] cannot find symbol
+  symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/Quote.java:[32,37] cannot find symbol
+  symbol:   method getClientId()
+  location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/Quote.java:[33,32] cannot find symbol
+  symbol:   method getTva()
+  location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/QuoteLine.java:[42,43] cannot find symbol
+  symbol:   method getLineNumber()
+  location: variable quoteLineRequest of type com.easyerp.quoteservice.requests.QuoteLineRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/QuoteLine.java:[43,44] cannot find symbol
+  symbol:   method getDescription()
+  location: variable quoteLineRequest of type com.easyerp.quoteservice.requests.QuoteLineRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/QuoteLine.java:[44,41] cannot find symbol
+  symbol:   method getQuantity()
+  location: variable quoteLineRequest of type com.easyerp.quoteservice.requests.QuoteLineRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/QuoteLine.java:[45,44] cannot find symbol
+  symbol:   method getPreTaxPrice()
+  location: variable quoteLineRequest of type com.easyerp.quoteservice.requests.QuoteLineRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[30,12] cannot find symbol
+  symbol:   method setItems(java.util.List<com.easyerp.quoteservice.domains.Quote>)
+  location: variable dto of type com.easyerp.quoteservice.dtos.DTO<com.easyerp.quoteservice.domains.Quote>
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[31,35] cannot find symbol
+  symbol:   method getItems()
+  location: variable dto of type com.easyerp.quoteservice.dtos.DTO<com.easyerp.quoteservice.domains.Quote>
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[31,12] cannot find symbol
+  symbol:   method setNumFound(long)
+  location: variable dto of type com.easyerp.quoteservice.dtos.DTO<com.easyerp.quoteservice.domains.Quote>
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[80,18] cannot find symbol
+  symbol:   method getBillId()
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[83,14] cannot find symbol
+  symbol:   method setBillId(java.lang.Long)
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[93,18] cannot find symbol
+  symbol:   method getBillId()
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[96,14] cannot find symbol
+  symbol:   method setBillId(java.lang.Long)
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[113,14] cannot find symbol
+  symbol:   method setDeleted(boolean)
+  location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[INFO] 31 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.005 s
+[INFO] Finished at: 2020-01-02T18:19:15+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project quote-service: Compilation failure: Compilation failure: 
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[90,27] method linkToBill(java.lang.Long,java.lang.Long,org.springframework.security.oauth2.provider.OAuth2Authentication) is already defined in class com.easyerp.quoteservice.controllers.QuoteController
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[42,14] cannot find symbol
+[ERROR]   symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[48,14] cannot find symbol
+[ERROR]   symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[54,14] cannot find symbol
+[ERROR]   symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[59,33] cannot find symbol
+[ERROR]   symbol:   method getLines()
+[ERROR]   location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[61,16] cannot find symbol
+[ERROR]   symbol:   method setQuote(com.easyerp.quoteservice.domains.Quote)
+[ERROR]   location: variable key of type com.easyerp.quoteservice.domains.QuoteLineCompositeKey
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[64,81] constructor QuoteLine in class com.easyerp.quoteservice.domains.QuoteLine cannot be applied to given types;
+[ERROR]   required: com.easyerp.quoteservice.requests.QuoteLineRequest
+[ERROR]   found: no arguments
+[ERROR]   reason: actual and formal argument lists differ in length
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[70,22] cannot find symbol
+[ERROR]   symbol:   method setQuote(com.easyerp.quoteservice.domains.Quote)
+[ERROR]   location: variable quoteLine of type com.easyerp.quoteservice.domains.QuoteLine
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[75,14] cannot find symbol
+[ERROR]   symbol:   method getLines()
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[76,14] cannot find symbol
+[ERROR]   symbol:   method getLines()
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[78,34] cannot find symbol
+[ERROR]   symbol:   method getTva()
+[ERROR]   location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[79,29] cannot find symbol
+[ERROR]   symbol:   method getLines()
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[81,110] cannot find symbol
+[ERROR]   symbol:   method getTva()
+[ERROR]   location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[84,25] cannot find symbol
+[ERROR]   symbol:   method isDraft()
+[ERROR]   location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[85,18] cannot find symbol
+[ERROR]   symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[89,22] cannot find symbol
+[ERROR]   symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/services/impl/QuoteServiceImpl.java:[91,22] cannot find symbol
+[ERROR]   symbol:   method setStatus(com.easyerp.quoteservice.enums.QuoteStatus)
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/Quote.java:[32,37] cannot find symbol
+[ERROR]   symbol:   method getClientId()
+[ERROR]   location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/Quote.java:[33,32] cannot find symbol
+[ERROR]   symbol:   method getTva()
+[ERROR]   location: variable quoteRequest of type com.easyerp.quoteservice.requests.QuoteRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/QuoteLine.java:[42,43] cannot find symbol
+[ERROR]   symbol:   method getLineNumber()
+[ERROR]   location: variable quoteLineRequest of type com.easyerp.quoteservice.requests.QuoteLineRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/QuoteLine.java:[43,44] cannot find symbol
+[ERROR]   symbol:   method getDescription()
+[ERROR]   location: variable quoteLineRequest of type com.easyerp.quoteservice.requests.QuoteLineRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/QuoteLine.java:[44,41] cannot find symbol
+[ERROR]   symbol:   method getQuantity()
+[ERROR]   location: variable quoteLineRequest of type com.easyerp.quoteservice.requests.QuoteLineRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/domains/QuoteLine.java:[45,44] cannot find symbol
+[ERROR]   symbol:   method getPreTaxPrice()
+[ERROR]   location: variable quoteLineRequest of type com.easyerp.quoteservice.requests.QuoteLineRequest
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[30,12] cannot find symbol
+[ERROR]   symbol:   method setItems(java.util.List<com.easyerp.quoteservice.domains.Quote>)
+[ERROR]   location: variable dto of type com.easyerp.quoteservice.dtos.DTO<com.easyerp.quoteservice.domains.Quote>
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[31,35] cannot find symbol
+[ERROR]   symbol:   method getItems()
+[ERROR]   location: variable dto of type com.easyerp.quoteservice.dtos.DTO<com.easyerp.quoteservice.domains.Quote>
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[31,12] cannot find symbol
+[ERROR]   symbol:   method setNumFound(long)
+[ERROR]   location: variable dto of type com.easyerp.quoteservice.dtos.DTO<com.easyerp.quoteservice.domains.Quote>
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[80,18] cannot find symbol
+[ERROR]   symbol:   method getBillId()
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[83,14] cannot find symbol
+[ERROR]   symbol:   method setBillId(java.lang.Long)
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[93,18] cannot find symbol
+[ERROR]   symbol:   method getBillId()
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[96,14] cannot find symbol
+[ERROR]   symbol:   method setBillId(java.lang.Long)
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] /home/dorian/Projects/Pro/easy-erp/source/backend/quote-service/src/main/java/com/easyerp/quoteservice/controllers/QuoteController.java:[113,14] cannot find symbol
+[ERROR]   symbol:   method setDeleted(boolean)
+[ERROR]   location: variable quote of type com.easyerp.quoteservice.domains.Quote
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

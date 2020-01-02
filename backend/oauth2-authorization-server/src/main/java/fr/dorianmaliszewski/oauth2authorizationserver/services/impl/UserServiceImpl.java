@@ -8,11 +8,15 @@ import fr.dorianmaliszewski.oauth2authorizationserver.requests.UserRequest;
 import fr.dorianmaliszewski.oauth2authorizationserver.services.EmailService;
 import fr.dorianmaliszewski.oauth2authorizationserver.services.UserService;
 import fr.dorianmaliszewski.oauth2authorizationserver.utils.PasswordUtils;
+import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {

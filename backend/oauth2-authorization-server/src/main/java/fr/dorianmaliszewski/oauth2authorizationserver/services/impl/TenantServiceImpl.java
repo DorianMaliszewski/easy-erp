@@ -57,6 +57,7 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public Tenant findByMainUser_Username(String username) throws EntityNotFoundException {
         Optional<Tenant> optionalTenant = this.tenantRepository.findByMainUser_Username(username);
+        System.out.println(optionalTenant.isEmpty() ? "Empty": "Présent");
 
         if (optionalTenant.isEmpty()) {
             throw new EntityNotFoundException("Entity not Found");
