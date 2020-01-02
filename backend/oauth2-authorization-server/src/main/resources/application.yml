@@ -14,3 +14,15 @@ spring:
   flyway:
     enabled: true
 
+  mail:
+    host: fake-mail-server
+    port: 1025
+#    username:
+#    password:
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+

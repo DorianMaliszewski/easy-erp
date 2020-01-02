@@ -112,3 +112,9 @@ services:
     links:
       - "traefik:oauth.easy-erp.lan"
       - "traefik:api.easy-erp.lan"
+
+  fake-mail-server:
+    image: reachfive/fake-smtp-server
+    ports:
+      - 1025:1025
+      - 1080:1080

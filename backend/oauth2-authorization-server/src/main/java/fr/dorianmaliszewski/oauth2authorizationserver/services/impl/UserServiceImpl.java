@@ -5,6 +5,7 @@ import fr.dorianmaliszewski.oauth2authorizationserver.enums.RoleEnum;
 import fr.dorianmaliszewski.oauth2authorizationserver.repositories.RoleRepository;
 import fr.dorianmaliszewski.oauth2authorizationserver.repositories.UserRepository;
 import fr.dorianmaliszewski.oauth2authorizationserver.requests.UserRequest;
+import fr.dorianmaliszewski.oauth2authorizationserver.services.EmailService;
 import fr.dorianmaliszewski.oauth2authorizationserver.services.UserService;
 import fr.dorianmaliszewski.oauth2authorizationserver.utils.PasswordUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,11 +19,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -113,5 +116,6 @@ public class UserServiceImpl implements UserService {
 
     private void sendPasswordByEmail (User user, String password) {
         System.out.println("Envoi du mot de passe " + password + " à l'utilisateur " + user.getUsername() + " email : " + user.getEmail());
+        this.emailService.sendSimpleMessage(user.getEmail(), "Votre inscription sur EASY-ERP ", "Bienvenue sur EASY-ERP : username :" + user.getUsername() + ", password : " + password);
     }
 }
