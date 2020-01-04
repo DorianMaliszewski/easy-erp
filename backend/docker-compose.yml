@@ -118,3 +118,4 @@ services:
     ports:
       - 1025:1025
       - 1080:1080
+    command: node index.js -a test:test

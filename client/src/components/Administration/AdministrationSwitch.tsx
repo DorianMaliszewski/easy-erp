@@ -4,7 +4,6 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "../../routes";
 
 import Users from "../../pages/Administration/Users";
-import Clients from "../../pages/Administration/Clients";
 import ClientsUsers from "../../pages/Administration/ClientsUsers";
 import { AUTH_TOKEN } from "../../constants";
 import AuthContext from "../../contexts/AuthContext";

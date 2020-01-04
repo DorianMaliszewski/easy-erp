@@ -1,8 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Typography, Button, Grid } from "@material-ui/core";
 import Splashscreen from "./Splashscreen";
-import usePromise from "../hooks/usePromise";
-import UserContext from "../contexts/UserContext";
 import { useHistory, useParams } from "react-router-dom";
 import UserDetailCard from "../components/User/UserDetailCard";
 import { useEffect } from "react";
@@ -20,7 +18,7 @@ const UserDetail: React.FC<any> = () => {
     if (id) {
       userContext.findById(parseInt(id, 10)).subscribe((u: UserData) => setUser(u));
     }
-  }, [id]);
+  }, [id, userContext]);
 
   if (userContext.state.isLoading || !user) {
     return <Splashscreen text="Chargement de l'utilisateur" />;

@@ -1,6 +1,5 @@
 import React from "react";
-import clsx from "clsx";
-import { createStyles, lighten, makeStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -8,19 +7,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FilterListIcon from "@material-ui/icons/FilterList";
 import { TableOrder, stableSort, getSorting } from "./BillOrQuoteTableEnhancedUtils";
 import { GenericBillOrQuoteData } from "../../../models/GenericBillOrQuoteData";
 import BillStatusIcon from "../../Bills/BillStatusIcon";
 import useCustomers from "../../../hooks/useCustomers";
 import { Skeleton } from "@material-ui/lab";
 import { TableHeadCell } from "../SortingTable/SortingTable";
-import routes from "../../../routes";
-import { useHistory } from "react-router-dom";
 
 const headCells: TableHeadCell[] = [
   { id: "status", numeric: false, disablePadding: false, label: "Status" },
@@ -61,54 +53,6 @@ function BillOrQuoteTableEnhancedHead(props: BillOrQuoteTableEnhancedHeadProps) 
   );
 }
 
-const useToolbarStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(1)
-    },
-    highlight:
-      theme.palette.type === "light"
-        ? {
-            color: theme.palette.secondary.main,
-            backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-          }
-        : {
-            color: theme.palette.text.primary,
-            backgroundColor: theme.palette.secondary.dark
-          },
-    title: {
-      flex: "1 1 100%"
-    }
-  })
-);
-
-interface BillOrQuoteTableEnhancedToolbarProps {
-  numSelected: number;
-}
-
-const BillOrQuoteTableEnhancedToolbar = (props: BillOrQuoteTableEnhancedToolbarProps) => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0
-      })}
-    >
-      <Typography className={classes.title} variant="h6" id="tableTitle">
-        Factures
-      </Typography>
-      <Tooltip title="Filter list">
-        <IconButton aria-label="filter list">
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
-    </Toolbar>
-  );
-};
-
 const useStyles = makeStyles((theme: Theme) => ({
   visuallyHidden: {
     border: 0,
@@ -136,16 +80,11 @@ export const BillOrQuoteTableEnhanced: React.FC<BillOrQuoteTableEnhancedProps> =
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const { customers } = useCustomers();
-  const history = useHistory();
 
   const handleRequestSort = (event: React.MouseEvent, property: any) => {
     const isDesc = orderBy === property && order === "desc";
     setOrder(isDesc ? "asc" : "desc");
     setOrderBy(property);
-  };
-
-  const handleClick = (event: React.MouseEvent, id: number) => {
-    history.push(routes.BILLS_DETAIL.path.replace(":id", id.toString()));
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -155,10 +94,6 @@ export const BillOrQuoteTableEnhanced: React.FC<BillOrQuoteTableEnhancedProps> =
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const emptyRows = (): number => {
-    return rows ? rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage) : 1;
   };
 
   return (

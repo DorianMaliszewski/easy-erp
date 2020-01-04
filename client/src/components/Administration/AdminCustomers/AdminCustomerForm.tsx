@@ -20,7 +20,7 @@ const AdminCustomerForm: React.FC<AdminCustomerFormProps> = ({ customer, setCust
     if (!contacts && !userContext.state.isLoading) {
       userContext.getInternalUsers().subscribe((users: any) => setContacts(users));
     }
-  }, [userContext]);
+  }, [userContext, contacts]);
 
   const handleChange = (event: any) => {
     const newCustomer: any = { ...customer };

@@ -1,6 +1,5 @@
 import React from "react";
 import { Grid, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
-import { UserData } from "../../models/UserData";
 import { Autocomplete } from "@material-ui/lab";
 import useCustomers from "../../hooks/useCustomers";
 import { CustomerData } from "../../models/CustomerData";
@@ -61,11 +60,14 @@ const UserForm: React.FC<UserFormProps> = ({ user, setUser }) => {
         />
       </Grid>
       <Grid item>
-        {user.sendEmail !== undefined && (
-          <FormControlLabel control={<Checkbox checked={user.sendEmail} id="sendEmail" onChange={handleCheckboxChange} value="sendEmail" color="primary" />} label="Envoyer le mot de passe par mail" />
+        {user.sendPasswordByEmail !== undefined && (
+          <FormControlLabel
+            control={<Checkbox checked={user.sendPasswordByEmail} id="sendPasswordByEmail" onChange={handleCheckboxChange} value="sendPasswordByEmail" color="primary" />}
+            label="Envoyer le mot de passe par mail"
+          />
         )}
       </Grid>
-      {!user.sendEmail && (
+      {!user.sendPasswordByEmail && (
         <>
           <Grid item>
             <TextField variant="outlined" label="Mot de passe" value={user.password} id="password" onChange={handleChange} fullWidth />

@@ -15,14 +15,18 @@ spring:
     enabled: true
 
   mail:
-    host: fake-mail-server
+    host: localhost
     port: 1025
-#    username:
-#    password:
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
+    username: test
+    password: test
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
 

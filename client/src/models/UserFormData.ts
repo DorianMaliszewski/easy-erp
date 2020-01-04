@@ -2,10 +2,10 @@ import { UserData } from "./UserData";
 
 export class UserFormData extends UserData {
   confirmPassword: string;
-  sendEmail: boolean;
+  sendPasswordByEmail: boolean;
   constructor() {
     super();
     this.confirmPassword = "";
-    this.sendEmail = true;
+    this.sendPasswordByEmail = true;
   }
 }

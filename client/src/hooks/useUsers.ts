@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useUserContext } from "../providers/UserProvider";
 
 const useUsers = () => {

@@ -30,16 +30,18 @@ export class UserApi {
     );
   }
 
-  public save(user: UserData): Observable<UserData> {
-    return user.id ? this.update(user) : this.create(user);
+  public save(user: UserData, isInternal: boolean): Observable<UserData> {
+    return user.id ? this.update(user, isInternal) : this.create(user, isInternal);
   }
 
-  public create(user: UserData): Observable<UserData> {
-    return HttpClient.POST(this.getApiUrl(), this.convertJSONToUserData(user)).pipe(map((res: any) => this.convertJSONToUserData(res as UserData)));
+  public create(user: UserData, isInternal: boolean): Observable<UserData> {
+    return HttpClient.POST(`${this.getApiUrl()}/${isInternal ? "internals" : "customers"}`, this.convertJSONToUserData(user)).pipe(map((res: any) => this.convertJSONToUserData(res as UserData)));
   }
 
-  public update(user: UserData): Observable<UserData> {
-    return HttpClient.PUT(this.getApiUrl() + "/" + user.id?.toString(), this.convertJSONToUserData(user)).pipe(map((res: any) => this.convertJSONToUserData(res as UserData)));
+  public update(user: UserData, isInternal: boolean): Observable<UserData> {
+    return HttpClient.PUT(`${this.getApiUrl()}/${isInternal ? "internals" : "customers"}/${user.id?.toString()}`, this.convertJSONToUserData(user)).pipe(
+      map((res: any) => this.convertJSONToUserData(res as UserData))
+    );
   }
 
   private convertJSONToUserData(userJson: any): UserData {

@@ -35,7 +35,7 @@ const QuoteDetail: React.FC<any> = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    if (id) {
+    if (id && !customerContext.state.isLoading && !quoteContext.state.isLoading) {
       quoteContext.findById(parseInt(id, 10)).subscribe(
         (q: QuoteData) => {
           setQuote(q);
@@ -51,7 +51,7 @@ const QuoteDetail: React.FC<any> = () => {
         }
       );
     }
-  }, [id, quoteContext, history, customerContext]);
+  }, [id, customerContext, quoteContext, history]);
 
   if (!quote) {
     return <Splashscreen text="Récupération du devis" />;
@@ -68,7 +68,7 @@ const QuoteDetail: React.FC<any> = () => {
           </Button>
         </Grid>
         <Grid item>
-          <QuoteActionButtons quote={quote} />
+          <QuoteActionButtons setQuote={setQuote} quote={quote} />
         </Grid>
       </Grid>
       <Grid item>

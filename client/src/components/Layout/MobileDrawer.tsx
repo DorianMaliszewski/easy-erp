@@ -1,12 +1,10 @@
 import React from "react";
 import { SwipeableDrawer } from "@material-ui/core";
-import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { MainMenuList, AdministrationMenuList } from "./MenuLists";
-import clsx from "clsx";
 import { makeStyles, ListItem, ListItemText, ListItemIcon, useMediaQuery, Theme, Typography } from "@material-ui/core";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { useHistory } from "react-router-dom";

@@ -6,7 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class UserRequest {
     private String username;
     private String firstName;

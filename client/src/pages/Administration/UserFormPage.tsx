@@ -1,7 +1,6 @@
 import React from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
 import UserForm from "../../components/User/UserForm";
-import { UserData } from "../../models/UserData";
 import { useUserContext } from "../../providers/UserProvider";
 import { useParams, useHistory } from "react-router-dom";
 import useSnackbar from "../../hooks/useSnackbar";
@@ -18,7 +17,7 @@ const UserFormPage = () => {
     if (id) {
       userContext.findById(id).subscribe((u: any) => setUser(u));
     }
-  }, [id]);
+  }, [id, userContext]);
 
   const handleSubmit = (event: any) => {
     userContext.save(user).subscribe((u: any) => {
@@ -28,7 +27,7 @@ const UserFormPage = () => {
 
   const disableSave = () => {
     let success = true;
-    if (!user.sendEmail) {
+    if (!user.sendPasswordByEmail) {
       if (user.password.length < 8 || user.password !== user.confirmPassword) {
         success = false;
       }

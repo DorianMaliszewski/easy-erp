@@ -17,7 +17,9 @@ import java.util.*;
 @Table(name = "oauth_user")
 public class User extends BaseEntity implements UserDetails {
 
+    @Column(unique = true)
     private String username;
+
     @JsonIgnore
     private String password;
     private String email;

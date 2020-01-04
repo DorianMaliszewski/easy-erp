@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import QuoteContext from "../contexts/QuoteContext";
 import { quoteReducer } from "../reducers/quote";
 import { FIND_ALL_QUOTES, QUOTE_UPDATE, QUOTE_ADD } from "../actions/quote";
@@ -76,13 +76,14 @@ const QuoteProvider: React.FC<any> = props => {
     };
   };
 
-  const updateState = (customer: QuoteData, isCreate: boolean) => {
-    if (!isCreate) {
-      dispatch({ type: QUOTE_ADD.SUCCESS, customer });
+  const updateState = (quote: QuoteData, isCreate: boolean) => {
+    console.log("Quote", quote);
+    if (isCreate) {
+      dispatch({ type: QUOTE_ADD.SUCCESS, quote });
     } else {
-      dispatch({ type: QUOTE_UPDATE.SUCCESS, customer });
+      dispatch({ type: QUOTE_UPDATE.SUCCESS, quote });
     }
-    return customer;
+    return quote;
   };
 
   return <QuoteContext.Provider value={{ state: quoteState, findAll, findById, accept, send, cancel, save }}>{props.children}</QuoteContext.Provider>;
@@ -92,6 +93,11 @@ QuoteProvider.propTypes = {};
 
 const useQuoteContext = () => {
   const quoteContext = React.useContext(QuoteContext);
+  useEffect(() => {
+    if (!quoteContext.state.isLoading && quoteContext.state.quotes.length === 0) {
+      quoteContext.findAll().subscribe();
+    }
+  }, [quoteContext]);
 
   return quoteContext;
 };

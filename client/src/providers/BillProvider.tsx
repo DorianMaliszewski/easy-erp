@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import BillContext from "../contexts/BillContext";
 import { FIND_ALL_BILLS, BILL_UPDATE, BILL_ADD } from "../actions/bill";
 import { billReducer } from "../reducers/bill";
@@ -12,7 +12,7 @@ import { of } from "rxjs";
 const initialState = {
   isLoading: false,
   numFound: 0,
-  bills: null
+  bills: []
 };
 
 const BillProvider: React.FC<any> = props => {
@@ -23,9 +23,11 @@ const BillProvider: React.FC<any> = props => {
     dispatch({ type: FIND_ALL_BILLS.REQUEST });
     return BillApi.getInstance()
       .findAll()
-      .subscribe(dto => {
-        dispatch({ type: FIND_ALL_BILLS.SUCCESS, bills: dto.items, numFound: dto.numFound });
-      });
+      .pipe(
+        tap(dto => {
+          dispatch({ type: FIND_ALL_BILLS.SUCCESS, bills: dto.items, numFound: dto.numFound });
+        })
+      );
   };
 
   const findById = (id: number) => {
@@ -96,6 +98,12 @@ const BillProvider: React.FC<any> = props => {
 
 const useBillContext = () => {
   const billContext = React.useContext(BillContext);
+
+  useEffect(() => {
+    if (!billContext.state.isLoading && billContext.state.bills.length === 0) {
+      billContext.findAll().subscribe();
+    }
+  });
   return billContext;
 };
 

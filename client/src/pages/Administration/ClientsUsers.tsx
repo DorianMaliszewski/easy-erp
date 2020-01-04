@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useUserContext } from "../../providers/UserProvider";
 import { Grid, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
@@ -15,7 +15,7 @@ const ClientsUsers: React.FC<any> = props => {
     if (!customersUsers && !userContext.state.isLoading) {
       userContext.getCustomerUsers().subscribe((users: any) => setCustomersUsers(users));
     }
-  }, [userContext]);
+  }, [userContext, customersUsers]);
 
   return (
     <Grid container direction="column" spacing={3}>

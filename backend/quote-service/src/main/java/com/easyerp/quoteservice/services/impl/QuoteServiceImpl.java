@@ -28,6 +28,7 @@ public class QuoteServiceImpl implements QuoteService {
     @Override
     public Quote create(QuoteRequest quoteRequest, OAuth2Authentication authentication) {
         Quote quote = new Quote(quoteRequest);
+        quote.setCreatedBy(authentication.getName());
         quote = this.quoteRepository.saveAndFlush(quote);
         return feedQuoteAndSave(quote, quoteRequest, authentication);
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import routes from "../../routes";
 import { Theme } from "@material-ui/core";
 import { UserData } from "../../models/UserData";
-import useCustomers from "../../hooks/useCustomers";
+import { useCustomersContext } from "../../providers/CustomerProvider";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -26,11 +26,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 const UserTable: React.FC<any> = ({ users, isLoading }) => {
   const classes = useStyles();
   const history = useHistory();
-  const { customers } = useCustomers();
+  const customerContext = useCustomersContext();
+  const [customers, setCustomers] = useState<any>([]);
+  useEffect(() => {
+    if (customerContext.state.isLoading === false && customers.length === 0) {
+      setCustomers(customerContext.state.customers);
+    }
+  }, [customerContext.state, customers.length]);
 
   const getCustomerName = (row: UserData) => {
     if (!row.clientId) return "Aucun client";
-    const customerFinded = customers.find(c => c.id === row.clientId);
+    const customerFinded = customers.find((c: any) => c.id === row.clientId);
     return customerFinded ? customerFinded.name : "Non trouvé";
   };
 

@@ -63,9 +63,9 @@ const UserProvider: React.FC<any> = props => {
     }
   };
 
-  const save = (user: UserData) => {
+  const save = (user: UserData, isInternal: boolean) => {
     return UserApi.getInstance()
-      .save(user)
+      .save(user, isInternal)
       .pipe(
         tap((u: UserData) => {
           return updateState(u, user.id ? false : true);

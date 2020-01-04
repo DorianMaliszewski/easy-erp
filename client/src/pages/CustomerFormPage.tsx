@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { CustomerData } from "../models/CustomerData";
 import { Typography } from "@material-ui/core";
 import AdminCustomerForm from "../components/Administration/AdminCustomers/AdminCustomerForm";
@@ -18,7 +18,7 @@ const CustomerFormPage: React.FC<any> = () => {
         setCustomer(customerFinded);
       });
     }
-  }, [id]);
+  }, [id, customerContext]);
 
   const submit = () => {
     customerContext.save(customer).subscribe((data: any) => {

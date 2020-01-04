@@ -6,6 +6,7 @@ import fr.dorianmaliszewski.oauth2authorizationserver.requests.UserRequest;
 import fr.dorianmaliszewski.oauth2authorizationserver.responses.DTO;
 
 import fr.dorianmaliszewski.oauth2authorizationserver.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -16,14 +17,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    public UserController(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
-        this.userService = userService;
-    }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
@@ -46,7 +44,7 @@ public class UserController {
         return ResponseEntity.ok(newUser);
     }
 
-    @PostMapping("/internal")
+    @PostMapping("/internals")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
     public ResponseEntity createInternalUser(@RequestBody UserRequest user, OAuth2Authentication authentication) {
         User newUser = this.userService.createInternalUser(user, authentication);
@@ -61,11 +59,16 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @PutMapping("/internal/{id}")
+    @PutMapping("/internals/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
     public ResponseEntity updateInternalUser(@RequestBody UserRequest user, @PathVariable Long id,
             OAuth2Authentication authentication) {
         User updatedUser = this.userService.updateInternalUser(id, user, authentication);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping("/username-already-exists")
+    public ResponseEntity userAlreadyExist (@RequestParam String username) {
+        return ResponseEntity.ok(this.userRepository.findByUsername(username).isPresent());
     }
 }

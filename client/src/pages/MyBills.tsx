@@ -1,21 +1,14 @@
-import React, { useContext, useEffect } from "react";
-import BillsTable from "../components/Bills/BillsTable";
+import React from "react";
 import { Button, Paper, makeStyles, Grid, Theme } from "@material-ui/core";
-import BillContext from "../contexts/BillContext";
 import routes from "../routes";
 import { useHistory } from "react-router-dom";
 import { BillOrQuoteTableEnhanced } from "../components/Tables/BillOrQuoteTableEnhanced/BillOrQuoteTableEnhanced";
+import { useBillContext } from "../providers/BillProvider";
 
 const MyBills: React.FC<any> = props => {
-  const billContext = useContext(BillContext);
+  const billContext = useBillContext();
   const history = useHistory();
   const classes = useStyles();
-
-  useEffect(() => {
-    if (!billContext.state.bills && !billContext.state.isLoading) {
-      billContext.findAll();
-    }
-  }, [billContext]);
 
   const handleRowClick = (event: any, id: string) => {
     history.push(routes.BILLS_DETAIL.path.replace(":id", id));

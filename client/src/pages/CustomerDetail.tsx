@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Button, Grid } from "@material-ui/core";
 import Splashscreen from "./Splashscreen";
@@ -27,7 +27,7 @@ const CustomerDetail: React.FC<any> = props => {
         }
       );
     }
-  }, [id]);
+  }, [id, customerContext, history]);
 
   if (!customer) {
     return <Splashscreen text="Récupération du client" />;

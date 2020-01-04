@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import { FIND_ALL_CUSTOMERS, DELETE_CUSTOMER, CUSTOMER_UPDATE, CUSTOMER_ADD } from "../actions/customer";
 import { customerReducer } from "../reducers/customer";
 import CustomerApi from "../api/CustomerApi";
@@ -10,25 +10,27 @@ import { DTO } from "../models/DTO";
 
 const initialState = {
   isLoading: false,
-  customers: null,
+  customers: [],
   numFound: 0
 };
 
 const CustomerContext = React.createContext<any>({});
+let currentRequest: any;
 
 const CustomerProvider: React.FC<any> = props => {
   const [customerState, dispatch] = useReducer(customerReducer, initialState);
   const snackbar = useSnackbar();
   const findAll = () => {
     dispatch({ type: FIND_ALL_CUSTOMERS.REQUEST });
-    return CustomerApi.getInstance()
+    currentRequest = CustomerApi.getInstance()
       .findAll()
       .pipe(
-        map(dto => {
+        tap(dto => {
           dispatch({ type: FIND_ALL_CUSTOMERS.SUCCESS, customers: dto.items, numFound: dto.numFound });
           return dto;
         })
       );
+    return currentRequest;
   };
 
   const findById = (id: number) => {
@@ -36,7 +38,6 @@ const CustomerProvider: React.FC<any> = props => {
     if (customerState.customers) {
       customerFinded = customerState.customers.find((customer: CustomerData) => customer.id === id);
     }
-    console.log(customerFinded);
 
     return customerFinded ? of(customerFinded) : findAll().pipe(map((dto: DTO<CustomerData>) => dto.items.find(c => c.id === id)));
   };
@@ -83,6 +84,9 @@ const CustomerProvider: React.FC<any> = props => {
 
 const useCustomersContext = () => {
   const customerContext = React.useContext(CustomerContext);
+  if (customerContext.state.customers.length === 0 && !customerContext.state.isLoading) {
+    customerContext.findAll().subscribe();
+  }
   return customerContext;
 };
 

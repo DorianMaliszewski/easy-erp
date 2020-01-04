@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useUserContext } from "../../providers/UserProvider";
 
 const UserTable = React.lazy(() => import("../../components/User/UserTable"));
@@ -13,7 +13,7 @@ const InternalUsers: React.FC<any> = props => {
         setInternalUsers(users);
       });
     }
-  }, [userContext]);
+  }, [userContext, internalUsers]);
 
   return (
     <React.Suspense fallback={<div>Chargement</div>}>

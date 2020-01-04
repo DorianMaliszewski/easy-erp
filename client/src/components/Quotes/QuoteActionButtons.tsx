@@ -21,7 +21,7 @@ import { MESSAGES } from "../../constants";
 import { BillData } from "../../models/BillData";
 import { useBillContext } from "../../providers/BillProvider";
 
-const QuoteActionButtons: React.FC<any> = ({ quote }) => {
+const QuoteActionButtons: React.FC<any> = ({ setQuote, quote }) => {
   const quoteStatus = getQuoteStatus(quote.status as string);
   const history = useHistory();
   const snackbar = useSnackbar();
@@ -46,18 +46,21 @@ const QuoteActionButtons: React.FC<any> = ({ quote }) => {
 
   const handleSend = (event: React.MouseEvent) => {
     quoteContext.send(quote.id).subscribe((quote: QuoteData) => {
+      setQuote(quote);
       snackbar.show("Devis envoyé", "success");
     });
   };
 
   const handleAccept = (event: React.MouseEvent) => {
     quoteContext.accept(quote.id).subscribe((quote: QuoteData) => {
+      setQuote(quote);
       snackbar.show("Devis accepté", "success");
     });
   };
 
   const handleCancel = (event: React.MouseEvent) => {
     quoteContext.cancel(quote.id).subscribe((quote: QuoteData) => {
+      setQuote(quote);
       snackbar.show("Devis annulé", "success");
     });
   };

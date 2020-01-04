@@ -7,7 +7,7 @@ import { DTO } from "../models/DTO";
 // Rxjs
 import { Observable } from "rxjs/internal/Observable";
 import { of } from "rxjs";
-import { map, catchError, first } from "rxjs/operators";
+import { catchError, first } from "rxjs/operators";
 import { HttpClient } from "./HttpClient";
 
 class CustomerApi {

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { CustomerData } from "../models/CustomerData";
 import { useCustomersContext } from "../providers/CustomerProvider";
 
