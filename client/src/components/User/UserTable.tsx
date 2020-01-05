@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const UserTable: React.FC<any> = ({ users, isLoading }) => {
+const UserTable: React.FC<any> = ({ users, isLoading, isInternal = false }) => {
   const classes = useStyles();
   const history = useHistory();
   const customerContext = useCustomersContext();
@@ -40,6 +40,8 @@ const UserTable: React.FC<any> = ({ users, isLoading }) => {
     return customerFinded ? customerFinded.name : "Non trouvé";
   };
 
+  const editRoute = isInternal ? routes.USER_DETAIL.path : routes.CUSTOMER_USER_DETAIL.path;
+
   return (
     <Paper className={classes.root}>
       <Table className={classes.table} aria-label="simple table">
@@ -54,7 +56,7 @@ const UserTable: React.FC<any> = ({ users, isLoading }) => {
         <TableBody>
           {users && users.map ? (
             users.map((row: UserData) => (
-              <TableRow key={row.id} hover onClick={e => history.push(routes.USER_DETAIL.path.replace(":id", row.id ? row.id.toString() : ""))}>
+              <TableRow key={row.id} hover onClick={e => history.push(editRoute.replace(":id", row.id ? row.id.toString() : ""))}>
                 <TableCell component="th" scope="row">
                   {row.firstName + " " + row.lastName}
                 </TableCell>

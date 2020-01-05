@@ -1,12 +1,12 @@
 import React from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
-import UserForm from "../../components/User/UserForm";
-import { useUserContext } from "../../providers/UserProvider";
+import UserForm from "../components/User/UserForm";
+import { useUserContext } from "../providers/UserProvider";
 import { useParams, useHistory } from "react-router-dom";
-import useSnackbar from "../../hooks/useSnackbar";
-import { UserFormData } from "../../models/UserFormData";
+import useSnackbar from "../hooks/useSnackbar";
+import { UserFormData } from "../models/UserFormData";
 
-const UserFormPage = () => {
+const CustomerUserFormPage = () => {
   const [user, setUser] = React.useState(new UserFormData());
   const userContext = useUserContext();
   const { id } = useParams();
@@ -22,7 +22,7 @@ const UserFormPage = () => {
   }, [id, userContext]);
 
   const handleSubmit = (event: any) => {
-    userContext.save(user, true).subscribe((u: any) => {
+    userContext.save(user, false).subscribe((u: any) => {
       snackbar.show("Modification enregistrée", "success");
     });
   };
@@ -49,27 +49,25 @@ const UserFormPage = () => {
   };
 
   return (
-    <form autoComplete="off">
-      <Grid container direction="column" spacing={3}>
-        <Grid item>
-          <Button onClick={e => history.goBack()}>Retour</Button>
-        </Grid>
-        <Grid item>
-          <Typography variant="h5" gutterBottom>
-            {user.id ? "Modification" : "Création"} d'un utilisateur
-          </Typography>
-        </Grid>
-        <Grid item>
-          <UserForm user={user} setUser={setUser} isInternal />
-        </Grid>
-        <Grid item container direction="row-reverse">
-          <Button color="primary" type="button" onClick={handleSubmit} variant="contained" disabled={disableSave()}>
-            Enregistrer
-          </Button>
-        </Grid>
+    <Grid container direction="column" spacing={3}>
+      <Grid item>
+        <Button onClick={e => history.goBack()}>Retour</Button>
       </Grid>
-    </form>
+      <Grid item>
+        <Typography variant="h5" gutterBottom>
+          {user.id ? "Modification" : "Création"} d'un contact
+        </Typography>
+      </Grid>
+      <Grid item>
+        <UserForm user={user} setUser={setUser} />
+      </Grid>
+      <Grid item container direction="row-reverse">
+        <Button color="primary" onClick={handleSubmit} variant="contained" disabled={disableSave()}>
+          Enregistrer
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 
-export default UserFormPage;
+export default CustomerUserFormPage;

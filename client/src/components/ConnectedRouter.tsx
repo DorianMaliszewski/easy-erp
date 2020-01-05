@@ -8,7 +8,6 @@ import AdministrationSwitch from "../components/Administration/AdministrationSwi
 import AuthContext from "../contexts/AuthContext";
 import BillForm from "../pages/BillFormPage";
 import Splashscreen from "../pages/Splashscreen";
-import UserFormPage from "../pages/Administration/UserFormPage";
 
 // Pages
 const Dashboard = React.lazy(() => import("../pages/Dashboard"));
@@ -24,6 +23,8 @@ const CustomerDetail = React.lazy(() => import("../pages/CustomerDetail"));
 const QuoteFormPage = React.lazy(() => import("../pages/QuoteFormPage"));
 const CustomerFormPage = React.lazy(() => import("../pages/CustomerFormPage"));
 const UserDetail = React.lazy(() => import("../pages/UserDetail"));
+const CustomerUserDetail = React.lazy(() => import("../pages/CustomerUserDetail"));
+const CustomerUserFormPage = React.lazy(() => import("../pages/CustomerUserFormPage"));
 
 const ConnectedRouter: React.FC = () => {
   const history = useHistory();
@@ -67,9 +68,10 @@ const ConnectedRouter: React.FC = () => {
           <Route path={routes.CUSTOMERS_ADD.path} exact component={CustomerFormPage} />
 
           <Route path={routes.MY_PROFILE.path} component={MyProfile} />
-          <Route path={routes.USER_DETAIL.path} exact component={UserDetail} />
-          <Route path={routes.USER_ADD.path} exact component={UserFormPage} />
-          <Route path={routes.USER_UPDATE.path} component={UserFormPage} />
+
+          <Route path={routes.CUSTOMER_USER_DETAIL.path} exact component={CustomerUserDetail} />
+          <Route path={routes.CUSTOMER_USER_ADD.path} exact component={CustomerUserFormPage} />
+          <Route path={routes.CUSTOMER_USER_UPDATE.path} component={CustomerUserFormPage} />
 
           <Route path={"/admin"} component={AdministrationSwitch} />
 

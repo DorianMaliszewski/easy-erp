@@ -1,58 +1,54 @@
-import React, { useContext, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { Button, Theme } from "@material-ui/core";
+import React from "react";
+import { Typography, Button, Grid } from "@material-ui/core";
 import Splashscreen from "./Splashscreen";
-import { makeStyles } from "@material-ui/styles";
-import QuoteDetailDialogTopActions from "../components/Quotes/QuoteSavePDFAndViewPDFActions";
+import { useHistory, useParams } from "react-router-dom";
+import UserDetailCard from "../components/User/UserDetailCard";
+import { useEffect } from "react";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import UserContext from "../contexts/UserContext";
-import CustomerUserCard from "../components/Customers/CustomerUserCard";
+import { useUserContext } from "../providers/UserProvider";
+import { UserData } from "../models/UserData";
+import routes from "../routes";
 
-const useStyle = makeStyles((theme: Theme) => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(2)
-  }
-}));
-
-const CustomerUserDetail: React.FC<any> = props => {
+const CustomerUserDetail: React.FC<any> = () => {
   const history = useHistory();
   const { id } = useParams();
-  const userContext = useContext(UserContext);
-  const [user, setUser] = useState({});
-  const classes = useStyle();
+  const userContext = useUserContext();
+  const [user, setUser] = React.useState<UserData>(new UserData());
 
-  if (!user) {
+  useEffect(() => {
     if (id) {
-      userContext.findById(parseInt(id, 10)).then((u: any) => {
-        if (u) {
-          setUser(u);
-        } else {
-          history.goBack();
-        }
-      });
-    } else {
-      history.goBack();
+      userContext.findById(parseInt(id, 10)).subscribe((u: UserData) => setUser(u));
     }
-    return <Splashscreen text="Récupération de l'utilisateur client" />;
+  }, [id, userContext]);
+
+  if (userContext.state.isLoading || !user) {
+    return <Splashscreen text="Chargement du contact" />;
   }
 
   return (
-    <>
-      <div style={{ display: "flex", flexDirection: "row", alignContent: "center", alignItems: "center", paddingBottom: 20 }}>
-        <div style={{ flexGrow: 1 }}>
-          <Button onClick={e => history.goBack()}>
-            <ChevronLeftIcon /> Retour
+    <Grid container direction="column" spacing={3}>
+      <Grid item>
+        <Button onClick={e => history.goBack()}>
+          <ChevronLeftIcon /> Retour
+        </Button>
+      </Grid>
+      <Grid item container justify="space-between">
+        <Grid item>
+          <Typography gutterBottom variant="h5" component="h1">
+            {user.firstName + " " + user.lastName}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="primary" onClick={e => history.push(routes.CUSTOMER_USER_UPDATE.path.replace(":id", user.id ? user.id.toString() : ""))}>
+            Modifier
           </Button>
-        </div>
-        <QuoteDetailDialogTopActions />
-      </div>
-      <CustomerUserCard user={user} />
-    </>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <UserDetailCard user={user} />
+      </Grid>
+    </Grid>
   );
 };
-
-CustomerUserDetail.propTypes = {};
 
 export default CustomerUserDetail;

@@ -43,19 +43,19 @@ const BillActionButtons: React.FC<any> = ({ bill }) => {
 
   const handleSend = (event: React.MouseEvent) => {
     billContext.send(bill.id).subscribe((bill: BillData) => {
-      snackbar.show("Devis envoyé", "success");
+      snackbar.show("Facture envoyée", "success");
     });
   };
 
   const handleAccept = (event: React.MouseEvent) => {
     billContext.accept(bill.id).subscribe((bill: BillData) => {
-      snackbar.show("Devis accepté", "success");
+      snackbar.show("Facture acceptée", "success");
     });
   };
 
   const handleCancel = (event: React.MouseEvent) => {
     billContext.cancel(bill.id).subscribe((bill: BillData) => {
-      snackbar.show("Devis annulé", "success");
+      snackbar.show("Facture annulée", "success");
     });
   };
 

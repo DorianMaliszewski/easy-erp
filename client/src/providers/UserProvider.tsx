@@ -1,11 +1,11 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 
 import { userReducer } from "../reducers/user";
 import { UserApi } from "../api/UserApi";
 import { FIND_ALL_USER, USER_ADD, USER_UPDATE } from "../actions/user";
 
 import { tap, map } from "rxjs/operators";
-import { of } from "rxjs";
+import { of, Observable } from "rxjs";
 import { UserData } from "../models/UserData";
 
 const UserContext = React.createContext<any>({});
@@ -30,12 +30,12 @@ const UserProvider: React.FC<any> = props => {
       );
   };
 
-  const findById = (id: number) => {
+  const findById = (id: number): Observable<UserData> => {
     let userFinded = null;
     if (userState.users) {
       userFinded = userState.users.find((u: any) => u.id === id);
     }
-    return userFinded ? of(userFinded) : findAll().pipe(map(result => result.items.find(u => u.id === id)));
+    return userFinded ? of(userFinded as UserData) : findAll().pipe(map(result => result.items.find(u => u.id === id) as UserData));
   };
 
   const get = () => {
@@ -86,7 +86,15 @@ const UserProvider: React.FC<any> = props => {
 };
 
 const useUserContext = () => {
-  return React.useContext(UserContext);
+  const userContext = React.useContext(UserContext);
+
+  useEffect(() => {
+    if (!userContext.state.isLoading && !userContext.state.users) {
+      userContext.findAll().subscribe();
+    }
+  });
+
+  return userContext;
 };
 
 export { UserProvider, useUserContext };

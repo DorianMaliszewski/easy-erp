@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { useUserContext } from "../providers/UserProvider";
 import { UserData } from "../models/UserData";
+import routes from "../routes";
 
 const UserDetail: React.FC<any> = () => {
   const history = useHistory();
@@ -31,10 +32,17 @@ const UserDetail: React.FC<any> = () => {
           <ChevronLeftIcon /> Retour
         </Button>
       </Grid>
-      <Grid item>
-        <Typography gutterBottom variant="h5" component="h1">
-          {user.firstName + " " + user.lastName}
-        </Typography>
+      <Grid item container justify="space-between">
+        <Grid item>
+          <Typography gutterBottom variant="h5" component="h1">
+            {user.firstName + " " + user.lastName}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="primary" onClick={e => history.push(routes.USER_UPDATE.path.replace(":id", user.id ? user.id.toString() : ""))}>
+            Modifier
+          </Button>
+        </Grid>
       </Grid>
       <Grid item>
         <UserDetailCard user={user} />

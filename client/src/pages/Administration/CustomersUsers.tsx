@@ -20,7 +20,7 @@ const ClientsUsers: React.FC<any> = props => {
   return (
     <Grid container direction="column" spacing={3}>
       <Grid item>
-        <Button variant="contained" color="primary" onClick={e => history.push(routes.USER_ADD.path)}>
+        <Button variant="contained" color="primary" onClick={e => history.push(routes.CUSTOMER_USER_ADD.path)}>
           Ajouter un contact
         </Button>
       </Grid>
