@@ -13,7 +13,7 @@ const QuoteLineDetailTable: React.FC<any> = ({ quote }) => {
           <TableCell className={classes.tableHeadCell}>Description</TableCell>
           <TableCell className={classes.tableHeadCell}>Prix UHT</TableCell>
           <TableCell className={classes.tableHeadCell}>Quantité</TableCell>
-          <TableCell className={classes.tableHeadCell}>Prix TTC</TableCell>
+          <TableCell className={classes.tableHeadCell}>Prix UTTC</TableCell>
           <TableCell className={classes.tableHeadCell}>Sous total</TableCell>
         </TableRow>
       </TableHead>
