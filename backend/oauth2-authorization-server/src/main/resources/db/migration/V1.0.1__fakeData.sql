@@ -25,7 +25,7 @@ INSERT INTO permission (id, name) VALUES (1,'CAN_DELETE_USER'),(2,'CAN_CREATE_US
 UNLOCK TABLES;
 
 LOCK TABLES `role` WRITE;
-INSERT INTO role (id, name) VALUES (1,'ROLE_SUPER_ADMIN'),(2,'ROLE_ADMIN'),(3,'ROLE_MANAGER'),(4,'ROLE_USER'),(5,'ROLE_CLIENT');
+INSERT INTO role (id, name, description) VALUES (1,'ROLE_SUPER_ADMIN', 'Super Administrateur'),(2,'ROLE_ADMIN', 'Administrateur'),(3,'ROLE_MANAGER', 'Manager'),(4,'ROLE_USER', 'Utilisateur'),(5,'ROLE_CLIENT', 'Contact');
 UNLOCK TABLES;
 
 INSERT INTO subscription (name, price) VALUES ('Core', 0), ('Starter', 30.0), ('Advanced', 45.0), ('Pro', 60.0), ('Enterprise', 100.0);

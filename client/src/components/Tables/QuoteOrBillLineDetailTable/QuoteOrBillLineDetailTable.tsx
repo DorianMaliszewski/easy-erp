@@ -14,14 +14,18 @@ const QuoteLineDetailTable: React.FC<any> = ({ item }) => {
           <TableCell className={classes.tableHeadCell}>Description</TableCell>
           <TableCell className={classes.tableHeadCell}>Prix UHT</TableCell>
           <TableCell className={classes.tableHeadCell}>Quantité</TableCell>
-          <TableCell className={classes.tableHeadCell}>Prix TTC</TableCell>
+          <TableCell className={classes.tableHeadCell}>Prix UTTC</TableCell>
           <TableCell className={classes.tableHeadCell}>Sous total</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {item.lines.map((line: QuoteLineData | BillLineData) => (
-          <QuoteOrBillLineDetailTable tva={item.tva} itemLine={line} />
+          <QuoteOrBillLineDetailTable key={line.lineNumber} tva={item.tva} itemLine={line} />
         ))}
+        <TableRow>
+          <TableCell colSpan={3}>TVA</TableCell>
+          <TableCell colSpan={2}>{item.tva * 100}%</TableCell>
+        </TableRow>
         <TableRow>
           <TableCell className={classes.totalLine} colSpan={4}>
             Total

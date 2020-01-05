@@ -34,13 +34,13 @@ const UserForm: React.FC<UserFormProps> = ({ user, setUser, isInternal = false }
   return (
     <Grid container direction="column" spacing={3}>
       <Grid item>
-        <TextField variant="outlined" label="Identifiant" value={user.username} id="username" disabled={user.id ? true : false} onChange={handleChange} fullWidth />
+        <TextField required helperText="4 caractères minimum" variant="outlined" label="Identifiant" value={user.username} id="username" disabled={user.id ? true : false} onChange={handleChange} fullWidth />
       </Grid>
       <Grid item>
-        <TextField variant="outlined" label="Nom" value={user.firstName || ""} id="firstName" onChange={handleChange} fullWidth />
+        <TextField required variant="outlined" label="Nom" value={user.firstName || ""} id="firstName" onChange={handleChange} fullWidth />
       </Grid>
       <Grid item>
-        <TextField variant="outlined" label="Prénom" value={user.lastName || ""} id="lastName" onChange={handleChange} fullWidth />
+        <TextField required variant="outlined" label="Prénom" value={user.lastName || ""} id="lastName" onChange={handleChange} fullWidth />
       </Grid>
       <Grid item>
         <TextField variant="outlined" label="Email" value={user.email || ""} id="email" onChange={handleChange} fullWidth />
@@ -73,10 +73,10 @@ const UserForm: React.FC<UserFormProps> = ({ user, setUser, isInternal = false }
       {!user.sendPasswordByEmail && (
         <>
           <Grid item>
-            <TextField variant="outlined" type="password" InputProps={{autoComplete: "off"}} label="Mot de passe" value={user.password} id="password" onChange={handleChange} fullWidth />
+            <TextField required helperText="8 caractères minimum" variant="outlined" type="password" InputProps={{autoComplete: "off"}} label="Mot de passe" value={user.password} id="password" onChange={handleChange} fullWidth />
           </Grid>
           <Grid item>
-            <TextField variant="outlined" type="password" InputProps={{autoComplete: "off"}} label="Confirmer mot de passe" value={user.confirmPassword} id="confirmPassword" onChange={handleChange} fullWidth />
+            <TextField required variant="outlined" type="password" InputProps={{autoComplete: "off"}} label="Confirmer mot de passe" value={user.confirmPassword} id="confirmPassword" onChange={handleChange} fullWidth />
           </Grid>
         </>
       )}

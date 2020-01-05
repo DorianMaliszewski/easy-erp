@@ -7,7 +7,7 @@ import Splashscreen from "./Splashscreen";
 import { makeStyles } from "@material-ui/styles";
 import classnames from "classnames";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import { getQuoteStatus } from "../utils/utils";
+import { getQuoteStatus, getBillStatus } from "../utils/utils";
 import { BillData } from "../models/BillData";
 import { CustomerData } from "../models/CustomerData";
 import { Skeleton } from "@material-ui/lab";
@@ -56,7 +56,7 @@ const BillDetail: React.FC<any> = props => {
     return <Splashscreen text="Récupération de la facture" />;
   }
 
-  const billStatus = getQuoteStatus(bill.status as string);
+  const billStatus = getBillStatus(bill.status as string);
 
   return (
     <>

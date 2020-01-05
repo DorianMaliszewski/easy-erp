@@ -69,9 +69,9 @@ const ConnectedRouter: React.FC = () => {
 
           <Route path={routes.MY_PROFILE.path} component={MyProfile} />
 
-          <Route path={routes.CUSTOMER_USER_DETAIL.path} exact component={CustomerUserDetail} />
           <Route path={routes.CUSTOMER_USER_ADD.path} exact component={CustomerUserFormPage} />
           <Route path={routes.CUSTOMER_USER_UPDATE.path} component={CustomerUserFormPage} />
+          <Route path={routes.CUSTOMER_USER_DETAIL.path} exact component={CustomerUserDetail} />
 
           <Route path={"/admin"} component={AdministrationSwitch} />
 

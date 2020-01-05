@@ -56,8 +56,7 @@ public class UserServiceImpl implements UserService {
 
         this.feedUserWithUserRequest(user, userRequest);
 
-        if (!Objects.equals(userRequest.getRoleId(),
-                this.roleRepository.findByName(RoleEnum.ROLE_SUPER_ADMIN).getId())) {
+        if (!Objects.equals(userRequest.getRoleId(),this.roleRepository.findByName(RoleEnum.ROLE_SUPER_ADMIN).getId())) {
             user.setRole(this.roleRepository.findById(userRequest.getRoleId()).orElseThrow());
         } else {
             user.setRole(this.roleRepository.findByName(RoleEnum.ROLE_USER));

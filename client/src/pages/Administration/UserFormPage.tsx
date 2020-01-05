@@ -1,13 +1,19 @@
 import React from "react";
-import { Grid, Button, Typography } from "@material-ui/core";
+import { Grid, Button, Typography, TextField, MenuItem } from "@material-ui/core";
 import UserForm from "../../components/User/UserForm";
 import { useUserContext } from "../../providers/UserProvider";
 import { useParams, useHistory } from "react-router-dom";
 import useSnackbar from "../../hooks/useSnackbar";
 import { UserFormData } from "../../models/UserFormData";
+import { RoleApi } from "../../api/RoleApi";
+import { Subscription } from "rxjs";
+import { RoleData } from "../../models/RoleData";
+
+let rolesSubscription: Subscription;
 
 const UserFormPage = () => {
   const [user, setUser] = React.useState(new UserFormData());
+  const [roles, setRoles] = React.useState([]);
   const userContext = useUserContext();
   const { id } = useParams();
   const history = useHistory();
@@ -16,10 +22,19 @@ const UserFormPage = () => {
   React.useEffect(() => {
     if (id && userContext.state.users) {
       userContext.findById(parseInt(id, 10)).subscribe((u: any) => {
-        setUser({ ...u, password: "", sendPasswordByEmail: false });
+        setUser({ ...u, password: "", sendPasswordByEmail: false, roleId: u.role.id });
       });
     }
   }, [id, userContext]);
+
+  React.useEffect(() => {
+    rolesSubscription = RoleApi.getInstance()
+      .findAll()
+      .subscribe((list: any) => {
+        setRoles(list);
+      });
+    return () => rolesSubscription.unsubscribe();
+  }, []);
 
   const handleSubmit = (event: any) => {
     userContext.save(user, true).subscribe((u: any) => {
@@ -61,6 +76,34 @@ const UserFormPage = () => {
         </Grid>
         <Grid item>
           <UserForm user={user} setUser={setUser} isInternal />
+        </Grid>
+        <Grid item>
+          <TextField
+            fullWidth
+            id="role"
+            disabled={roles.length === 0}
+            select
+            label="Role"
+            SelectProps={{
+              displayEmpty: true
+            }}
+            InputLabelProps={{
+              shrink: true
+            }}
+            value={user.roleId || ""}
+            onChange={e => setUser({ ...user, roleId: parseInt(e.target.value, 10) })}
+            variant="outlined"
+          >
+            <MenuItem value="" disabled>
+              Utilisateur
+            </MenuItem>
+            {roles &&
+              roles.map((option: RoleData) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.description}
+                </MenuItem>
+              ))}
+          </TextField>
         </Grid>
         <Grid item container direction="row-reverse">
           <Button color="primary" type="button" onClick={handleSubmit} variant="contained" disabled={disableSave()}>

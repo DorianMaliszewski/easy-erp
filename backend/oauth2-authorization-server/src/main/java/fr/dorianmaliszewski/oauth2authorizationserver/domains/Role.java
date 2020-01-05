@@ -15,4 +15,6 @@ public class Role extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private RoleEnum name;
 
+    private String description;
+
 }

@@ -111,6 +111,7 @@ CREATE TABLE `role` (
                         `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
                         `version` bigint(20) DEFAULT 0,
                         `name` varchar(255) DEFAULT NULL,
+                        description varchar(255) DEFAULT NULL,
                         PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
