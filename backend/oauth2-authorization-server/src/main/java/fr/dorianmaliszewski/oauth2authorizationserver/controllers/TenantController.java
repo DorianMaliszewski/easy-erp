@@ -3,6 +3,7 @@ package fr.dorianmaliszewski.oauth2authorizationserver.controllers;
 import fr.dorianmaliszewski.oauth2authorizationserver.domains.Tenant;
 import fr.dorianmaliszewski.oauth2authorizationserver.requests.TenantRequest;
 import fr.dorianmaliszewski.oauth2authorizationserver.responses.DTO;
+import fr.dorianmaliszewski.oauth2authorizationserver.services.FileStorageService;
 import fr.dorianmaliszewski.oauth2authorizationserver.services.TenantService;
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +29,8 @@ import fr.dorianmaliszewski.oauth2authorizationserver.domains.Tenant;
 import fr.dorianmaliszewski.oauth2authorizationserver.requests.TenantRequest;
 import fr.dorianmaliszewski.oauth2authorizationserver.responses.DTO;
 import fr.dorianmaliszewski.oauth2authorizationserver.services.TenantService;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 /**
@@ -39,6 +42,7 @@ import fr.dorianmaliszewski.oauth2authorizationserver.services.TenantService;
 public class TenantController {
 
     private final TenantService tenantService;
+    private final FileStorageService fileStorageService;
 
 
     @GetMapping
@@ -66,5 +70,17 @@ public class TenantController {
 
         Tenant tenant = this.tenantService.update(optionalTenant.get(), tenantRequest, authentication);
         return ResponseEntity.ok(tenant);
+    }
+
+    @PutMapping("/mine/upload-logo")
+    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    public ResponseEntity uploadLogo(@RequestParam("logo") MultipartFile logo, OAuth2Authentication authentication) {
+        String logoName = fileStorageService.storeLogo(logo, authentication);
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/images/logo/mine")
+                .path(logoName)
+                .toUriString();
+        this.tenantService.updateLogo(fileDownloadUri, authentication);
+        return ResponseEntity.ok(fileDownloadUri);
     }
 }

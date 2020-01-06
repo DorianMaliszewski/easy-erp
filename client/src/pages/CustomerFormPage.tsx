@@ -33,7 +33,7 @@ const CustomerFormPage: React.FC<any> = () => {
       <Typography variant="h5" gutterBottom style={{ marginBottom: 20 }}>
         {customer.id ? "Modifier" : "Créer"} un client
       </Typography>
-      <AdminCustomerForm customer={customer} setCustomer={setCustomer} handleSubmit={submit} />
+        <AdminCustomerForm customer={customer} setCustomer={setCustomer} handleSubmit={submit} />
     </>
   );
 };

@@ -2,7 +2,6 @@ package fr.dorianmaliszewski.oauth2authorizationserver.services.impl;
 
 import fr.dorianmaliszewski.oauth2authorizationserver.domains.User;
 import fr.dorianmaliszewski.oauth2authorizationserver.repositories.UserRepository;
-import fr.dorianmaliszewski.oauth2authorizationserver.services.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;

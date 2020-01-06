@@ -30,3 +30,5 @@ spring:
           starttls:
             enable: true
 
+file:
+  uploadDir: /tmp/

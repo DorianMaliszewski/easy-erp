@@ -23,4 +23,6 @@ public interface TenantService {
     Tenant findByMainUser_Username(String username);
 
     Optional<Tenant> findById(Long id);
+
+    void updateLogo(String fileDownloadUri, OAuth2Authentication authentication);
 }

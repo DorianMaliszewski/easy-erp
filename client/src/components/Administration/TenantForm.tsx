@@ -10,6 +10,10 @@ const TenantForm: React.FC<any> = ({ tenant, setTenant, handleSubmit }) => {
     setTenant({ ...tenant, [key]: event.target.value });
   };
 
+  const handleUploadNewIcon = (e: any) => {
+    console.log(e.target.value);
+  };
+
   return (
     <Grid container spacing={3} direction="column">
       <Grid item>
@@ -32,6 +36,13 @@ const TenantForm: React.FC<any> = ({ tenant, setTenant, handleSubmit }) => {
       </Grid>
       <Grid item>
         <TextField variant="outlined" label="Logo" fullWidth value={tenant.logo ? tenant.logo : ""} onChange={handleInputChange("logo")} />
+        <input type="file" accept="image/x-png,image/jpeg" style={{ display: "none" }} id="icon-upload" onChange={handleUploadNewIcon} />
+        <label htmlFor="icon-upload">
+          <Button variant="contained" color="secondary" component="span">
+            Uploader une nouvelle icône
+          </Button>
+        </label>
+        {tenant.logo && <img src={tenant.logo} alt="tenant icon" />}
       </Grid>
       <Grid item container alignItems="center" direction="row-reverse" spacing={1}>
         <Grid item xs={12} sm="auto">

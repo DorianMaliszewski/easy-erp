@@ -57,7 +57,6 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public Tenant findByMainUser_Username(String username) throws EntityNotFoundException {
         Optional<Tenant> optionalTenant = this.tenantRepository.findByMainUser_Username(username);
-        System.out.println(optionalTenant.isEmpty() ? "Empty": "Présent");
 
         if (optionalTenant.isEmpty()) {
             throw new EntityNotFoundException("Entity not Found");
@@ -69,5 +68,12 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public Optional<Tenant> findById(Long id) {
         return this.tenantRepository.findById(id);
+    }
+
+    @Override
+    public void updateLogo(String fileDownloadUri, OAuth2Authentication authentication) {
+        var tenant = this.findByMainUser_Username(authentication.getName());
+        tenant.setLogo(fileDownloadUri);
+        this.tenantRepository.saveAndFlush(tenant);
     }
 }

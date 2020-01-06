@@ -6,21 +6,31 @@ import com.easyerp.quoteservice.exceptions.ConflictException;
 import com.easyerp.quoteservice.repositories.QuoteRepository;
 import com.easyerp.quoteservice.requests.QuoteRequest;
 import com.easyerp.quoteservice.services.QuoteService;
+import com.easyerp.quoteservice.utils.PdfGeneratorUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/quotes")
 public class QuoteController {
     private final QuoteRepository quoteRepository;
     private final QuoteService quoteService;
+    private final PdfGeneratorUtils pdfGeneratorUtils;
+    private final ObjectMapper objectMapper;
 
-    public QuoteController(QuoteRepository quoteRepository, QuoteService quoteService) {
+    public QuoteController(QuoteRepository quoteRepository, QuoteService quoteService, PdfGeneratorUtils pdfGeneratorUtils, ObjectMapper objectMapper) {
         this.quoteRepository = quoteRepository;
         this.quoteService = quoteService;
+        this.pdfGeneratorUtils = pdfGeneratorUtils;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping
@@ -100,5 +110,20 @@ public class QuoteController {
         quote.setDeleted(true);
         this.quoteRepository.save(quote);
         return ResponseEntity.ok(true);
+    }
+
+    @GetMapping(value = "/{id}/generate-pdf", produces = "application/pdf")
+    public ResponseEntity generatePDF(@PathVariable Long id) {
+        Quote quote = this.quoteRepository.findById(id).orElseThrow();
+
+        try {
+            var byteArrayOutputStream = this.pdfGeneratorUtils.createPdf("devis", this.objectMapper.convertValue(quote, Map.class));
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set("Content-Disposition","attachment;filename=devis-" + quote.getId() + ".pdf");
+            return ResponseEntity.ok().headers(responseHeaders).body(byteArrayOutputStream.toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Une erreur est survenue lors de la génération du PDF");
+        }
     }
 }
