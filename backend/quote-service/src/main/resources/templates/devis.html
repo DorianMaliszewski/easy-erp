@@ -1,9 +1,212 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Devis</title>
-    </head>
-    <body>
-        <p th:text="'Hello, world !'"></p>
-    </body>
+
+<head>
+    <title>Devis</title>
+    <meta charset="UTF-8" />
+</head>
+
+<style>
+    p {
+        margin: 5px 0px;
+    }
+
+    body {
+        margin: auto;
+        padding: 0 10px;
+    }
+
+    .header-my-information {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .quote-title {
+        border: 2px solid black;
+        font-weight: bold;
+        padding: 20px 100px;
+        display: inline-block;
+    }
+
+    .header-my-information .logo {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 5px;
+        display: inline-block;
+    }
+
+    .header-my-information .my-information {
+        display: inline-block;
+    }
+
+    .header-customer-information {
+        position: relative;
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .quote-table {
+        margin-top: 10px;
+        border-collapse: collapse;
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .quote-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .quote-table thead {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: lightblue;
+        color: black;
+        font-weight: bold;
+    }
+
+    .quote-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .total-table {
+        border-collapse: collapse;
+        table-layout: fixed;
+        width: 50%;
+        margin: 10px 0 auto auto;
+    }
+
+    .total-table td {
+        font-weight: bold;
+    }
+
+    .total-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .quote-end {
+        margin-top: 30px;
+    }
+
+    .quote-reference {
+        border: 2px solid black;
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .footer {
+        position: static;
+        bottom: 0;
+        width: 100%;
+        margin: auto;
+        text-align: center;
+        font-size: 8pt;
+    }
+
+    .post-info {
+        margin-top: 100px;
+        padding-bottom: 20px;
+        color: #555;
+        font-size: 11pt;
+    }
+</style>
+
+<body>
+    <div class="header-my-information">
+        <div>
+            <img class="logo" src="noimage.png" alt="" />
+            <div class="my-information">
+                <p>Mon entreprise</p>
+                <p>16, Rue Jean Desparmet</p>
+                <p>Lyon, 69002</p>
+                <p>0619755845</p>
+                <p>http://dorianmaliszewski.fr</p>
+            </div>
+            <div style="float: right;">
+                <h3 class="quote-title">Devis</h3>
+            </div>
+        </div>
+    </div>
+    <div class="header-customer-information">
+        <div class="quote-reference">
+            <p>Référence : DEV1-0001</p>
+            <p>Date : 01/07/2020</p>
+            <p>N°Client : 12</p>
+        </div>
+        <div style="float: right;">
+            <p>Mon Client</p>
+            <p>16, rue jean desparmet</p>
+            <p>69002, Lyon</p>
+        </div>
+    </div>
+    <div>
+        <p>Intitulé : Description du projet</p>
+    </div>
+    <div>
+        <table class="quote-table">
+            <thead>
+                <tr>
+                    <td>Description</td>
+                    <td>Quantité</td>
+                    <td>Prix Unitaire HT</td>
+                    <td>Prix Total TTC</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Test</td>
+                    <td>1</td>
+                    <td>1.50 €</td>
+                    <td>1.50 €</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="total-table">
+            <tbody>
+                <tr>
+                    <td>Tva appliquée</td>
+                    <td>0%</td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>6.00 €</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="quote-end">
+        <p>Nous restons à votre disposition pour toute information complémentaire</p>
+        <p>Cordialement,</p>
+    </div>
+
+    <div>
+        <p>Si ce devis vous convient, veuillez nous le retourner igné précédé de la mention :</p>
+        <p>"BON POUR ACCORD ET EXECUTION DU DEVIS"</p>
+    </div>
+
+    <div>
+        <span style="padding-right: 500px;">Date : </span>
+        <span>Signature : </span>
+    </div>
+
+    <div class="post-info">
+        <p>Validité du devis : 3 Mois</p>
+        <p>Conditions de règlement : 30% à la commande, le solde à la livraison</p>
+        <p>Toute somme non payée à sa date d'éxigibilité produiura de plein droit des intérêts de retard équivalents
+            au triple du taux d'intérêts légal de l'année en cours ainsi que le paiement d'une somme de 40€ due au
+            titre des frais de recouvrement</p>
+    </div>
+    <footer class="footer footer-caption">
+        <p>N° Siret : 21089676400015 RCS Lyon</p>
+        <p>Code APE 947A - N°TVA INtracom FR778254684652000</p>
+    </footer>
+
+</body>
+
 </html>

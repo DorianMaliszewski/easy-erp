@@ -1,12 +1,10 @@
 package com.easyerp.quoteservice.utils;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.jhonnymertz.wkhtmltopdf.wrapper.Pdf;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,12 +42,23 @@ public class PdfGeneratorUtils {
             final File outputFile = File.createTempFile(fileName, ".pdf");
             os = new ByteArrayOutputStream();
 
-            ITextRenderer renderer = new ITextRenderer();
-            renderer.setDocumentFromString(processedHtml);
-            renderer.layout();
-            renderer.createPDF(os, false);
-            renderer.finishPDF();
-            System.out.println("PDF created successfully");
+            Pdf pdf = new Pdf();
+
+            pdf.addPageFromString(processedHtml);
+
+// Add a Table of Contents
+            pdf.addToc();
+
+// The `wkhtmltopdf` shell command accepts different types of options such as global, page, headers and footers, and toc. Please see `wkhtmltopdf -H` for a full explanation.
+// All options are passed as array, for example:
+//            pdf.addParam(new Param("--no-footer-line"), new Param("--header-html", "file:///header.html"));
+//            pdf.addParam(new Param("--enable-javascript"));
+
+// Add styling for Table of Contents
+//            pdf.addTocParam(new Param("--xsl-style-sheet", "my_toc.xsl"));
+
+// Save the PDF
+            os.write(pdf.getPDF());
         }
         finally {
             if (os != null) {

@@ -1,0 +1,111 @@
+p {
+    margin: 5px 0px;
+}
+
+body {
+    margin: auto;
+    padding: 0 10px;
+}
+
+.header-my-information {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.quote-title {
+    border: 2px solid black;
+    font-weight: bold;
+    padding: 20px 100px;
+}
+
+.header-my-information .logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    align-self: center;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.header-my-information .my-information {
+    display: inline-block;
+}
+
+.header-customer-information {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.quote-table {
+    margin-top: 10px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.quote-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.quote-table thead {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: lightblue;
+    color: black;
+    font-weight: bold;
+}
+
+.quote-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.total-table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: auto;
+    width: 50%;
+    margin-top: 10px;
+    margin-right: 0px;
+}
+
+.total-table td {
+    font-weight: bold;
+}
+
+.total-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.quote-end {
+    margin-top: 30px;
+}
+
+.quote-reference {
+    border: 2px solid black;
+    padding: 10px 20px;
+    border-radius: 10px;
+
+}
+
+.footer {
+    position: static;
+    bottom: 0;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    font-size: 8pt;
+}
+
+.post-info {
+    margin-top: 100px;
+    padding-bottom: 20px;
+    color: #555;
+    font-size: 11pt;
+}
