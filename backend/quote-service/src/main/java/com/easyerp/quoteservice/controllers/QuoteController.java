@@ -113,13 +113,11 @@ public class QuoteController {
     }
 
     @GetMapping(value = "/{id}/generate-pdf", produces = "application/pdf")
-    public ResponseEntity generatePDF(@PathVariable Long id) {
-        Quote quote = this.quoteRepository.findById(id).orElseThrow();
-
+    public ResponseEntity generatePDF(@PathVariable Long id, OAuth2Authentication authentication) {
         try {
-            var byteArrayOutputStream = this.pdfGeneratorUtils.createPdf("devis", this.objectMapper.convertValue(quote, Map.class));
+            var byteArrayOutputStream = this.quoteService.generatePDF(id, authentication);
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set("Content-Disposition","attachment;filename=devis-" + quote.getId() + ".pdf");
+            responseHeaders.set("Content-Disposition","attachment;filename=devis-" + id + ".pdf");
             return ResponseEntity.ok().headers(responseHeaders).body(byteArrayOutputStream.toByteArray());
         } catch (Exception e) {
             e.printStackTrace();

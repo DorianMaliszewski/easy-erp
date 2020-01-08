@@ -61,7 +61,7 @@ const MobileDrawer: React.FC<any> = ({ toggleDrawer, open }) => {
   const authContext = React.useContext(AuthContext);
   const classes = useStyles();
   const handleLogout = (event: React.MouseEvent) => {
-    localStorage.removeItem(AUTH_TOKEN);
+    authContext.logout();
     history.push(routes.LOGIN.path);
   };
 

@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import routes from "../routes";
 import Axios from "axios";
-import { initInterceptor } from "../utils/fetchInterceptor";
+import { initInterceptor, destroyInterceptor } from "../utils/fetchInterceptor";
 
 const AuthProvider: React.FC<any> = props => {
   const [user, setUser] = useState();
@@ -35,9 +35,11 @@ const AuthProvider: React.FC<any> = props => {
 
   const logout = () => {
     sessionStorage.removeItem(AUTH_TOKEN);
+    localStorage.removeItem(AUTH_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
     sessionStorage.removeItem(INSTANCE_URL);
     props.history.push(routes.LOGIN.path);
+    destroyInterceptor();
   };
 
   const refreshTokenAction = () => {

@@ -68,7 +68,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ toggleDrawer, open }) => {
   const authContext = React.useContext(AuthContext);
 
   const handleLogout = (event: React.MouseEvent) => {
-    localStorage.removeItem(AUTH_TOKEN);
+    authContext.logout();
     history.push(routes.LOGIN.path);
   };
 

@@ -8,22 +8,33 @@ import com.easyerp.quoteservice.repositories.QuoteLineRepository;
 import com.easyerp.quoteservice.repositories.QuoteRepository;
 import com.easyerp.quoteservice.requests.QuoteRequest;
 import com.easyerp.quoteservice.services.QuoteService;
+import com.easyerp.quoteservice.utils.PdfGeneratorUtils;
 import com.easyerp.quoteservice.utils.SecurityUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class QuoteServiceImpl implements QuoteService {
     private final QuoteRepository quoteRepository;
     private final QuoteLineRepository quoteLineRepository;
+    private final PdfGeneratorUtils pdfGeneratorUtils;
+    private final ObjectMapper objectMapper;
+    private final OAuth2RestOperations restTemplate;
 
-    public QuoteServiceImpl(QuoteRepository quoteRepository, QuoteLineRepository quoteLineRepository) {
-        this.quoteRepository = quoteRepository;
-        this.quoteLineRepository = quoteLineRepository;
-    }
 
     @Override
     public Quote create(QuoteRequest quoteRequest, OAuth2Authentication authentication) {
@@ -54,6 +65,25 @@ public class QuoteServiceImpl implements QuoteService {
     public Quote send(Quote quote, OAuth2Authentication authentication) {
         quote.setStatus(QuoteStatus.WAITING_CUSTOMER);
         return this.quoteRepository.saveAndFlush(quote);
+    }
+
+    @Override
+    public ByteArrayOutputStream generatePDF(Long id, OAuth2Authentication authentication) throws Exception {
+        Quote quote = this.quoteRepository.findById(id).orElseThrow();
+
+        Map data = new HashMap<String, Object>();
+        data.put("user",this.objectMapper.convertValue(authentication.getUserAuthentication().getDetails(), Map.class));
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        var customerData = restTemplate.getForEntity("http://api.easy-erp.lan/client-service/api/clients/" + quote.getClientId(), Map.class).getBody();
+
+        data.put("customer", this.objectMapper.convertValue(customerData, Map.class));
+        data.put("quote", this.objectMapper.convertValue(quote, Map.class));
+        System.out.println(this.objectMapper.convertValue(data, Map.class));
+        var byteArrayOutputStream = this.pdfGeneratorUtils.createPdf("devis", data);
+        return byteArrayOutputStream;
     }
 
     private Quote feedQuoteAndSave(Quote quote, QuoteRequest quoteRequest, OAuth2Authentication authentication) {

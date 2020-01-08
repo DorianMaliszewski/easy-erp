@@ -10,8 +10,8 @@ export function initInterceptor() {
       if (localStorage.getItem(AUTH_TOKEN)) {
         if (!config.headers) {
           config.headers = new Headers();
+          config.headers.append("Content-Type", "application/json");
         }
-        config.headers.append("Content-Type", "application/json");
         config.headers.append("Authorization", "Bearer " + localStorage.getItem(AUTH_TOKEN));
       }
 
@@ -40,5 +40,5 @@ export function initInterceptor() {
 
 export function destroyInterceptor() {
   // Unregister your interceptor
-  unregister();
+  if (unregister) unregister();
 }

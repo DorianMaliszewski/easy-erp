@@ -118,13 +118,13 @@
 <body>
     <div class="header-my-information">
         <div>
-            <img class="logo" src="/noimage.png" alt="" />
+            <img class="logo" src="" alt="" />
             <div class="my-information">
-                <p>Mon entreprise</p>
-                <p>16, Rue Jean Desparmet</p>
-                <p>Lyon, 69002</p>
-                <p>0619755845</p>
-                <p>http://dorianmaliszewski.fr</p>
+                <p th:text="${user.tenant.name}"/>
+                <p th:text="${user.tenant.address}"/>
+                <p th:text="'Lyon, ' + ${user.tenant.postalCode}"/>
+                <p th:text="${user.tenant.phone}"/>
+                <p th:text="${user.tenant.site}"/>
             </div>
             <div style="float: right;">
                 <h3 class="quote-title">Devis</h3>
@@ -133,14 +133,14 @@
     </div>
     <div class="header-customer-information">
         <div class="quote-reference">
-            <p>Référence : DEV1-0001</p>
-            <p>Date : 01/07/2020</p>
-            <p>N°Client : 12</p>
+            <p th:text="'Référence : ' + 'DEV1-0001'"/>
+            <p th:text="'Date : ' + ${quote.updatedAt}"/>
+            <p th:text="'N°Client : ' + ${quote.clientId}"/>
         </div>
         <div style="float: right;">
-            <p>Mon Client</p>
-            <p>16, rue jean desparmet</p>
-            <p>69002, Lyon</p>
+            <p th:text="${customer.name}"/>
+            <p th:text="${customer.address}"/>
+            <p th:text="${customer.city} + ', ' + ${customer.postalCode}"/>
         </div>
     </div>
     <div>
@@ -157,11 +157,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Test</td>
-                    <td>1</td>
-                    <td>1.50 €</td>
-                    <td>1.50 €</td>
+                <tr th:each="line : ${quote.lines}">
+                    <td th:text="${line.description}"/>
+                    <td th:text="${line.quantity}"/>
+                    <td th:text="${line.preTaxPrice} + ' €'"/>
+                    <td th:text="${#numbers.formatDecimal((line.preTaxPrice * line.quantity) + (line.preTaxPrice * line.quantity * quote.tva),0,2, 'POINT') + ' €'}"/>
                 </tr>
             </tbody>
         </table>
@@ -170,11 +170,11 @@
             <tbody>
                 <tr>
                     <td>Tva appliquée</td>
-                    <td>0%</td>
+                    <td th:text="${quote.tva * 100} + '%'"/>
                 </tr>
                 <tr>
                     <td>Total</td>
-                    <td>6.00 €</td>
+                    <td th:text="${quote.total} + ' €'"/>
                 </tr>
             </tbody>
         </table>
