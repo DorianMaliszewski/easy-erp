@@ -32,9 +32,7 @@ public class PdfGeneratorUtils {
                 ctx.setVariable(pair.getKey().toString(), pair.getValue());
             }
         }
-
-        System.out.println(templateName);
-
+        
         String processedHtml = templateEngine.process(templateName, ctx);
         ByteArrayOutputStream os = null;
         String fileName = UUID.randomUUID().toString();
@@ -47,7 +45,7 @@ public class PdfGeneratorUtils {
             pdf.addPageFromString(processedHtml);
 
 // Add a Table of Contents
-            pdf.addToc();
+//            pdf.addToc();
 
 // The `wkhtmltopdf` shell command accepts different types of options such as global, page, headers and footers, and toc. Please see `wkhtmltopdf -H` for a full explanation.
 // All options are passed as array, for example:
