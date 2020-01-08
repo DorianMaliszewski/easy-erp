@@ -7,6 +7,21 @@ build:
 launch:
 	./launch-stack.sh
 
+dc-logs:
+	docker-compose logs -f
+
+dc-up:
+	docker-compose -d
+
+dc-start:
+	docker-compose start
+
+dc-stop:
+	docker-compose stop
+
+dc-down:
+	docker-compose down
+
 build-bill-service:
 	cd bill-service && ./mvnw clean package docker:build -DskipTests
 

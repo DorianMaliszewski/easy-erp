@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "file",
+      "type": "fr.dorianmaliszewski.oauth2authorizationserver.properties.FileStorageProperties",
+      "sourceType": "fr.dorianmaliszewski.oauth2authorizationserver.properties.FileStorageProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "file.upload-dir",
+      "type": "java.lang.String",
+      "sourceType": "fr.dorianmaliszewski.oauth2authorizationserver.properties.FileStorageProperties"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,8 @@
+/home/dorian/Projects/Pro/easy-erp/source/backend/pdf-service/src/main/java/com/easyerp/pdfservice/requests/PdfRequest.java
+/home/dorian/Projects/Pro/easy-erp/source/backend/pdf-service/src/main/java/com/easyerp/pdfservice/config/ResourceConfiguration.java
+/home/dorian/Projects/Pro/easy-erp/source/backend/pdf-service/src/main/java/com/easyerp/pdfservice/PdfServiceApplication.java
+/home/dorian/Projects/Pro/easy-erp/source/backend/pdf-service/src/main/java/com/easyerp/pdfservice/config/EasyERPConfiguration.java
+/home/dorian/Projects/Pro/easy-erp/source/backend/pdf-service/src/main/java/com/easyerp/pdfservice/utils/PdfGeneratorUtils.java
+/home/dorian/Projects/Pro/easy-erp/source/backend/pdf-service/src/main/java/com/easyerp/pdfservice/services/impl/PdfServiceImpl.java
+/home/dorian/Projects/Pro/easy-erp/source/backend/pdf-service/src/main/java/com/easyerp/pdfservice/services/PdfService.java
+/home/dorian/Projects/Pro/easy-erp/source/backend/pdf-service/src/main/java/com/easyerp/pdfservice/controllers/PdfController.java
