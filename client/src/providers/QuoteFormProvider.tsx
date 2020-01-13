@@ -3,10 +3,13 @@ import QuoteFormContext from "../contexts/QuoteFormContext";
 import { QuoteLineData } from "../models/QuoteLineData";
 import { QuoteData } from "../models/QuoteData";
 import { useQuoteContext } from "./QuoteProvider";
+import { useHistory } from "react-router-dom";
+import routes from "../routes";
 
 const QuoteFormProvider: React.FC<any> = props => {
   const [quote, setQuote] = useState<QuoteData>(props.quote);
   const quoteContext = useQuoteContext();
+  const history = useHistory();
 
   const addLine = () => {
     const newQuote = { ...quote };
@@ -39,19 +42,18 @@ const QuoteFormProvider: React.FC<any> = props => {
 
   const submit = () => {
     quoteContext.save(quote, false).subscribe((newQuote: QuoteData) => {
-      console.log(newQuote);
       if (newQuote) {
         setQuote(newQuote);
+        history.push(routes.QUOTES_DETAIL.path.replace(":id", newQuote.id?.toString() || ""));
       }
     });
   };
 
   const saveDraft = () => {
     quoteContext.save(quote, true).subscribe((newQuote: QuoteData) => {
-      console.log(newQuote);
-
       if (newQuote) {
         setQuote(newQuote);
+        history.push(routes.QUOTES_DETAIL.path.replace(":id", newQuote.id?.toString() || ""));
       }
     });
   };

@@ -75,10 +75,9 @@ public class TenantController {
     @PutMapping("/mine/upload-logo")
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
     public ResponseEntity uploadLogo(@RequestParam("logo") MultipartFile logo, OAuth2Authentication authentication) {
-        String logoName = fileStorageService.storeLogo(logo, authentication);
+        fileStorageService.storeLogo(logo, authentication);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/images/logo/mine")
-                .path(logoName)
                 .toUriString();
         this.tenantService.updateLogo(fileDownloadUri, authentication);
         return ResponseEntity.ok(fileDownloadUri);

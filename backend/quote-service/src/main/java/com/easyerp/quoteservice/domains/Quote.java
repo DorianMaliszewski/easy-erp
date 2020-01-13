@@ -3,6 +3,7 @@ package com.easyerp.quoteservice.domains;
 import com.easyerp.quoteservice.enums.QuoteStatus;
 import com.easyerp.quoteservice.requests.QuoteLineRequest;
 import com.easyerp.quoteservice.requests.QuoteRequest;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -22,6 +23,11 @@ public class Quote extends BaseEntity {
     private Long clientId;
     private Double tva;
     private Long billId;
+    private boolean locked;
+
+    @OneToMany(mappedBy = "quote")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<QuotePdf> pdfs;
 
     @OneToMany(mappedBy = "quote", targetEntity = QuoteLine.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuoteLine> lines = new ArrayList<>();

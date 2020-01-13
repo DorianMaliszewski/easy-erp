@@ -33,13 +33,18 @@ const TenantProvider: React.FC<any> = props => {
     };
   };
 
+  const uploadLogo = (value: File) => {
+    return TenantApi.getInstance().uploadLogo(value);
+  };
+
   return (
     <TenantContext.Provider
       value={{
         tenant,
         setTenant,
         submit,
-        cancel
+        cancel,
+        uploadLogo
       }}
     >
       {props.children}

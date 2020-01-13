@@ -2,6 +2,7 @@ package com.easyerp.billservice.domains;
 
 import com.easyerp.billservice.enums.BillStatus;
 import com.easyerp.billservice.requests.BillRequest;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,9 +21,14 @@ public class Bill extends BaseEntity {
     private Long clientId;
     private Long quoteId;
     private Double tva;
+    private boolean locked;
 
     @OneToMany(mappedBy = "bill", targetEntity = BillLine.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BillLine> lines = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bill")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<BillPdf> pdfs;
 
     private Boolean deleted;
 

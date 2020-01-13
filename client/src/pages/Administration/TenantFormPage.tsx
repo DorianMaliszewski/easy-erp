@@ -22,7 +22,6 @@ const TenantFormPage: React.FC<any> = () => {
       TenantApi.getInstance()
         .findMine()
         .subscribe((result: TenantData) => {
-          console.log(result);
           setTenant(result);
           setIsLoading(false);
         });

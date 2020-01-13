@@ -11,14 +11,12 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.web.context.request.RequestContextListener;
 
 @EnableResourceServer
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
-
-    private ResourceServerProperties sso;
-
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -37,5 +35,10 @@ public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
     public OAuth2RestTemplate restTemplate(UserInfoRestTemplateFactory factory) {
         factory.getUserInfoRestTemplate().setRequestFactory(new OkHttp3ClientHttpRequestFactory());
         return factory.getUserInfoRestTemplate();
+    }
+
+    @Bean
+    public RequestContextListener requestContextListener() {
+        return new RequestContextListener();
     }
 }

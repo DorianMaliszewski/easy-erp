@@ -1,4 +1,4 @@
-package com.easyerp.quoteservice.utils;
+package com.easyerp.billservice.utils;
 
 import com.github.jhonnymertz.wkhtmltopdf.wrapper.Pdf;
 import org.springframework.stereotype.Component;
@@ -7,11 +7,9 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 
 @Component
 public class PdfGeneratorUtils {

@@ -4,22 +4,29 @@ import { IconButton, makeStyles, Theme } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { purple } from "@material-ui/core/colors";
+import { BillApi } from "../../api/BillApi";
+import { AUTH_TOKEN } from "../../constants";
 
-const BillDetailDialogTopActions: React.FC<any> = props => {
+const BillDetailDialogTopActions: React.FC<any> = ({ bill }) => {
   const classes = useStyles();
 
   const savePDF = (e: any) => {
-    var aLink = document.createElement("a");
-    aLink.href = "/assets/modele-devis.pdf";
-    aLink.download = "devis.pdf";
-    aLink.style.display = "none";
-    document.body.appendChild(aLink);
-    aLink.click();
-    document.body.removeChild(aLink);
+    var a = document.createElement("a");
+    //On met l'url en dur pour ne pas perdre le nom du fichier
+    a.href = BillApi.getInstance().getApiUrl() + "/" + bill.id + "/show-pdf?access_token=" + localStorage.getItem(AUTH_TOKEN);
+    document.body.appendChild(a);
+    a.target = "_blank";
+    a.click();
+    a.remove();
   };
 
   const viewPDF = (e: any) => {
-    window.open("/assets/modele-devis.pdf", "_blank");
+    BillApi.getInstance()
+      .getPDF(bill.id)
+      .subscribe(pdf => {
+        var url = window.URL.createObjectURL(pdf);
+        window.open(url, "_blank");
+      });
   };
 
   return (

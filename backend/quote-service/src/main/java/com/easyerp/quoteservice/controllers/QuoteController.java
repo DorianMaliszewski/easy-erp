@@ -8,6 +8,10 @@ import com.easyerp.quoteservice.requests.QuoteRequest;
 import com.easyerp.quoteservice.services.QuoteService;
 import com.easyerp.quoteservice.utils.PdfGeneratorUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,10 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 
 @RestController
@@ -115,13 +123,43 @@ public class QuoteController {
     @GetMapping(value = "/{id}/generate-pdf", produces = "application/pdf")
     public ResponseEntity generatePDF(@PathVariable Long id, OAuth2Authentication authentication) {
         try {
-            var byteArrayOutputStream = this.quoteService.generatePDF(id, authentication);
+            var file = this.quoteService.generatePDF(id, authentication);
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set("Content-Disposition","attachment;filename=devis-" + id + ".pdf");
-            return ResponseEntity.ok().headers(responseHeaders).body(byteArrayOutputStream.toByteArray());
+            responseHeaders.set("Content-Type", "application/pdf");
+            responseHeaders.set("Content-Disposition","attachment;filename=" + file.getName());
+
+            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+
+            return ResponseEntity.ok().headers(responseHeaders).body(resource);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Une erreur est survenue lors de la génération du PDF");
         }
+    }
+
+    @GetMapping(value = "/{id}/show-pdf", produces = "application/pdf")
+    public ResponseEntity showLastPDF(@PathVariable Long id, OAuth2Authentication authentication) {
+        try {
+            File file = this.quoteService.getPDFOrGenerateIt(id, authentication);
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set("Content-Type", "application/pdf");
+            responseHeaders.set("Content-Disposition","attachment;filename=" + file.getName());
+
+            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+
+            return ResponseEntity.ok().headers(responseHeaders).body(resource);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Une erreur est survenue lors de la génération du PDF");
+        }
+    }
+
+    @GetMapping("/for-me")
+    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    public ResponseEntity findQuotesForMe(OAuth2Authentication authentication) {
+        DTO<Quote> dto = new DTO<>();
+        dto.setItems(this.quoteService.findForMe(authentication));
+        dto.setNumFound((long) dto.getItems().size());
+        return ResponseEntity.ok(dto);
     }
 }

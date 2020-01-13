@@ -2,7 +2,11 @@ package com.easyerp.billservice.services;
 
 import com.easyerp.billservice.domains.Bill;
 import com.easyerp.billservice.requests.BillRequest;
+import lombok.SneakyThrows;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+
+import java.io.File;
+import java.util.List;
 
 public interface BillService {
     Bill create(BillRequest quoteRequest, OAuth2Authentication authentication);
@@ -20,4 +24,11 @@ public interface BillService {
     Bill createFromQuote(BillRequest billRequest, OAuth2Authentication authentication);
 
     Bill payed(Bill bill, OAuth2Authentication authentication);
+
+    File generatePDF(Long id, OAuth2Authentication authentication) throws Exception;
+
+    @SneakyThrows
+    File getPDFOrGenerateIt(Long id, OAuth2Authentication authentication);
+
+    List<Bill> findForMe(OAuth2Authentication authentication);
 }

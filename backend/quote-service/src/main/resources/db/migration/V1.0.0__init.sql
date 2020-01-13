@@ -9,6 +9,7 @@ CREATE TABLE quote (
     status varchar(50) DEFAULT NULL,
     total double DEFAULT NULL,
     tva double DEFAULT 0,
+    locked bit(1) DEFAULT 0,
     created_by bigint(20) unsigned DEFAULT NULL,
     client_id bigint(20) unsigned DEFAULT NULL,
     deleted bit(1) DEFAULT 0

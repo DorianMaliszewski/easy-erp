@@ -62,7 +62,7 @@ const QuoteProvider: React.FC<any> = props => {
       .pipe(
         map((result: QuoteData) => {
           snackbar.show(isDraft ? "Brouillon enregistrée" : "Modification enregistrée", "success");
-          updateState(result, quote.id ? false : true);
+          return updateState(result, quote.id ? false : true);
         }),
         catchError(handleError(quote))
       );
@@ -77,7 +77,6 @@ const QuoteProvider: React.FC<any> = props => {
   };
 
   const updateState = (quote: QuoteData, isCreate: boolean) => {
-    console.log("Quote", quote);
     if (isCreate) {
       dispatch({ type: QUOTE_ADD.SUCCESS, quote });
     } else {

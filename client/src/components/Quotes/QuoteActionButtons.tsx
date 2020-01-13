@@ -68,10 +68,8 @@ const QuoteActionButtons: React.FC<any> = ({ setQuote, quote }) => {
   const handleCreateBill = (e: React.MouseEvent) => {
     billContext.createFromQuote(quote).subscribe((bill: BillData) => {
       snackbar.show("Facture créée", "success");
-      console.log("Bill créée", bill);
-
       if (bill.id) {
-        history.push(routes.BILLS_FORM.path + "/" + bill.id);
+        history.push(routes.BILLS_DETAIL.path.replace(":id", bill.id?.toString() || ""));
       }
     });
   };
@@ -134,7 +132,7 @@ const QuoteActionButtons: React.FC<any> = ({ setQuote, quote }) => {
           </Grid>
         ))}
       <Grid item>
-        <QuoteSavePDFAndViewPDFActions />
+        <QuoteSavePDFAndViewPDFActions quote={quote} />
       </Grid>
       {modal.ConfirmDialogComponent}
     </Grid>

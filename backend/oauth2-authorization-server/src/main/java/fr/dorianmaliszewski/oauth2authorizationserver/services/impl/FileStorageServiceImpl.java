@@ -30,6 +30,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Autowired
     public FileStorageServiceImpl(FileStorageProperties fileStorageProperties, TenantRepository tenantRepository) {
+        System.out.println("File Storage Destination : " + fileStorageProperties.getUploadDir());
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
         this.tenantRepository = tenantRepository;
@@ -47,7 +48,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         // Normalize file name
         Tenant tenant = this.tenantRepository.findByMainUser_Username(authentication.getName()).orElseThrow();
         this.createTenantDirectory(tenant.getName());
-        String fileName = StringUtils.cleanPath("tenant/" + Objects.requireNonNull(file.getOriginalFilename()));
+        String fileName = StringUtils.cleanPath(tenant.getName() + Objects.requireNonNull(file.getOriginalFilename()));
 
         try {
             // Check if the file's name contains invalid characters
@@ -70,10 +71,11 @@ public class FileStorageServiceImpl implements FileStorageService {
     public String storeLogo(MultipartFile logo, OAuth2Authentication authentication) {
         Tenant tenant = this.tenantRepository.findByMainUser_Username(authentication.getName()).orElseThrow();
         this.createTenantDirectory(tenant.getName());
-        String fileName = tenant.getName() + "/logo.png";
+        String fileName = "logo.png";
         try {
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Path targetLocation = this.fileStorageLocation.resolve(tenant.getName() + "/" + fileName);
+            System.out.println(targetLocation.toAbsolutePath().toString());
             Files.copy(logo.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return fileName;

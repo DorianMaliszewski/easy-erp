@@ -15,7 +15,7 @@ export class QuoteApi {
     return this.INSTANCE;
   }
 
-  private getApiUrl() {
+  public getApiUrl() {
     return sessionStorage.getItem(INSTANCE_URL) + "/" + QUOTE_SERVICE;
   }
 
@@ -61,6 +61,10 @@ export class QuoteApi {
 
   public cancel(quoteId: number) {
     return HttpClient.PATCH(this.getApiUrl() + "/api/quotes/" + quoteId + "/cancel").pipe(map((res: any) => this.convertJSONToQuoteData(res as QuoteData)));
+  }
+
+  public getPDF(quoteId: number) {
+    return HttpClient.GET(this.getApiUrl() + "/api/quotes/" + quoteId + "/show-pdf");
   }
 
   private convertJSONToQuoteData(item: QuoteData) {

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Devis</title>
+    <title>Facture</title>
     <meta charset="UTF-8" />
 </head>
 
@@ -21,7 +21,7 @@
         margin-bottom: 20px;
     }
 
-    .quote-title {
+    .bill-title {
         border: 2px solid black;
         font-weight: bold;
         padding: 20px 100px;
@@ -46,19 +46,19 @@
         margin-bottom: 20px;
     }
 
-    .quote-table {
+    .bill-table {
         margin-top: 10px;
         border-collapse: collapse;
         table-layout: fixed;
         width: 100%;
     }
 
-    .quote-table td {
+    .bill-table td {
         border: 1px solid #ddd;
         padding: 8px;
     }
 
-    .quote-table thead {
+    .bill-table thead {
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: left;
@@ -67,7 +67,7 @@
         font-weight: bold;
     }
 
-    .quote-table tr:nth-child(even) {
+    .bill-table tr:nth-child(even) {
         background-color: #f2f2f2;
     }
 
@@ -87,11 +87,11 @@
         padding: 8px;
     }
 
-    .quote-end {
+    .bill-end {
         margin-top: 30px;
     }
 
-    .quote-reference {
+    .bill-reference {
         border: 2px solid black;
         padding: 10px 20px;
         border-radius: 10px;
@@ -127,15 +127,15 @@
                 <p th:text="${user.tenant.site}"/>
             </div>
             <div style="float: right;">
-                <h3 class="quote-title">Devis</h3>
+                <h3 class="bill-title">Facture</h3>
             </div>
         </div>
     </div>
     <div class="header-customer-information">
-        <div class="quote-reference">
-            <p th:text="'Référence : ' + ${quoteReference}"/>
-            <p th:text="'Date : ' + ${quote.updatedAt}"/>
-            <p th:text="'N°Client : ' + ${quote.clientId}"/>
+        <div class="bill-reference">
+            <p th:text="'Référence : ' + ${billReference}"/>
+            <p th:text="'Date : ' + ${bill.updatedAt}"/>
+            <p th:text="'N°Client : ' + ${bill.clientId}"/>
         </div>
         <div style="float: right;">
             <p th:text="${customer.name}"/>
@@ -147,7 +147,7 @@
         <p>Intitulé : Description du projet</p>
     </div>
     <div>
-        <table class="quote-table">
+        <table class="bill-table">
             <thead>
                 <tr>
                     <td>Description</td>
@@ -157,11 +157,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="line : ${quote.lines}">
+                <tr th:each="line : ${bill.lines}">
                     <td th:text="${line.description}"/>
                     <td th:text="${line.quantity}"/>
-                    <td th:text="${line.preTaxPrice} + ' €'"/>
-                    <td th:text="${#numbers.formatDecimal((line.preTaxPrice * line.quantity) + (line.preTaxPrice * line.quantity * quote.tva),0,2, 'POINT') + ' €'}"/>
+                    <td th:text="${#numbers.formatDecimal(line.preTaxPrice,0,2, 'COMMA')}"/>
+                    <td th:text="${#numbers.formatDecimal((line.preTaxPrice * line.quantity) + (line.preTaxPrice * line.quantity * bill.tva),0,2, 'COMMA')}"/>
                 </tr>
             </tbody>
         </table>
@@ -170,37 +170,25 @@
             <tbody>
                 <tr>
                     <td>Tva appliquée</td>
-                    <td th:text="${quote.tva * 100} + '%'"/>
+                    <td th:text="${bill.tva * 100} + '%'"/>
                 </tr>
                 <tr>
                     <td>Total</td>
-                    <td th:text="${quote.total} + ' €'"/>
+                    <td th:text="${#numbers.formatDecimal(bill.total,0,2,'COMMA')} + ' €'"/>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="quote-end">
+    <div class="bill-end">
         <p>Nous restons à votre disposition pour toute information complémentaire</p>
         <p>Cordialement,</p>
     </div>
 
-    <div>
-        <p>Si ce devis vous convient, veuillez nous le retourner igné précédé de la mention :</p>
-        <p>"BON POUR ACCORD ET EXECUTION DU DEVIS"</p>
-    </div>
-
-    <div>
-        <span style="padding-right: 500px;">Date : </span>
-        <span>Signature : </span>
-    </div>
-
     <div class="post-info">
-        <p>Validité du devis : 3 Mois</p>
-        <p>Conditions de règlement : 30% à la commande, le solde à la livraison</p>
-        <p>Toute somme non payée à sa date d'éxigibilité produiura de plein droit des intérêts de retard équivalents
-            au triple du taux d'intérêts légal de l'année en cours ainsi que le paiement d'une somme de 40€ due au
-            titre des frais de recouvrement</p>
+        <p>Condition de paiement : paiement à la réception de la facture sous 30 jours</p>
+        <p>Tout incident de paiement est passible d'intérêt de retard. Le montant des pénalités résulte de l'application aux sommes restant dues d'un taux d'intérêts légal en vigueur au moment de l'incident.</p>
+        <p>Indemenité forfaitaire pour frais de recouvrement due au créancier en cas de retard de paiement : 40€</p>
     </div>
     <footer class="footer footer-caption">
         <p>N° Siret : 21089676400015 RCS Lyon</p>
