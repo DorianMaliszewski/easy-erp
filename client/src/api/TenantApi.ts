@@ -30,6 +30,13 @@ export class TenantApi {
     return HttpClient.PUT(this.getApiUrl() + "/" + tenant.id?.toString(), this.convertJSONToTenantData(tenant)).pipe(map(res => this.convertJSONToTenantData(res as TenantData)));
   }
 
+  public uploadLogo(value: File) {
+    const formData = new FormData();
+    formData.append("logo", value);
+    const myHeaders = new Headers();
+    return HttpClient.PUT(this.getApiUrl() + "/mine/upload-logo", formData, myHeaders);
+  }
+
   private convertJSONToTenantData(tenantJson: any): TenantData {
     return tenantJson as TenantData;
   }

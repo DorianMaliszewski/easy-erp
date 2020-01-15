@@ -18,7 +18,6 @@ import EnterpriseIcon from "@material-ui/icons/AccountBalance";
 
 import AuthContext from "../../contexts/AuthContext";
 
-
 type ListItemLinkProps = {
   icon: any;
   path: string;
@@ -26,7 +25,7 @@ type ListItemLinkProps = {
   className?: string;
 };
 
-const ListItemLink: React.FC<ListItemLinkProps> = ({ icon, path, text, className }) => {
+export const ListItemLink: React.FC<ListItemLinkProps> = ({ icon, path, text, className }) => {
   const IconComponent = icon;
   return (
     <ListItem className={className} component={Link} to={path} button>

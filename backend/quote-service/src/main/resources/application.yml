@@ -11,6 +11,8 @@ spring:
     show-sql: true
   flyway:
     enabled: true
+  main:
+    allow-bean-definition-overriding: true
 
 
 server:
@@ -21,3 +23,13 @@ application:
     client-id: easy-erp
     client-secret: easy-erp
     client-url: http://oauth.easy-erp.lan/oauth/check_token
+
+security:
+  oauth2:
+    client:
+      clientId: easy-erp
+      clientSecret: easy-erp
+    resource:
+      tokenInfoUri: http://oauth.easy-erp.lan/oauth/check_token
+      userInfoUri: http://oauth.easy-erp.lan/api/users/me
+      preferTokenInfo: false

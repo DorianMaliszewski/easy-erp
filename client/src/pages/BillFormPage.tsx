@@ -11,7 +11,6 @@ const BillFormPage: React.FC<any> = props => {
   const { id } = useParams();
   const [bill, setQuote] = useState(new BillData());
   const billContext = React.useContext(BillContext);
-  console.log(id, bill);
   if (id && !bill.id) {
     billContext.findById(parseInt(id, 10)).subscribe((billFinded: BillData) => {
       if (!billFinded.lines) {

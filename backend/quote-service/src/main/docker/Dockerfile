@@ -15,7 +15,8 @@ RUN mv wkhtmltox/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
 ENV SPRING_DATASOURCE_URL="" \
   SPRING_DATASOURCE_USERNAME="" \
   SPRING_DATASOURCE_PASSWORD="" \
-  OAUTHSERVICE_URL=''
+  OAUTHSERVICE_URL='' \
+  EASY_ERP_FILE_DIRECTORY='/tmp'
 
 ADD *.jar /app.jar
 
@@ -26,4 +27,5 @@ CMD java -jar /app.jar \
   --spring.datasource.url="${SPRING_DATASOURCE_URL}" \
   --spring.datasource.username="${SPRING_DATASOURCE_USERNAME}" \
   --spring.datasource.password="${SPRING_DATASOURCE_PASSWORD}" \
-  --application.oauth.client-url="${OAUTHSERVICE_URL}"
+  --application.oauth.client-url="${OAUTHSERVICE_URL}" \
+  --easy-erp.fileDirectory="${EASY_ERP_FILE_DIRECTORY}"

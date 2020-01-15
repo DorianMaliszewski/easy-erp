@@ -32,7 +32,6 @@ const QuotesTable: React.FC<any> = ({ quotes, isLoading = true }) => {
     history.push(routes.QUOTES_DETAIL.path.replace(":id", id.toString()));
   };
 
-  console.log("Rerender", quotes.length, isLoading);
   return (
     <Table className={classes.table}>
       <TableHead>

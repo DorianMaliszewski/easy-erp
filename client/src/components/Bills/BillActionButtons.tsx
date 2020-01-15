@@ -110,7 +110,7 @@ const BillActionButtons: React.FC<any> = ({ bill }) => {
         </Grid>
       )}
       <Grid item>
-        <BillSavePDFAndViewPDFActions />
+        <BillSavePDFAndViewPDFActions bill={bill} />
       </Grid>
       {modal.ConfirmDialogComponent}
     </Grid>

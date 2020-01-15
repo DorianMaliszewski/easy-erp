@@ -14,7 +14,7 @@ export class BillApi {
     return this.INSTANCE;
   }
 
-  private getApiUrl() {
+  public getApiUrl() {
     return sessionStorage.getItem(INSTANCE_URL) + "/" + BILL_SERVICE + "/api/bills";
   }
 
@@ -70,5 +70,9 @@ export class BillApi {
     return HttpClient.POST(this.getApiUrl() + "/from-quote", { ...convertGenericBillOrQuoteDataToRequest(quote), quoteId: quote.id }).pipe(
       map((res: any) => convertJSONToGenericBillOrQuoteData(res) as BillData)
     );
+  }
+
+  public getPDF(billId: number) {
+    return HttpClient.GET(this.getApiUrl() + "/" + billId + "/show-pdf");
   }
 }

@@ -113,6 +113,26 @@ services:
       - "traefik:oauth.easy-erp.lan"
       - "traefik:api.easy-erp.lan"
 
+  pdf-service:
+    image: easy-erp-pdf-service
+    env_file:
+      - .env_file
+    volumes:
+      - ./data/:/data/
+      - ./templates/:/templates/
+    depends_on:
+      - db-client
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pdf-service-router.rule=Host(`api.easy-erp.lan`) && PathPrefix(`/pdf-service`)"
+      - "traefik.http.middlewares.pdf-service-middlewares.stripprefix.prefixes=/pdf-service"
+      - "traefik.http.routers.pdf-service-router.middlewares=pdf-service-middlewares@docker"
+    links:
+      - "traefik:oauth.easy-erp.lan"
+      - "traefik:api.easy-erp.lan"
+
+
+
   fake-mail-server:
     image: reachfive/fake-smtp-server
     ports:

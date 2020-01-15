@@ -13,12 +13,6 @@ spring:
     hibernate:
       ddl-auto: none
 
-application:
-  oauth:
-    client-id: easy-erp
-    client-secret: easy-erp
-    client-url: http://oauth.easy-erp.lan/oauth/check_token
-
 security:
   oauth2:
     client:
@@ -26,4 +20,5 @@ security:
       clientSecret: easy-erp
     resource:
       tokenInfoUri: http://oauth.easy-erp.lan/oauth/check_token
-      userInfoUri: http://oauth.easy-erp.lan/oauth/users/me
+      userInfoUri: http://oauth.easy-erp.lan/api/users/me
+      preferTokenInfo: false

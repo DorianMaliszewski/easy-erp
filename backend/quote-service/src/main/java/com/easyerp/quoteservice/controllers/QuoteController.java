@@ -6,32 +6,21 @@ import com.easyerp.quoteservice.exceptions.ConflictException;
 import com.easyerp.quoteservice.repositories.QuoteRepository;
 import com.easyerp.quoteservice.requests.QuoteRequest;
 import com.easyerp.quoteservice.services.QuoteService;
-import com.easyerp.quoteservice.utils.PdfGeneratorUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpHeaders;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
-import java.util.Map;
-
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/quotes")
 public class QuoteController {
     private final QuoteRepository quoteRepository;
     private final QuoteService quoteService;
-    private final PdfGeneratorUtils pdfGeneratorUtils;
     private final ObjectMapper objectMapper;
-
-    public QuoteController(QuoteRepository quoteRepository, QuoteService quoteService, PdfGeneratorUtils pdfGeneratorUtils, ObjectMapper objectMapper) {
-        this.quoteRepository = quoteRepository;
-        this.quoteService = quoteService;
-        this.pdfGeneratorUtils = pdfGeneratorUtils;
-        this.objectMapper = objectMapper;
-    }
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_READ_QUOTES')")
@@ -113,17 +102,33 @@ public class QuoteController {
     }
 
     @GetMapping(value = "/{id}/generate-pdf", produces = "application/pdf")
-    public ResponseEntity generatePDF(@PathVariable Long id) {
-        Quote quote = this.quoteRepository.findById(id).orElseThrow();
-
+    public ResponseEntity generatePDF(@PathVariable Long id, OAuth2Authentication authentication) {
         try {
-            var byteArrayOutputStream = this.pdfGeneratorUtils.createPdf("devis", this.objectMapper.convertValue(quote, Map.class));
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set("Content-Disposition","attachment;filename=devis-" + quote.getId() + ".pdf");
-            return ResponseEntity.ok().headers(responseHeaders).body(byteArrayOutputStream.toByteArray());
+            var responseEntity = this.quoteService.generatePDF(id, authentication);
+            return responseEntity;
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Une erreur est survenue lors de la génération du PDF");
         }
+    }
+
+    @GetMapping(value = "/{id}/show-pdf", produces = "application/pdf")
+    public ResponseEntity showLastPDF(@PathVariable Long id, OAuth2Authentication authentication) {
+        try {
+            var responseEntity = this.quoteService.getPDFOrGenerateIt(id, authentication);
+            return responseEntity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Une erreur est survenue lors de la génération du PDF");
+        }
+    }
+
+    @GetMapping("/for-me")
+    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    public ResponseEntity findQuotesForMe(OAuth2Authentication authentication) {
+        DTO<Quote> dto = new DTO<>();
+        dto.setItems(this.quoteService.findForMe(authentication));
+        dto.setNumFound((long) dto.getItems().size());
+        return ResponseEntity.ok(dto);
     }
 }

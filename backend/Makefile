@@ -33,3 +33,6 @@ build-client-service:
 
 build-oauth-service:
 	cd oauth2-authorization-server && ./mvnw clean package docker:build -DskipTests
+
+build-pdf-service:
+	cd pdf-service && ./mvnw clean package docker:build -DskipTests

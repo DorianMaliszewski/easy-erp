@@ -7,17 +7,21 @@ export function initInterceptor() {
   unregister = fetchIntercept.register({
     request: function(url, config) {
       // Modify the url or config here
+
       if (localStorage.getItem(AUTH_TOKEN)) {
-        if (!config.headers) {
-          config.headers = new Headers();
+        if (config) {
+          if (!config.headers) {
+            config.headers = new Headers();
+            config.headers.append("Content-Type", "application/json");
+          }
+          config.headers.append("Authorization", "Bearer " + localStorage.getItem(AUTH_TOKEN));
         }
-        config.headers.append("Content-Type", "application/json");
-        config.headers.append("Authorization", "Bearer " + localStorage.getItem(AUTH_TOKEN));
       }
 
-      if (config.body) {
+      if (config && config.body && config.headers.get("Content-Type") === "application/json") {
         config.body = JSON.stringify(config.body);
       }
+
       return [url, config];
     },
 
@@ -40,5 +44,5 @@ export function initInterceptor() {
 
 export function destroyInterceptor() {
   // Unregister your interceptor
-  unregister();
+  if (unregister) unregister();
 }
