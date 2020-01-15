@@ -11,7 +11,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useLocation } from "react-router-dom";
 import routes from "../../routes";
 import { useMediaQuery, Theme } from "@material-ui/core";
-import SearchBar from "./SearchBar";
+import TopSearchBar from "./TopSearchBar";
 
 const drawerWidth = 240;
 
@@ -65,7 +65,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleDrawer, open }) => {
         <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
           {pageTitle ? pageTitle.title : ""}
         </Typography>
-        <SearchBar />
+        <TopSearchBar />
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
             <NotificationsIcon />

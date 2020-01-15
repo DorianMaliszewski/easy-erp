@@ -88,20 +88,6 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
-
-        <!-- PDF, HTML, TEMPLATE -->
-        <!-- Thymeleaf -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.jhonnymertz</groupId>
-            <artifactId>java-wkhtmltopdf-wrapper</artifactId>
-            <version>1.1.11-RELEASE</version>
-        </dependency>
-
         <!-- OAuth 2 -->
         <dependency>
             <groupId>org.springframework.security.oauth.boot</groupId>

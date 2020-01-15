@@ -1,33 +1,27 @@
 package com.easyerp.billservice.services.impl;
 
-import com.easyerp.billservice.config.EasyERPConfiguration;
 import com.easyerp.billservice.domains.Bill;
 import com.easyerp.billservice.domains.BillLine;
 import com.easyerp.billservice.domains.BillLineCompositeKey;
 import com.easyerp.billservice.domains.BillPdf;
 import com.easyerp.billservice.enums.BillStatus;
 import com.easyerp.billservice.exceptions.ConflictException;
-import com.easyerp.billservice.exceptions.ForbiddenException;
 import com.easyerp.billservice.repositories.BillLineRepository;
 import com.easyerp.billservice.repositories.BillPdfRepository;
 import com.easyerp.billservice.repositories.BillRepository;
 import com.easyerp.billservice.requests.BillRequest;
+import com.easyerp.billservice.requests.PdfRequest;
 import com.easyerp.billservice.services.BillService;
-import com.easyerp.billservice.utils.PdfGeneratorUtils;
 import com.easyerp.billservice.utils.SecurityUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.hibernate.Session;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,8 +31,6 @@ public class BillServiceImpl implements BillService {
     private final BillRepository billRepository;
     private final BillLineRepository billLineRepository;
     private final OAuth2RestOperations restTemplate;
-    private final PdfGeneratorUtils pdfGeneratorUtils;
-    private final EasyERPConfiguration easyERPConfiguration;
     private final ObjectMapper objectMapper;
     private final BillPdfRepository billPDFRepository;
 
@@ -91,6 +83,7 @@ public class BillServiceImpl implements BillService {
             } else {
                 bill.setStatus(BillStatus.NEED_CONFIRMATION);
             }
+            bill.setLocked(true);
         }
 
         return this.billRepository.saveAndFlush(bill);
@@ -103,6 +96,7 @@ public class BillServiceImpl implements BillService {
         } else {
             bill.setStatus(BillStatus.NEED_CONFIRMATION);
         }
+        bill.setLocked(true);
         return this.billRepository.save(bill);
     }
 
@@ -112,6 +106,7 @@ public class BillServiceImpl implements BillService {
             throw new ConflictException();
         }
         bill.setStatus(BillStatus.ACCEPTED);
+        bill.setLocked(true);
         return this.billRepository.save(bill);
     }
 
@@ -156,11 +151,11 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public File generatePDF(Long id, OAuth2Authentication authentication) throws Exception {
+    public ResponseEntity<byte[]> generatePDF(Long id, OAuth2Authentication authentication) throws Exception {
         Bill bill = this.billRepository.findById(id).orElseThrow();
 
         // Reference du devis
-        String billReference = "DEV" + bill.getId() + "-" + String.format("%05d", bill.getVersion());
+        String billReference = "FAC" + bill.getId() + "-" + String.format("%05d", bill.getVersion());
 
         Map data = new HashMap<String, Object>();
 
@@ -178,39 +173,33 @@ public class BillServiceImpl implements BillService {
         data.put("bill", this.objectMapper.convertValue(bill, Map.class));
 
         // Génération du PDF
-        var byteArrayOutputStream = this.pdfGeneratorUtils.createPdf("facture", data);
+        HttpEntity<PdfRequest> httpEntity = new HttpEntity<>(PdfRequest.builder().data(data).filename(bill.getClientId() + "/" + billReference + ".pdf").template("facture").build());
+        var file = restTemplate.exchange("http://api.easy-erp.lan/pdf-service/pdf/get-or-generate", HttpMethod.POST, httpEntity, byte[].class);
 
-        if (byteArrayOutputStream == null) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "PDF is empty");
+        if (file.getBody() != null) {
+
+            //Enregistrement en base de données
+            BillPdf billPdf = new BillPdf();
+            billPdf.setCreatedBy(authentication.getName());
+            billPdf.setFileName(billReference + ".pdf");
+            billPdf.setBill(bill);
+            billPdf.setBillVersion(bill.getVersion());
+            this.billPDFRepository.save(billPdf);
+            return file;
         }
 
-        //Enregistrement du fichier
-        File file = new File(easyERPConfiguration.getFileDirectory() + bill.getClientId() + "/" + billReference + ".pdf");
-        file.getParentFile().mkdirs();
-        file.createNewFile();
-        var fos = new FileOutputStream(file);
-        byteArrayOutputStream.writeTo(fos);
-
-        //Enregistrement en base de données
-        BillPdf billPdf = new BillPdf();
-        billPdf.setCreatedBy(authentication.getName());
-        billPdf.setFileName(file.getName());
-        billPdf.setBill(bill);
-        billPdf.setBillVersion(bill.getVersion());
-        this.billPDFRepository.save(billPdf);
-
-        return file;
+        return null;
     }
 
     @SneakyThrows
     @Override
-    public File getPDFOrGenerateIt(Long id, OAuth2Authentication authentication) {
+    public ResponseEntity<byte[]> getPDFOrGenerateIt(Long id, OAuth2Authentication authentication) {
         Optional<BillPdf> billPdf = this.billPDFRepository.findFirstByBill_IdOrderByIdDesc(id);
         if (billPdf.isEmpty() || (!billPdf.get().getBillVersion().equals(billPdf.get().getBill().getVersion()) && !billPdf.get().getBill().isLocked())) {
             return this.generatePDF(id, authentication);
         } else {
-            File file = new File(easyERPConfiguration.getFileDirectory() + billPdf.get().getBill().getClientId() + "/" + billPdf.get().getFileName());
-            return file.exists() ? file : this.generatePDF(id, authentication);
+            var file = restTemplate.exchange("http://api.easy-erp.lan/pdf-service/pdf/" + billPdf.get().getBill().getClientId() + "/" + billPdf.get().getFileName(), HttpMethod.GET,  null,byte[].class);
+            return file.getBody() != null ? file : this.generatePDF(id, authentication);
         }
     }
 

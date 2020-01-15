@@ -95,7 +95,7 @@ public class BillController {
 
         if (optionalBill.isEmpty())
             return ResponseEntity.notFound().build();
-        if (optionalBill.get().getStatus() != BillStatus.NEED_CONFIRMATION)
+        if (optionalBill.get().getStatus() != BillStatus.NEED_CONFIRMATION || optionalBill.get().getStatus() != BillStatus.DRAFT)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         return ResponseEntity.ok(this.billService.send(optionalBill.get(), authentication));
@@ -130,14 +130,8 @@ public class BillController {
     @GetMapping(value = "/{id}/generate-pdf", produces = "application/pdf")
     public ResponseEntity generatePDF(@PathVariable Long id, OAuth2Authentication authentication) {
         try {
-            var file = this.billService.generatePDF(id, authentication);
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set("Content-Type", "application/pdf");
-            responseHeaders.set("Content-Disposition","attachment;filename=" + file.getName());
-
-            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
-
-            return ResponseEntity.ok().headers(responseHeaders).body(resource);
+            var responseEntity = this.billService.generatePDF(id, authentication);
+            return responseEntity;
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Une erreur est survenue lors de la génération du PDF");
@@ -147,14 +141,8 @@ public class BillController {
     @GetMapping(value = "/{id}/show-pdf", produces = "application/pdf")
     public ResponseEntity showLastPDF(@PathVariable Long id, OAuth2Authentication authentication) {
         try {
-            File file = this.billService.getPDFOrGenerateIt(id, authentication);
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set("Content-Type", "application/pdf");
-            responseHeaders.set("Content-Disposition","attachment;filename=" + file.getName());
-
-            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
-
-            return ResponseEntity.ok().headers(responseHeaders).body(resource);
+            var responseEntity = this.billService.getPDFOrGenerateIt(id, authentication);
+            return responseEntity;
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Une erreur est survenue lors de la génération du PDF");

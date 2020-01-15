@@ -1,6 +1,5 @@
 package com.easyerp.quoteservice.services.impl;
 
-import com.easyerp.quoteservice.config.EasyERPConfiguration;
 import com.easyerp.quoteservice.domains.Quote;
 import com.easyerp.quoteservice.domains.QuoteLine;
 import com.easyerp.quoteservice.domains.QuoteLineCompositeKey;
@@ -10,22 +9,22 @@ import com.easyerp.quoteservice.exceptions.QuoteLockedException;
 import com.easyerp.quoteservice.repositories.QuoteLineRepository;
 import com.easyerp.quoteservice.repositories.QuotePDFRepository;
 import com.easyerp.quoteservice.repositories.QuoteRepository;
+import com.easyerp.quoteservice.requests.PdfRequest;
 import com.easyerp.quoteservice.requests.QuoteRequest;
 import com.easyerp.quoteservice.services.QuoteService;
-import com.easyerp.quoteservice.utils.PdfGeneratorUtils;
 import com.easyerp.quoteservice.utils.SecurityUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.client.HttpClientErrorException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,10 +34,8 @@ public class QuoteServiceImpl implements QuoteService {
     private final QuoteRepository quoteRepository;
     private final QuoteLineRepository quoteLineRepository;
     private final QuotePDFRepository quotePDFRepository;
-    private final PdfGeneratorUtils pdfGeneratorUtils;
     private final ObjectMapper objectMapper;
     private final OAuth2RestOperations restTemplate;
-    private final EasyERPConfiguration easyERPConfiguration;
 
 
     @Override
@@ -79,7 +76,7 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     @Override
-    public File generatePDF(Long id, OAuth2Authentication authentication) throws Exception {
+    public ResponseEntity<byte[]> generatePDF(Long id, OAuth2Authentication authentication) throws Exception {
         Quote quote = this.quoteRepository.findById(id).orElseThrow();
 
         // Reference du devis
@@ -100,29 +97,20 @@ public class QuoteServiceImpl implements QuoteService {
         // Récupération des informations sur le devis
         data.put("quote", this.objectMapper.convertValue(quote, Map.class));
 
-        // Génération du PDF
-        var byteArrayOutputStream = this.pdfGeneratorUtils.createPdf("devis", data);
+        HttpEntity<PdfRequest> httpEntity = new HttpEntity<>(PdfRequest.builder().data(data).filename(quote.getClientId() + "/" + quoteReference + ".pdf").template("devis").build());
+        var file = restTemplate.exchange("http://api.easy-erp.lan/pdf-service/pdf/get-or-generate", HttpMethod.POST, httpEntity, byte[].class);
 
-        if (byteArrayOutputStream == null) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "PDF is empty");
+        if (file.getBody() != null) {
+            //Enregistrement en base de données
+            QuotePdf quotePdf = new QuotePdf();
+            quotePdf.setCreatedBy(authentication.getName());
+            quotePdf.setFileName(quoteReference + ".pdf");
+            quotePdf.setQuote(quote);
+            quotePdf.setQuoteVersion(quote.getVersion());
+            this.quotePDFRepository.save(quotePdf);
+            return file;
         }
-
-        //Enregistrement du fichier
-        File file = new File(easyERPConfiguration.getFileDirectory() + quote.getClientId() + "/" + quoteReference + ".pdf");
-        file.getParentFile().mkdirs();
-        file.createNewFile();
-        var fos = new FileOutputStream(file);
-        byteArrayOutputStream.writeTo(fos);
-
-        //Enregistrement en base de données
-        QuotePdf quotePdf = new QuotePdf();
-        quotePdf.setCreatedBy(authentication.getName());
-        quotePdf.setFileName(file.getName());
-        quotePdf.setQuote(quote);
-        quotePdf.setQuoteVersion(quote.getVersion());
-        this.quotePDFRepository.save(quotePdf);
-
-        return file;
+        return null;
     }
 
     @Override
@@ -136,13 +124,17 @@ public class QuoteServiceImpl implements QuoteService {
 
     @SneakyThrows
     @Override
-    public File getPDFOrGenerateIt(Long id, OAuth2Authentication authentication) {
+    public ResponseEntity<byte[]> getPDFOrGenerateIt(Long id, OAuth2Authentication authentication) {
         Optional<QuotePdf> quotePdf = this.quotePDFRepository.findFirstByQuote_IdOrderByIdDesc(id);
         if (quotePdf.isEmpty() || (!quotePdf.get().getQuoteVersion().equals(quotePdf.get().getQuote().getVersion()) && !quotePdf.get().getQuote().isLocked())) {
             return this.generatePDF(id, authentication);
         } else {
-            File file = new File(easyERPConfiguration.getFileDirectory() + quotePdf.get().getQuote().getClientId() + "/" + quotePdf.get().getFileName());
-            return file.exists() ? file : this.generatePDF(id, authentication);
+            try {
+                var file = restTemplate.exchange("http://api.easy-erp.lan/pdf-service/pdf/" + quotePdf.get().getQuote().getClientId() + "/" + quotePdf.get().getFileName(), HttpMethod.GET,  null,byte[].class);
+                return file.getBody() != null ? file : this.generatePDF(id, authentication);
+            } catch (HttpClientErrorException.NotFound e) {
+                return this.generatePDF(id, authentication);
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.easyerp.quoteservice.config;
+package com.easyerp.pdfservice.config;
 
 import lombok.Getter;
 import lombok.Setter;
