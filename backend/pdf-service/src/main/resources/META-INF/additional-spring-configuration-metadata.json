@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "easy-erp.data-directory",
+      "type": "java.lang.String",
+      "description": "Dossier où sont stockés les pdf générés"
+  }
+] }

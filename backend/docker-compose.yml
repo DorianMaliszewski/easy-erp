@@ -24,6 +24,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.authorization-server.rule=Host(`oauth.easy-erp.lan`)"
+    links:
+      - "traefik:api.easy-erp.lan"
 
   db-bill:
     image: mariadb
@@ -71,6 +73,9 @@ services:
       - "traefik.http.routers.quote-service-router.rule=Host(`api.easy-erp.lan`) && PathPrefix(`/quote-service`)"
       - "traefik.http.middlewares.quote-service-middlewares.stripprefix.prefixes=/quote-service"
       - "traefik.http.routers.quote-service-router.middlewares=quote-service-middlewares@docker"
+    links:
+      - "traefik:oauth.easy-erp.lan"
+      - "traefik:api.easy-erp.lan"
 
   bill-service:
     image: easy-erp-bill-service
@@ -86,6 +91,9 @@ services:
       - "traefik.http.routers.bill-service-router.rule=Host(`api.easy-erp.lan`) && PathPrefix(`/bill-service`)"
       - "traefik.http.middlewares.bill-service-middlewares.stripprefix.prefixes=/bill-service"
       - "traefik.http.routers.bill-service-router.middlewares=bill-service-middlewares@docker"
+    links:
+      - "traefik:oauth.easy-erp.lan"
+      - "traefik:api.easy-erp.lan"
 
   client-service:
     image: easy-erp-client-service
@@ -101,3 +109,33 @@ services:
       - "traefik.http.routers.client-service-router.rule=Host(`api.easy-erp.lan`) && PathPrefix(`/client-service`)"
       - "traefik.http.middlewares.client-service-middlewares.stripprefix.prefixes=/client-service"
       - "traefik.http.routers.client-service-router.middlewares=client-service-middlewares@docker"
+    links:
+      - "traefik:oauth.easy-erp.lan"
+      - "traefik:api.easy-erp.lan"
+
+  pdf-service:
+    image: easy-erp-pdf-service
+    env_file:
+      - .env_file
+    volumes:
+      - ./data/:/data/
+      - ./templates/:/templates/
+    depends_on:
+      - db-client
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pdf-service-router.rule=Host(`api.easy-erp.lan`) && PathPrefix(`/pdf-service`)"
+      - "traefik.http.middlewares.pdf-service-middlewares.stripprefix.prefixes=/pdf-service"
+      - "traefik.http.routers.pdf-service-router.middlewares=pdf-service-middlewares@docker"
+    links:
+      - "traefik:oauth.easy-erp.lan"
+      - "traefik:api.easy-erp.lan"
+
+
+
+  fake-mail-server:
+    image: reachfive/fake-smtp-server
+    ports:
+      - 1025:1025
+      - 1080:1080
+    command: node index.js -a test:test

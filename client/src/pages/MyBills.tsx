@@ -1,28 +1,39 @@
-import React, { useContext } from "react";
-import BillsTable from "../components/Bills/BillsTable";
-import { Button } from "@material-ui/core";
-import BillContext from "../contexts/BillContext";
-import Splashscreen from "./Splashscreen";
+import React from "react";
+import { Button, Paper, makeStyles, Grid, Theme } from "@material-ui/core";
 import routes from "../routes";
 import { useHistory } from "react-router-dom";
+import { BillOrQuoteTableEnhanced } from "../components/Tables/BillOrQuoteTableEnhanced/BillOrQuoteTableEnhanced";
+import { useBillContext } from "../providers/BillProvider";
 
 const MyBills: React.FC<any> = props => {
-  const billContext = useContext(BillContext);
+  const billContext = useBillContext();
   const history = useHistory();
+  const classes = useStyles();
 
-  if (!billContext.state.bills) {
-    billContext.findAll();
-    return <Splashscreen text="Récupération des factures" />;
-  }
+  const handleRowClick = (event: any, id: string) => {
+    history.push(routes.BILLS_DETAIL.path.replace(":id", id));
+  };
 
   return (
-    <>
-      <Button color="primary" variant="contained" onClick={e => history.push(routes.QUOTES_FORM.path)}>
-        Créer une facture
-      </Button>
-      <BillsTable bills={billContext.state.bills} />
-    </>
+    <Grid container spacing={3} direction="column">
+      <Grid item>
+        <Button color="primary" variant="contained" onClick={e => history.push(routes.BILLS_FORM.path)}>
+          Créer une facture
+        </Button>
+      </Grid>
+      <Grid item>
+        <Paper className={classes.paper}>
+          <BillOrQuoteTableEnhanced rows={billContext.state.bills} isLoading={billContext.state.isLoading} handleRowClick={handleRowClick} />
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
+
+const useStyles = makeStyles((theme: Theme) => ({
+  paper: {
+    padding: theme.spacing(2)
+  }
+}));
 
 export default MyBills;

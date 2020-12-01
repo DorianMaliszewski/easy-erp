@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { AUTH_TOKEN, REFRESH_TOKEN, INSTANCE_URL } from "../constants";
-import { login, refreshToken } from "../api/auth";
+import { login, refreshToken } from "../api/AuthApi";
 import { withRouter } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import routes from "../routes";
 import Axios from "axios";
+import { initInterceptor, destroyInterceptor } from "../utils/fetchInterceptor";
 
 const AuthProvider: React.FC<any> = props => {
   const [user, setUser] = useState();
@@ -19,6 +20,7 @@ const AuthProvider: React.FC<any> = props => {
         sessionStorage.setItem(INSTANCE_URL, res.instanceUrl);
         setInstanceUrl(res.instanceUrl);
         Axios.defaults.headers.common["Authorization"] = "Bearer " + res.access_token;
+        initInterceptor();
         setUser(res.user);
         return true;
       })
@@ -33,9 +35,11 @@ const AuthProvider: React.FC<any> = props => {
 
   const logout = () => {
     sessionStorage.removeItem(AUTH_TOKEN);
+    localStorage.removeItem(AUTH_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
     sessionStorage.removeItem(INSTANCE_URL);
     props.history.push(routes.LOGIN.path);
+    destroyInterceptor();
   };
 
   const refreshTokenAction = () => {
@@ -45,6 +49,7 @@ const AuthProvider: React.FC<any> = props => {
         localStorage.setItem(REFRESH_TOKEN, res.refresh_token);
         sessionStorage.setItem(INSTANCE_URL, res.instanceUrl);
         setInstanceUrl(res.instanceUrl);
+        initInterceptor();
         Axios.defaults.headers.common["Authorization"] = "Bearer " + res.access_token;
         setUser(res.user);
         return true;
@@ -61,7 +66,11 @@ const AuthProvider: React.FC<any> = props => {
   const isMoreThanOrEqualAdmin = () => {
     return user && (user.role.name === "ROLE_ADMIN" || user.role.name === "ROLE_SUPER_ADMIN");
   };
-  return <AuthContext.Provider value={{ user, setUser, login: loginAction, isConnected, logout, isMoreThanOrEqualAdmin, refreshToken: refreshTokenAction, instanceUrl }}>{props.children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, setUser, login: loginAction, isConnected, logout, isMoreThanOrEqualAdmin, refreshToken: refreshTokenAction, instanceUrl }}>
+      {props.children}
+    </AuthContext.Provider>
+  );
 };
 
 export default withRouter(AuthProvider);

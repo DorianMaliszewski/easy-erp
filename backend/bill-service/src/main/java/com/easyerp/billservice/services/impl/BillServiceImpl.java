@@ -3,65 +3,77 @@ package com.easyerp.billservice.services.impl;
 import com.easyerp.billservice.domains.Bill;
 import com.easyerp.billservice.domains.BillLine;
 import com.easyerp.billservice.domains.BillLineCompositeKey;
+import com.easyerp.billservice.domains.BillPdf;
 import com.easyerp.billservice.enums.BillStatus;
 import com.easyerp.billservice.exceptions.ConflictException;
-import com.easyerp.billservice.exceptions.ForbiddenException;
 import com.easyerp.billservice.repositories.BillLineRepository;
+import com.easyerp.billservice.repositories.BillPdfRepository;
 import com.easyerp.billservice.repositories.BillRepository;
 import com.easyerp.billservice.requests.BillRequest;
+import com.easyerp.billservice.requests.PdfRequest;
 import com.easyerp.billservice.services.BillService;
 import com.easyerp.billservice.utils.SecurityUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.http.*;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
     private final BillRepository billRepository;
     private final BillLineRepository billLineRepository;
-
-    public BillServiceImpl(BillRepository billRepository, BillLineRepository billLineRepository) {
-        this.billRepository = billRepository;
-        this.billLineRepository = billLineRepository;
-    }
+    private final OAuth2RestOperations restTemplate;
+    private final ObjectMapper objectMapper;
+    private final BillPdfRepository billPDFRepository;
 
     @Override
-    public Bill create(BillRequest billRequest, OAuth2Authentication authentication) {
+    public Bill create(final BillRequest billRequest, final OAuth2Authentication authentication) {
 
         Bill bill = new Bill(billRequest);
-        bill.setCreatedBy(0L);
+        bill.setCreatedBy(authentication.getName());
+        bill = this.billRepository.saveAndFlush(bill);
 
         return feedBillAndSave(bill, billRequest, authentication);
     }
 
     @Override
-    public Bill update(Bill bill, BillRequest billRequest, OAuth2Authentication authentication) {
-//        if (!authentication.getName().equals(bill.getCreatedBy().toString())) {
-//            throw new ForbiddenException();
-//        }
-
+    public Bill update(final Bill bill, final BillRequest billRequest, final OAuth2Authentication authentication) {
         return feedBillAndSave(bill, billRequest, authentication);
     }
 
-    private Bill feedBillAndSave(Bill bill, BillRequest billRequest, OAuth2Authentication authentication) {
-        bill.setLines(billRequest.getLines().parallelStream().map(billLineRequest -> {
-            var key =new BillLineCompositeKey();
+    private Bill feedBillAndSave(final Bill bill, final BillRequest billRequest,
+            final OAuth2Authentication authentication) {
+        final var lines = billRequest.getLines().parallelStream().map(billLineRequest -> {
+            final var key = new BillLineCompositeKey();
             key.setBill(bill);
             key.setLineNumber(billLineRequest.getLineNumber());
 
-            BillLine billLine = this.billLineRepository.findById(key).orElse(new BillLine());
+            final BillLine billLine = this.billLineRepository.findById(key).orElse(new BillLine());
 
+            billLine.setLineNumber(billLineRequest.getLineNumber());
             billLine.setDescription(billLineRequest.getDescription());
             billLine.setPreTaxPrice(billLineRequest.getPreTaxPrice());
             billLine.setQuantity(billLineRequest.getQuantity());
             billLine.setBill(bill);
 
             return billLine;
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toList());
 
+        bill.getLines().clear();
+        bill.getLines().addAll(this.billLineRepository.saveAll(lines));
+
+        bill.setClientId(billRequest.getClientId());
         bill.setTva(billRequest.getTva());
-        bill.setTotal(billRequest.getLines().stream().mapToDouble(line -> line.getPreTaxPrice() * line.getQuantity() * (1 + billRequest.getTva())).sum());
+        bill.setTotal(billRequest.getLines().stream()
+                .mapToDouble(line -> line.getPreTaxPrice() * line.getQuantity() * (1 + billRequest.getTva())).sum());
 
         if (billRequest.isDraft()) {
             bill.setStatus(BillStatus.DRAFT);
@@ -71,60 +83,132 @@ public class BillServiceImpl implements BillService {
             } else {
                 bill.setStatus(BillStatus.NEED_CONFIRMATION);
             }
+            bill.setLocked(true);
         }
 
-        return this.billRepository.save(bill);
+        return this.billRepository.saveAndFlush(bill);
     }
 
     @Override
-    public void publish(Bill bill, OAuth2Authentication authentication) {
-        if (!authentication.getName().equals(bill.getCreatedBy())) {
-            throw new ForbiddenException();
-        }
-
+    public Bill publish(final Bill bill, final OAuth2Authentication authentication) {
         if (SecurityUtils.isMoreThanOrEqualManager(authentication.getAuthorities())) {
             bill.setStatus(BillStatus.WAITING_CUSTOMER);
         } else {
             bill.setStatus(BillStatus.NEED_CONFIRMATION);
         }
-
-        this.billRepository.save(bill);
-
+        bill.setLocked(true);
+        return this.billRepository.save(bill);
     }
 
     @Override
-    public void accept(Bill bill, OAuth2Authentication authentication) {
-        if (!bill.getClientId().equals(authentication.getName())) {
-            throw new ForbiddenException();
-        }
+    public Bill accept(final Bill bill, final OAuth2Authentication authentication) {
         if (bill.getStatus() != BillStatus.WAITING_CUSTOMER) {
             throw new ConflictException();
         }
         bill.setStatus(BillStatus.ACCEPTED);
-        this.billRepository.save(bill);
+        bill.setLocked(true);
+        return this.billRepository.save(bill);
     }
 
     @Override
-    public void cancel(Bill bill, OAuth2Authentication authentication) {
-        if (!bill.getClientId().equals(authentication.getName())) {
-            throw new ForbiddenException();
-        }
+    public Bill cancel(final Bill bill, final OAuth2Authentication authentication) {
         if (bill.getStatus() != BillStatus.WAITING_CUSTOMER) {
             throw new ConflictException();
         }
         bill.setStatus(BillStatus.CANCELED);
-        this.billRepository.save(bill);
+        return this.billRepository.save(bill);
     }
 
     @Override
-    public void send(Bill bill, OAuth2Authentication authentication) {
-        if (!SecurityUtils.isMoreThanOrEqualManager(authentication.getAuthorities())) {
-            throw new ForbiddenException();
-        }
+    public Bill send(final Bill bill, final OAuth2Authentication authentication) {
         if (bill.getStatus() != BillStatus.NEED_CONFIRMATION) {
             throw new ConflictException();
         }
         bill.setStatus(BillStatus.WAITING_CUSTOMER);
-        this.billRepository.save(bill);
+        return this.billRepository.save(bill);
+    }
+
+    @Override
+    public Bill createFromQuote(final BillRequest billRequest, final OAuth2Authentication authentication) {
+        Bill bill = new Bill(billRequest);
+        bill.setCreatedBy(authentication.getName());
+        bill = this.billRepository.saveAndFlush(bill);
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        final HttpEntity entity = new HttpEntity<Long>(bill.getId(), headers);
+        restTemplate.exchange("http://api.easy-erp.lan/quote-service/api/quotes/" + bill.getQuoteId() + "/link-to-bill/"
+                + bill.getId(), HttpMethod.PATCH, entity, Void.class);
+        return feedBillAndSave(bill, billRequest, authentication);
+    }
+
+    @Override
+    public Bill payed(final Bill bill, final OAuth2Authentication authentication) {
+        if (bill.getStatus() != BillStatus.ACCEPTED) {
+            throw new ConflictException();
+        }
+        bill.setStatus(BillStatus.PAYED);
+        return this.billRepository.save(bill);
+    }
+
+    @Override
+    public ResponseEntity<byte[]> generatePDF(Long id, OAuth2Authentication authentication) throws Exception {
+        Bill bill = this.billRepository.findById(id).orElseThrow();
+
+        // Reference du devis
+        String billReference = "FAC" + bill.getId() + "-" + String.format("%05d", bill.getVersion());
+
+        Map data = new HashMap<String, Object>();
+
+        data.put("access_token", ((OAuth2AuthenticationDetails)authentication.getDetails()).getTokenValue());
+        data.put("billReference", billReference);
+
+        // Recupération des informations utilisateurs
+        data.put("user",this.objectMapper.convertValue(authentication.getUserAuthentication().getDetails(), Map.class));
+
+        // Récupération des informations clients
+        var customerData = restTemplate.getForEntity("http://api.easy-erp.lan/client-service/api/clients/" + bill.getClientId(), Map.class).getBody();
+        data.put("customer", this.objectMapper.convertValue(customerData, Map.class));
+
+        // Récupération des informations sur la facture
+        data.put("bill", this.objectMapper.convertValue(bill, Map.class));
+
+        // Génération du PDF
+        HttpEntity<PdfRequest> httpEntity = new HttpEntity<>(PdfRequest.builder().data(data).filename(bill.getClientId() + "/" + billReference + ".pdf").template("facture").build());
+        var file = restTemplate.exchange("http://api.easy-erp.lan/pdf-service/pdf/get-or-generate", HttpMethod.POST, httpEntity, byte[].class);
+
+        if (file.getBody() != null) {
+
+            //Enregistrement en base de données
+            BillPdf billPdf = new BillPdf();
+            billPdf.setCreatedBy(authentication.getName());
+            billPdf.setFileName(billReference + ".pdf");
+            billPdf.setBill(bill);
+            billPdf.setBillVersion(bill.getVersion());
+            this.billPDFRepository.save(billPdf);
+            return file;
+        }
+
+        return null;
+    }
+
+    @SneakyThrows
+    @Override
+    public ResponseEntity<byte[]> getPDFOrGenerateIt(Long id, OAuth2Authentication authentication) {
+        Optional<BillPdf> billPdf = this.billPDFRepository.findFirstByBill_IdOrderByIdDesc(id);
+        if (billPdf.isEmpty() || (!billPdf.get().getBillVersion().equals(billPdf.get().getBill().getVersion()) && !billPdf.get().getBill().isLocked())) {
+            return this.generatePDF(id, authentication);
+        } else {
+            var file = restTemplate.exchange("http://api.easy-erp.lan/pdf-service/pdf/" + billPdf.get().getBill().getClientId() + "/" + billPdf.get().getFileName(), HttpMethod.GET,  null,byte[].class);
+            return file.getBody() != null ? file : this.generatePDF(id, authentication);
+        }
+    }
+
+    @Override
+    public List<Bill> findForMe(OAuth2Authentication authentication) {
+        Map userInfo = this.objectMapper.convertValue(authentication.getUserAuthentication().getDetails(), Map.class);
+        if (userInfo.get("clientId") == null) {
+            return new ArrayList<>();
+        }
+        return this.billRepository.findByClientId((Long) userInfo.get("clientId"));
     }
 }

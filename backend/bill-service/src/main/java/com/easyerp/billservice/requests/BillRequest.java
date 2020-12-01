@@ -10,10 +10,9 @@ import java.util.List;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BillRequest {
-    private Double total;
-    private Long createdBy;
     private Long clientId;
     private Double tva;
     private List<BillLineRequest> lines;
     private boolean draft;
+    private Long quoteId;
 }

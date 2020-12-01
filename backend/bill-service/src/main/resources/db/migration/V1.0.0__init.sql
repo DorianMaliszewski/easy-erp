@@ -10,6 +10,7 @@ CREATE TABLE bill (
     tva DOUBLE DEFAULT 0,
     created_by BIGINT(20) DEFAULT NULL,
     client_id BIGINT(20) DEFAULT NULL,
+    locked BIT(1) DEFAULT 0,
     deleted BIT(1) DEFAULT 0
 );
 

@@ -247,7 +247,8 @@ const IntegrationReactSelect: React.FC<any> = props => {
         InputLabelProps: {
           htmlFor: "react-select-single",
           shrink: true
-        }
+        },
+        variant: props.variant ? props.variant : "default"
       }}
       isLoading={props.isLoading}
       placeholder={props.placeholder}

@@ -1,0 +1,1 @@
+ALTER TABLE bill ADD COLUMN quote_id bigint(20) unsigned default null;

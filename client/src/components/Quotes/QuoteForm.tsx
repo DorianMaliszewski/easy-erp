@@ -20,8 +20,6 @@ const QuoteForm: React.FC<any> = ({ quote }) => {
     quoteFormContext.setClient(event.value);
   }
 
-  console.log(clientSelected, quoteFormContext.quote.clientId);
-
   const getCustomersList = () => {
     return customers ? customers.map(customer => ({ value: customer.id, label: customer.name })) : [];
   };

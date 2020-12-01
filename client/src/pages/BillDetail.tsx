@@ -6,13 +6,14 @@ import { Paper, Grid, Typography, Divider, Button, Link, Theme } from "@material
 import Splashscreen from "./Splashscreen";
 import { makeStyles } from "@material-ui/styles";
 import classnames from "classnames";
-import QuoteDetailDialogTopActions from "../components/Quotes/QuoteSavePDFAndViewPDFActions";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import { getQuoteStatus } from "../utils/utils";
+import { getQuoteStatus, getBillStatus } from "../utils/utils";
 import { BillData } from "../models/BillData";
-import CustomerContext from "../contexts/CustomerContext";
 import { CustomerData } from "../models/CustomerData";
 import { Skeleton } from "@material-ui/lab";
+import QuoteOrBillLineDetailTable from "../components/Tables/QuoteOrBillLineDetailTable/QuoteOrBillLineDetailTable";
+import BillActionButtons from "../components/Bills/BillActionButtons";
+import { useCustomersContext } from "../providers/CustomerProvider";
 
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
@@ -30,7 +31,7 @@ const BillDetail: React.FC<any> = props => {
   const [bill, setBill] = useState<BillData>();
 
   const [customer, setCustomer] = useState();
-  const customerContext = useContext(CustomerContext);
+  const customerContext = useCustomersContext();
 
   const classes = useStyle();
 
@@ -55,57 +56,76 @@ const BillDetail: React.FC<any> = props => {
     return <Splashscreen text="Récupération de la facture" />;
   }
 
-  const billStatus = getQuoteStatus(bill.status as string);
+  const billStatus = getBillStatus(bill.status as string);
 
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "row", alignContent: "center", alignItems: "center", paddingBottom: 20 }}>
-        <div style={{ flexGrow: 1 }}>
+      <Grid container justify="space-between">
+        <Grid item>
           <Button onClick={e => history.goBack()}>
             <ChevronLeftIcon /> Retour
           </Button>
-        </div>
-        <QuoteDetailDialogTopActions />
-      </div>
-      <Paper className={classnames(classes.root)}>
-        <Typography variant="h5" gutterBottom>
-          Facture n°{bill.id}
-        </Typography>
-        <Divider />
-        <Grid container style={{ paddingTop: 20 }} spacing={3}>
-          <Grid item xs={6} sm={3}>
-            Client
-          </Grid>
-          <Grid item xs={6} sm={9}>
-            <Link href={routes.CUSTOMERS_DETAIL.path.replace(":id", bill.clientId ? bill.clientId.toString() : "")}>{customer ? customer.name : <Skeleton />}</Link>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            Etat
-          </Grid>
-          <Grid container item xs={6} sm={9} direction="row" alignContent="center" alignItems="center">
-            {billStatus?.icon}
-            <div style={{ paddingLeft: 10 }}>{billStatus?.text}</div>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            Créé par
-          </Grid>
-          <Grid item xs={6} sm={9}>
-            {bill.createdBy}
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            Créé
-          </Grid>
-          <Grid item xs={6} sm={9}>
-            {bill.createdAt?.fromNow()}
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            Mis à jour
-          </Grid>
-          <Grid item xs={6} sm={9}>
-            {bill.updatedAt ? bill.updatedAt.fromNow() : "Jamais"}
-          </Grid>
         </Grid>
-      </Paper>
+        <Grid item>
+          <BillActionButtons bill={bill} />
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Paper className={classnames(classes.root)}>
+          <Typography variant="h5" gutterBottom>
+            Facture n°{bill.id}
+          </Typography>
+          <Divider />
+          <Grid container style={{ paddingTop: 20 }} spacing={3}>
+            <Grid item xs={6} sm={3}>
+              Client
+            </Grid>
+            <Grid item xs={6} sm={9}>
+              <Link href={routes.CUSTOMERS_DETAIL.path.replace(":id", bill.clientId ? bill.clientId.toString() : "")}>{customer ? customer.name : <Skeleton />}</Link>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              Etat
+            </Grid>
+            <Grid container item xs={6} sm={9} direction="row" alignContent="center" alignItems="center">
+              {billStatus?.icon}
+              <div style={{ paddingLeft: 10 }}>{billStatus?.text}</div>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              Créé par
+            </Grid>
+            <Grid item xs={6} sm={9}>
+              {bill.createdBy}
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              Créé
+            </Grid>
+            <Grid item xs={6} sm={9}>
+              {bill.createdAt?.fromNow()}
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              Mis à jour
+            </Grid>
+            <Grid item xs={6} sm={9}>
+              {bill.updatedAt ? bill.updatedAt.fromNow() : "Jamais"}
+            </Grid>
+            {bill.quoteId && (
+              <>
+                <Grid item xs={6} sm={3}>
+                  Devis associé
+                </Grid>
+                <Grid item xs={6} sm={9}>
+                  <Button color="primary" variant="contained" onClick={e => history.push(routes.QUOTES_DETAIL.path.replace(":id", bill.quoteId ? bill.quoteId.toString() : ""))}>
+                    Voir le devis
+                  </Button>
+                </Grid>
+              </>
+            )}
+          </Grid>
+        </Paper>
+      </Grid>
+      <Grid item>
+        <QuoteOrBillLineDetailTable item={bill} />
+      </Grid>
     </>
   );
 };

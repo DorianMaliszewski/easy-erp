@@ -1,17 +1,19 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import Splashscreen from "./Splashscreen";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import CustomerContext from "../contexts/CustomerContext";
 import CustomerCard from "../components/Customers/CustomerCard";
 import { CustomerData } from "../models/CustomerData";
+import routes from "../routes";
+import { useCustomersContext } from "../providers/CustomerProvider";
+import EditIcon from "@material-ui/icons/Edit";
 
 const CustomerDetail: React.FC<any> = props => {
   const history = useHistory();
   const { id } = useParams();
 
-  const customerContext = useContext(CustomerContext);
+  const customerContext = useCustomersContext();
   const [customer, setCustomer] = useState<any>();
 
   useEffect(() => {
@@ -32,16 +34,21 @@ const CustomerDetail: React.FC<any> = props => {
   }
 
   return (
-    <>
-      <div style={{ display: "flex", flexDirection: "row", alignContent: "center", alignItems: "center", paddingBottom: 20 }}>
-        <div style={{ flexGrow: 1 }}>
+    <Grid container direction="column" spacing={3}>
+      <Grid item container direction="row" justify="space-between">
+        <Grid item>
           <Button onClick={e => history.goBack()}>
             <ChevronLeftIcon /> Retour
           </Button>
-        </div>
-      </div>
+        </Grid>
+        <Grid item>
+          <Button startIcon={<EditIcon />} variant="contained" color="primary" onClick={e => history.push(routes.CUSTOMERS_UPDATE.path.replace(":id", customer.id))}>
+            Modifier
+          </Button>
+        </Grid>
+      </Grid>
       <CustomerCard customer={customer} />
-    </>
+    </Grid>
   );
 };
 

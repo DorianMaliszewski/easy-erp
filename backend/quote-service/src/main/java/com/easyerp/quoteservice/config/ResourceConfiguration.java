@@ -1,29 +1,28 @@
 package com.easyerp.quoteservice.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoRestTemplateFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
+import org.springframework.web.context.request.RequestContextListener;
 
 @EnableResourceServer
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
-
-    @Value("${application.oauth.client-id}")
-    private String clientId;
-    @Value("${application.oauth.client-secret}")
-    private String clientSecret;
-    @Value("${application.oauth.client-url}")
-    private String clientUrl;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        http.authorizeRequests()
+                .anyRequest().authenticated();
     }
 
     @Override
@@ -32,13 +31,14 @@ public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
         resources.resourceId("quote-service");
     }
 
-    @Primary
     @Bean
-    RemoteTokenServices tokenServices() {
-        RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
-        remoteTokenServices.setClientId(clientId);
-        remoteTokenServices.setClientSecret(clientSecret);
-        remoteTokenServices.setCheckTokenEndpointUrl(clientUrl);
-        return remoteTokenServices;
+    public OAuth2RestTemplate restTemplate(UserInfoRestTemplateFactory factory) {
+        factory.getUserInfoRestTemplate().setRequestFactory(new OkHttp3ClientHttpRequestFactory());
+        return factory.getUserInfoRestTemplate();
+    }
+
+    @Bean
+    public RequestContextListener requestContextListener() {
+        return new RequestContextListener();
     }
 }

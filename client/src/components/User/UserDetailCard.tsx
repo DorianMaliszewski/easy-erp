@@ -7,57 +7,47 @@ import UserReinitPasswordGridItem from "./UserReinitPasswordGridItem";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
-    padding: theme.spacing(1),
-    margin: theme.spacing(2)
+    padding: theme.spacing(2)
   },
   gridLine: {
     paddingTop: theme.spacing(1)
   }
 }));
 
+let keys = [
+  { id: "id", label: "Id" },
+  { id: "username", label: "Identifiant" },
+  { id: "email", label: "Email" },
+  { id: "lastName", label: "Nom" },
+  { id: "firstName", label: "Prénom" }
+];
+
 const UserDetailCard: React.FC<any> = ({ user }) => {
   const classes = useStyles();
   const authContext = useContext(AuthContext);
   return (
     <Paper className={classes.paper}>
-      <Grid container spacing={3} direction="row">
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" component="p">
-            Id
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" component="p">
-            {user.id}
-          </Typography>
-        </Grid>
-        <Grid item className={classes.gridLine} xs={12}>
-          <Divider />
-        </Grid>
-        <Grid item className={classes.gridLine} xs={12} sm={6}>
-          <Typography variant="body1" component="p">
-            Nom
-          </Typography>
-        </Grid>
-        <Grid item className={classes.gridLine} xs={12} sm={6}>
-          <Typography variant="body1" component="p">
-            {user.name}
-          </Typography>
-        </Grid>
-        <Grid item className={classes.gridLine} xs={12}>
-          <Divider />
-        </Grid>
-        <Grid item className={classes.gridLine} xs={12} sm={6}>
-          <Typography variant="body1" component="p">
-            Email
-          </Typography>
-        </Grid>
-        <Grid item className={classes.gridLine} xs={12} sm={6}>
-          <Typography variant="body1" component="p">
-            {user.email}
-          </Typography>
-        </Grid>
-        {authContext.user.id === user.id ? <UserResetPasswordGridItem user={user} /> : authContext.isMoreThanOrEqualAdmin() && <UserReinitPasswordGridItem />}
+      <Grid container spacing={3} direction="column">
+        {keys.map(key => (
+          <Grid key={key.id} container item spacing={1}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">{key.label}</Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="body1" component="p">
+                {user[key.id]}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+          </Grid>
+        ))}
+        {authContext.user.id === user.id ? (
+          <UserResetPasswordGridItem user={user} />
+        ) : (
+          authContext.isMoreThanOrEqualAdmin() && user.role && user.role.name !== "ROLE_SUPER_ADMIN" && <UserReinitPasswordGridItem />
+        )}
       </Grid>
     </Paper>
   );

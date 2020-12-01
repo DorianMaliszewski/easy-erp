@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Typography, Divider } from "@material-ui/core";
 import { QuoteData } from "../models/QuoteData";
 import QuoteForm from "../components/Quotes/QuoteForm";
@@ -12,13 +12,18 @@ const QuoteFormPage: React.FC<any> = props => {
   const [quote, setQuote] = useState(new QuoteData());
   const quoteContext = useContext(QuoteContext);
 
+  useEffect(() => {
+    if (id && !quoteContext.state.isLoading) {
+      quoteContext.findById(parseInt(id, 10)).subscribe((quoteFinded: QuoteData) => {
+        if (!quoteFinded.lines) {
+          quoteFinded.lines = [];
+        }
+        setQuote(quoteFinded);
+      });
+    }
+  }, [id, quoteContext]);
+
   if (id && !quote.id) {
-    quoteContext.findById(parseInt(id, 10)).subscribe((quoteFinded: QuoteData) => {
-      if (!quoteFinded.lines) {
-        quoteFinded.lines = [];
-      }
-      setQuote(quoteFinded);
-    });
     return <Splashscreen text="Récupération du devis" />;
   }
 

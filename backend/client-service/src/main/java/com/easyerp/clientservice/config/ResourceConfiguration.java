@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoRestTemplateFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
@@ -18,13 +19,6 @@ import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
 
-    @Value("${application.oauth.client-id}")
-    private String clientId;
-    @Value("${application.oauth.client-secret}")
-    private String clientSecret;
-    @Value("${application.oauth.client-url}")
-    private String clientUrl;
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
         super.configure(http);
@@ -35,14 +29,9 @@ public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
         super.configure(resources.resourceId("client-service"));
     }
 
-    @Primary
     @Bean
-    RemoteTokenServices tokenServices() {
-        RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
-        remoteTokenServices.setClientId(clientId);
-        remoteTokenServices.setClientSecret(clientSecret);
-        remoteTokenServices.setCheckTokenEndpointUrl(clientUrl);
-        return remoteTokenServices;
+    public OAuth2RestTemplate restTemplate(UserInfoRestTemplateFactory factory) {
+        factory.getUserInfoRestTemplate().setRequestFactory(new OkHttp3ClientHttpRequestFactory());
+        return factory.getUserInfoRestTemplate();
     }
-
 }

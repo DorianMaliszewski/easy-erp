@@ -1,5 +1,5 @@
 #!/bin/bash
-for dir in ./*/
+for dir in ./*-service/
 do
   cd $dir;
   echo -ne "Building $dir ...";

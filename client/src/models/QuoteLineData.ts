@@ -1,12 +1,12 @@
-export class QuoteLineData {
+import { GenericBillOrQuoteLineData } from "./GenericBillOrQuoteData";
+
+export class QuoteLineData implements GenericBillOrQuoteLineData {
   lineNumber?: number;
   description: string;
   quantity: number;
   preTaxPrice: number;
   postTaxPrice: number;
   total?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
   version?: number;
 
   constructor() {

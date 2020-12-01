@@ -22,7 +22,7 @@ const App: React.FC<any> = ({ ...props }) => {
         history.push(routes.LOGIN.path);
       }
     });
-    return <Splashscreen />;
+    return <Splashscreen text=" " />;
   }
 
   return (

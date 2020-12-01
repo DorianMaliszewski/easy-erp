@@ -1,0 +1,23 @@
+
+
+security:
+  oauth2:
+    client:
+      clientId: easy-erp
+      clientSecret: easy-erp
+    resource:
+      tokenInfoUri: http://oauth.easy-erp.lan/oauth/check_token
+      userInfoUri: http://oauth.easy-erp.lan/api/users/me
+      preferTokenInfo: false
+server:
+  port: 8082
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+
+
+easy-erp:
+  file-directory: /tmp
+
+

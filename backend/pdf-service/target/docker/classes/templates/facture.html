@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Facture</title>
+    <meta charset="UTF-8" />
+</head>
+
+<style>
+    p {
+        margin: 5px 0px;
+    }
+
+    body {
+        margin: auto;
+        padding: 0 10px;
+    }
+
+    .header-my-information {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .bill-title {
+        border: 2px solid black;
+        font-weight: bold;
+        padding: 20px 100px;
+        display: inline-block;
+    }
+
+    .header-my-information .logo {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 5px;
+        display: inline-block;
+    }
+
+    .header-my-information .my-information {
+        display: inline-block;
+    }
+
+    .header-customer-information {
+        position: relative;
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .bill-table {
+        margin-top: 10px;
+        border-collapse: collapse;
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .bill-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .bill-table thead {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: lightblue;
+        color: black;
+        font-weight: bold;
+    }
+
+    .bill-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .total-table {
+        border-collapse: collapse;
+        table-layout: fixed;
+        width: 50%;
+        margin: 10px 0 auto auto;
+    }
+
+    .total-table td {
+        font-weight: bold;
+    }
+
+    .total-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .bill-end {
+        margin-top: 30px;
+    }
+
+    .bill-reference {
+        border: 2px solid black;
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .footer {
+        position: static;
+        bottom: 0;
+        width: 100%;
+        margin: auto;
+        text-align: center;
+        font-size: 8pt;
+    }
+
+    .post-info {
+        margin-top: 100px;
+        padding-bottom: 20px;
+        color: #555;
+        font-size: 11pt;
+    }
+</style>
+
+<body>
+    <div class="header-my-information">
+        <div>
+            <img th:if="${user.tenant.logo != null}" class="logo" th:src="${user.tenant.logo} + '?access_token=' + ${access_token}" alt="" />
+            <div class="my-information">
+                <p th:text="${user.tenant.name}"/>
+                <p th:text="${user.tenant.address}"/>
+                <p th:text="'Lyon, ' + ${user.tenant.postalCode}"/>
+                <p th:text="${user.tenant.phone}"/>
+                <p th:text="${user.tenant.site}"/>
+            </div>
+            <div style="float: right;">
+                <h3 class="bill-title">Facture</h3>
+            </div>
+        </div>
+    </div>
+    <div class="header-customer-information">
+        <div class="bill-reference">
+            <p th:text="'Référence : ' + ${billReference}"/>
+            <p th:text="'Date : ' + ${bill.updatedAt}"/>
+            <p th:text="'N°Client : ' + ${bill.clientId}"/>
+        </div>
+        <div style="float: right;">
+            <p th:text="${customer.name}"/>
+            <p th:text="${customer.address}"/>
+            <p th:text="${customer.city} + ', ' + ${customer.postalCode}"/>
+        </div>
+    </div>
+    <div>
+        <p>Intitulé : Description du projet</p>
+    </div>
+    <div>
+        <table class="bill-table">
+            <thead>
+                <tr>
+                    <td>Description</td>
+                    <td>Quantité</td>
+                    <td>Prix Unitaire HT</td>
+                    <td>Prix Total TTC</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="line : ${bill.lines}">
+                    <td th:text="${line.description}"/>
+                    <td th:text="${line.quantity}"/>
+                    <td th:text="${#numbers.formatDecimal(line.preTaxPrice,0,2, 'COMMA')}"/>
+                    <td th:text="${#numbers.formatDecimal((line.preTaxPrice * line.quantity) + (line.preTaxPrice * line.quantity * bill.tva),0,2, 'COMMA')}"/>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="total-table">
+            <tbody>
+                <tr>
+                    <td>Tva appliquée</td>
+                    <td th:text="${bill.tva * 100} + '%'"/>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td th:text="${#numbers.formatDecimal(bill.total,0,2,'COMMA')} + ' €'"/>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="bill-end">
+        <p>Nous restons à votre disposition pour toute information complémentaire</p>
+        <p>Cordialement,</p>
+    </div>
+
+    <div class="post-info">
+        <p>Condition de paiement : paiement à la réception de la facture sous 30 jours</p>
+        <p>Tout incident de paiement est passible d'intérêt de retard. Le montant des pénalités résulte de l'application aux sommes restant dues d'un taux d'intérêts légal en vigueur au moment de l'incident.</p>
+        <p>Indemenité forfaitaire pour frais de recouvrement due au créancier en cas de retard de paiement : 40€</p>
+    </div>
+    <footer class="footer footer-caption">
+        <p>N° Siret : 21089676400015 RCS Lyon</p>
+        <p>Code APE 947A - N°TVA INtracom FR778254684652000</p>
+    </footer>
+
+</body>
+
+</html>

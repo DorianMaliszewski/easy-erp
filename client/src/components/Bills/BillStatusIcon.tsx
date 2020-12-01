@@ -12,7 +12,8 @@ export const BILL_STATUS = {
   NEED_CONFIRMATION: { enum: "NEED_CONFIRMATION", text: "En attente de confirmation", weight: 1, icon: <VpnKeyIcon style={{ color: "#ffc107" }} /> },
   WAITING_CUSTOMER: { enum: "WAITING_CUSTOMER", text: "En attente client", weight: 2, icon: <SendIcon style={{ color: "#2196f3" }} /> },
   ACCEPTED: { enum: "ACCEPTED", text: "Acceptée / Terminée", weight: 3, icon: <CheckIcon style={{ color: "green" }} /> },
-  CANCELED: { enum: "CANCELED", text: "Annulée / Refusée", weight: 4, icon: <CancelIcon color="error" /> }
+  CANCELED: { enum: "CANCELED", text: "Annulée / Refusée", weight: 4, icon: <CancelIcon color="error" /> },
+  PAYED: { enum: "PAYED", text: "Payée", weight: 5, icon: <CheckIcon style={{ color: "green" }} /> }
 };
 
 const BillStatusIcon: React.FC<any> = props => {
@@ -21,7 +22,7 @@ const BillStatusIcon: React.FC<any> = props => {
 };
 
 BillStatusIcon.propTypes = {
-  status: PropTypes.string.isRequired
+  status: PropTypes.string
 };
 
 export default BillStatusIcon;

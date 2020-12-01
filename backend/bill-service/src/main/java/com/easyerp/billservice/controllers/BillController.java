@@ -6,12 +6,17 @@ import com.easyerp.billservice.repositories.BillRepository;
 import com.easyerp.billservice.requests.BillRequest;
 import com.easyerp.billservice.responses.DTO;
 import com.easyerp.billservice.services.BillService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @RestController
@@ -42,69 +47,114 @@ public class BillController {
     }
 
     @PostMapping
-    @PreAuthorize("!hasAuthority('ROLE_CLIENT')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_CREATE_BILLS')")
     public ResponseEntity create(@RequestBody BillRequest billRequest, OAuth2Authentication authentication) {
         Bill bill = this.billService.create(billRequest, authentication);
         return ResponseEntity.ok(bill);
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("!hasAuthority('ROLE_CLIENT')")
-    public ResponseEntity update(@PathVariable Long id, @RequestBody BillRequest billRequest, OAuth2Authentication authentication) {
-        Optional<Bill> optionalBill= this.billRepository.findById(id);
+    @PostMapping("from-quote")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_CREATE_BILLS')")
+    public ResponseEntity createFromQuote(@RequestBody BillRequest billRequest, OAuth2Authentication authentication) {
+        Bill bill = this.billService.createFromQuote(billRequest, authentication);
+        return ResponseEntity.ok(bill);
+    }
 
-        if (optionalBill.isEmpty()) return ResponseEntity.notFound().build();
-        if (optionalBill.get().getStatus() != BillStatus.DRAFT) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_UPDATE_BILLS')")
+    public ResponseEntity update(@PathVariable Long id, @RequestBody BillRequest billRequest,
+            OAuth2Authentication authentication) {
+        Optional<Bill> optionalBill = this.billRepository.findById(id);
+
+        if (optionalBill.isEmpty())
+            return ResponseEntity.notFound().build();
+        if (optionalBill.get().getStatus() != BillStatus.DRAFT)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Bill bill = this.billService.update(optionalBill.get(), billRequest, authentication);
         return ResponseEntity.ok(bill);
     }
 
-    @PatchMapping("/{id}/publish")
-    @PreAuthorize("!hasAuthority('ROLE_CLIENT')")
-    public ResponseEntity publish(@PathVariable Long id, OAuth2Authentication authentication) {
+    @PatchMapping("/{id}/payed")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_MANAGE_BILLS')")
+    public ResponseEntity payed(@PathVariable Long id, OAuth2Authentication authentication) {
         Optional<Bill> optionalBill = this.billRepository.findById(id);
 
-        if (optionalBill.isEmpty()) return ResponseEntity.notFound().build();
-        if (optionalBill.get().getStatus() != BillStatus.DRAFT) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if (optionalBill.isEmpty())
+            return ResponseEntity.notFound().build();
+        if (optionalBill.get().getStatus() != BillStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        this.billService.publish(optionalBill.get(), authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.billService.payed(optionalBill.get(), authentication));
     }
 
     @PatchMapping("/{id}/send")
-    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_SEND_BILLS')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_SEND_BILLS', 'CAN_MANAGE_BILLS')")
     public ResponseEntity send(@PathVariable Long id, OAuth2Authentication authentication) {
         Optional<Bill> optionalBill = this.billRepository.findById(id);
 
-        if (optionalBill.isEmpty()) return ResponseEntity.notFound().build();
-        if (optionalBill.get().getStatus() != BillStatus.NEED_CONFIRMATION) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if (optionalBill.isEmpty())
+            return ResponseEntity.notFound().build();
+        if (optionalBill.get().getStatus() != BillStatus.NEED_CONFIRMATION || optionalBill.get().getStatus() != BillStatus.DRAFT)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        this.billService.send(optionalBill.get(), authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.billService.send(optionalBill.get(), authentication));
     }
 
     @PatchMapping("/{id}/accept")
-    @PreAuthorize("hasAnyAuthority('ROLE_CLIENT')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER', 'CAN_MANAGE_BILLS')")
     public ResponseEntity accept(@PathVariable Long id, OAuth2Authentication authentication) {
         Optional<Bill> optionalBill = this.billRepository.findById(id);
 
-        if (optionalBill.isEmpty()) return ResponseEntity.notFound().build();
-        if (optionalBill.get().getStatus() != BillStatus.WAITING_CUSTOMER) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if (optionalBill.isEmpty())
+            return ResponseEntity.notFound().build();
+        if (optionalBill.get().getStatus() != BillStatus.WAITING_CUSTOMER)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        this.billService.accept(optionalBill.get(), authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.billService.accept(optionalBill.get(), authentication));
     }
 
     @PatchMapping("/{id}/cancel")
-    @PreAuthorize("hasAnyAuthority('ROLE_CLIENT')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_MANAGER','CAN_MANAGE_BILLS')")
     public ResponseEntity cancel(@PathVariable Long id, OAuth2Authentication authentication) {
         Optional<Bill> optionalBill = this.billRepository.findById(id);
 
-        if (optionalBill.isEmpty()) return ResponseEntity.notFound().build();
-        if (optionalBill.get().getStatus() != BillStatus.WAITING_CUSTOMER) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if (optionalBill.isEmpty())
+            return ResponseEntity.notFound().build();
+        if (optionalBill.get().getStatus() != BillStatus.WAITING_CUSTOMER)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        this.billService.cancel(optionalBill.get(), authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.billService.cancel(optionalBill.get(), authentication));
+    }
+
+    @GetMapping(value = "/{id}/generate-pdf", produces = "application/pdf")
+    public ResponseEntity generatePDF(@PathVariable Long id, OAuth2Authentication authentication) {
+        try {
+            var responseEntity = this.billService.generatePDF(id, authentication);
+            return responseEntity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Une erreur est survenue lors de la génération du PDF");
+        }
+    }
+
+    @GetMapping(value = "/{id}/show-pdf", produces = "application/pdf")
+    public ResponseEntity showLastPDF(@PathVariable Long id, OAuth2Authentication authentication) {
+        try {
+            var responseEntity = this.billService.getPDFOrGenerateIt(id, authentication);
+            return responseEntity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Une erreur est survenue lors de la génération du PDF");
+        }
+    }
+
+    @GetMapping("/for-me")
+    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    public ResponseEntity findBillsForMe(OAuth2Authentication authentication) {
+        DTO<Bill> dto = new DTO<>();
+        dto.setItems(this.billService.findForMe(authentication));
+        dto.setNumFound(dto.getItems().size());
+        return ResponseEntity.ok(dto);
     }
 }

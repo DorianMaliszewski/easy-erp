@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "easy-erp",
+      "type": "com.easyerp.pdfservice.config.EasyERPConfiguration",
+      "sourceType": "com.easyerp.pdfservice.config.EasyERPConfiguration"
+    }
+  ],
+  "properties": [
+    {
+      "name": "easy-erp.data-directory",
+      "type": "java.lang.String",
+      "description": "Dossier où sont stockés les pdf générés"
+    },
+    {
+      "name": "easy-erp.file-directory",
+      "type": "java.lang.String",
+      "sourceType": "com.easyerp.pdfservice.config.EasyERPConfiguration"
+    }
+  ],
+  "hints": []
+}

@@ -2,9 +2,18 @@ import React from "react";
 import { Paper, Typography, Divider, Grid, Link, makeStyles, Theme } from "@material-ui/core";
 import routes from "../../routes";
 import classnames from "classnames";
+import useUsers from "../../hooks/useUsers";
 
 const CustomerCard: React.FC<any> = ({ customer }) => {
   const classes = useStyles();
+  const users = useUsers();
+
+  const getUserLabel = (contact: any) => {
+    return contact ? contact.firstName + " " + contact.lastName : "Non renseigné";
+  };
+
+  const contact = users ? users.find((u: any) => u.username === customer.contact) : null;
+
   return (
     <Paper className={classnames(classes.root)}>
       <Typography variant="h5" gutterBottom>
@@ -22,7 +31,7 @@ const CustomerCard: React.FC<any> = ({ customer }) => {
           Contact
         </Grid>
         <Grid item xs={8} sm={9}>
-          <Link href={routes.USER_DETAIL.path.replace(":id", customer.contact)}>{customer.contact}</Link>
+          <Link href={routes.USER_DETAIL.path.replace(":id", contact ? contact.id.toString() : "")}>{contact ? getUserLabel(contact) : customer.contact}</Link>
         </Grid>
         <Grid item xs={4} sm={3}>
           Téléphone
@@ -60,9 +69,7 @@ const CustomerCard: React.FC<any> = ({ customer }) => {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(2),
-    overflowX: "auto"
+    padding: theme.spacing(2)
   }
 }));
 
